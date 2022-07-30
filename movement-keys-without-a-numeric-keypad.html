@@ -5,23 +5,23 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <meta name="generator" content="Pelican" />
         <title>Movement Keys Without a Numeric Keypad</title>
-        <link rel="stylesheet" href="https://motardo.github.io/theme/css/main.css" />
-        <link href="https://motardo.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="Full Time Snacking Atom Feed" />
+        <link rel="stylesheet" href="https://motardo.github.io/fts/theme/css/main.css" />
+        <link href="https://motardo.github.io/fts/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="Full Time Snacking Atom Feed" />
         <meta name="description" content="Motivation Movement in the Exile games is controlled either by clicking on the terrain in the desired direction, or by using the keys on the..." />
 </head>
 
 <body id="index" class="home">
         <header id="banner" class="body">
-                <h1><a href="https://motardo.github.io/">Full Time Snacking</a></h1>
+                <h1><a href="https://motardo.github.io/fts/">Full Time Snacking</a></h1>
                 <nav><ul>
-                    <li class="active"><a href="https://motardo.github.io/category/exile.html">Exile</a></li>
+                    <li class="active"><a href="https://motardo.github.io/fts/category/exile.html">Exile</a></li>
                 </ul></nav>
         </header><!-- /#banner -->
 <section id="content" class="body">
   <article>
     <header>
       <h1 class="entry-title">
-        <a href="https://motardo.github.io/movement-keys-without-a-numeric-keypad.html" rel="bookmark"
+        <a href="https://motardo.github.io/fts/movement-keys-without-a-numeric-keypad.html" rel="bookmark"
            title="Permalink to Movement Keys Without a Numeric Keypad">Movement Keys Without a Numeric Keypad</a></h1>
     </header>
 
@@ -32,10 +32,10 @@
         </abbr>
 
         <address class="vcard author">
-                By                         <a class="url fn" href="https://motardo.github.io/author/nathan-wilson.html">Nathan Wilson</a>
+                By                         <a class="url fn" href="https://motardo.github.io/fts/author/nathan-wilson.html">Nathan Wilson</a>
         </address>
-<p>In <a href="https://motardo.github.io/category/exile.html">Exile</a>.</p>
-<p>tags: <a href="https://motardo.github.io/tag/exile.html">exile</a> <a href="https://motardo.github.io/tag/patches.html">patches</a> </p>
+<p>In <a href="https://motardo.github.io/fts/category/exile.html">Exile</a>.</p>
+<p>tags: <a href="https://motardo.github.io/fts/tag/exile.html">exile</a> <a href="https://motardo.github.io/fts/tag/patches.html">patches</a> </p>
 </footer><!-- /.post-info -->      <h2>Motivation</h2>
 <p>Movement in the Exile games is controlled either by clicking on the terrain in
 the desired direction, or by using the keys on the numeric keypad. Clicking with
@@ -63,7 +63,7 @@ modify it. From BasiliskII, I used a program to convert the Exile game file to
 MacBinary format. This combines the data and resource forks into a file with a
 single fork that unix understands.</p>
 <p>Now I have the game code on my Linux filesystem as a MacBinary encoded file
-called <a href="https://motardo.github.io/exile/e1orig.bin"><code>e1orig.bin</code></a>. Let's find those keycodes.</p>
+called <a href="https://motardo.github.io/fts/exile/e1orig.bin"><code>e1orig.bin</code></a>. Let's find those keycodes.</p>
 <p>The Exile games were written in C and compiled with <em>Metrowerk's Code Warrior</em>, a
 popular Macintosh IDE from the 1990s. Code Warrior inserts so called <code>macsbug</code>
 strings into the executable code it generates. These strings contain the names
@@ -276,7 +276,7 @@ $ xxd -r e1-keypad-patch.txt e1-no-keypad.bin
 </code></pre></div>
 
 <h2>Conclusion</h2>
-<p>We can copy the <a href="https://motardo.github.io/exile/keypad/e1-no-keypad.bin">patched game file</a> back over to BasiliskII, extract the
+<p>We can copy the <a href="https://motardo.github.io/fts/exile/keypad/e1-no-keypad.bin">patched game file</a> back over to BasiliskII, extract the
 application program from the MacBinary format, and test out our new motion keys.</p>
 <p>Good luck and have fun!</p>
     </div><!-- /.entry-content -->
@@ -296,7 +296,7 @@ application program from the MacBinary format, and test out our new motion keys.
                 <div class="social">
                         <h2>social</h2>
                         <ul>
-                            <li><a href="https://motardo.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate">atom feed</a></li>
+                            <li><a href="https://motardo.github.io/fts/feeds/all.atom.xml" type="application/atom+xml" rel="alternate">atom feed</a></li>
 
                             <li><a href="#">You can add links in your config file</a></li>
                             <li><a href="#">Another social link</a></li>

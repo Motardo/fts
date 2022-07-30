@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>Full Time Snacking - Exile</title><link href="https://motardo.github.io/" rel="alternate"></link><link href="https://motardo.github.io/feeds/exile.atom.xml" rel="self"></link><id>https://motardo.github.io/</id><updated>2021-07-22T11:16:47-04:00</updated><entry><title>Movement Keys Without a Numeric Keypad</title><link href="https://motardo.github.io/movement-keys-without-a-numeric-keypad.html" rel="alternate"></link><published>2021-07-22T11:16:47-04:00</published><updated>2021-07-22T11:16:47-04:00</updated><author><name>Nathan Wilson</name></author><id>tag:motardo.github.io,2021-07-22:/movement-keys-without-a-numeric-keypad.html</id><summary type="html">&lt;h2&gt;Motivation&lt;/h2&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title>Full Time Snacking - Exile</title><link href="https://motardo.github.io/fts/" rel="alternate"></link><link href="https://motardo.github.io/fts/feeds/exile.atom.xml" rel="self"></link><id>https://motardo.github.io/fts/</id><updated>2021-07-22T11:16:47-04:00</updated><entry><title>Movement Keys Without a Numeric Keypad</title><link href="https://motardo.github.io/fts/movement-keys-without-a-numeric-keypad.html" rel="alternate"></link><published>2021-07-22T11:16:47-04:00</published><updated>2021-07-22T11:16:47-04:00</updated><author><name>Nathan Wilson</name></author><id>tag:motardo.github.io,2021-07-22:/fts/movement-keys-without-a-numeric-keypad.html</id><summary type="html">&lt;h2&gt;Motivation&lt;/h2&gt;
 &lt;p&gt;Movement in the Exile games is controlled either by clicking on the terrain in
 the desired direction, or by using the keys on the numeric keypad. Clicking with
 the mouse seems tedious to me, so I have always used the keypad. In the past, I
@@ -30,7 +30,7 @@ modify it. From BasiliskII, I used a program to convert the Exile game file to
 MacBinary format. This combines the data and resource forks into a file with a
 single fork that unix understands.&lt;/p&gt;
 &lt;p&gt;Now I have the game code on my Linux filesystem as a MacBinary encoded file
-called &lt;a href="https://motardo.github.io/exile/e1orig.bin"&gt;&lt;code&gt;e1orig.bin&lt;/code&gt;&lt;/a&gt;. Let's find those keycodes.&lt;/p&gt;
+called &lt;a href="https://motardo.github.io/fts/exile/e1orig.bin"&gt;&lt;code&gt;e1orig.bin&lt;/code&gt;&lt;/a&gt;. Let's find those keycodes.&lt;/p&gt;
 &lt;p&gt;The Exile games were written in C and compiled with &lt;em&gt;Metrowerk's Code Warrior&lt;/em&gt;, a
 popular Macintosh IDE from the 1990s. Code Warrior inserts so called &lt;code&gt;macsbug&lt;/code&gt;
 strings into the executable code it generates. These strings contain the names
@@ -243,6 +243,6 @@ $ xxd -r e1-keypad-patch.txt e1-no-keypad.bin
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;h2&gt;Conclusion&lt;/h2&gt;
-&lt;p&gt;We can copy the &lt;a href="https://motardo.github.io/exile/keypad/e1-no-keypad.bin"&gt;patched game file&lt;/a&gt; back over to BasiliskII, extract the
+&lt;p&gt;We can copy the &lt;a href="https://motardo.github.io/fts/exile/keypad/e1-no-keypad.bin"&gt;patched game file&lt;/a&gt; back over to BasiliskII, extract the
 application program from the MacBinary format, and test out our new motion keys.&lt;/p&gt;
 &lt;p&gt;Good luck and have fun!&lt;/p&gt;</content><category term="Exile"></category><category term="exile"></category><category term="patches"></category></entry></feed>
