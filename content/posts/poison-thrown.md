@@ -312,7 +312,7 @@ Everything looks good. Let's fire it up in DOSBox and see if it works.
 
 ![Frrr with darts equiped and poisoned]({static}/exile/poison/poison-darts.png){: style="width:100%;" }
 
-Success!
+Success! Frrr has magic darts equipped and they were able to be poisoned.
 
 ## Macintosh Versions
 
@@ -408,8 +408,8 @@ Patched:  0000 6716 0c42 0004 6710 0c42 0006 6f06
 _Exile I_ and _Exile II_:
 
 ```
-Original: 0001 670c 0c42 0002 6706 0c42 0005 6604  ..g..B..g..B..f.
-Patched:  0000 6710 0c42 0004 670a 0c42 0006 6e04  ..g..B..g..B..f.
+Original: 0001 670c 0c42 0002 6706 0c42 0005 6604
+Patched:  0000 6710 0c42 0004 670a 0c42 0006 6e04
 ```
 
 Here is a screenshot of the Mac version of Exile I showing John having 
