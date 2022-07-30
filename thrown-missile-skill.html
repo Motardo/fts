@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="generator" content="Pelican" />
+        <title>Thrown Missile Skill</title>
+        <link rel="stylesheet" href="https://motardo.github.io/fts/theme/css/main.css" />
+        <link href="https://motardo.github.io/fts/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="Full Time Snacking Atom Feed" />
+        <meta name="description" content="Motivation Thrown weapons are common in Exile, and throwing skill is cheap in both gold and skill points. Unfortunately, in all versions of Exile,..." />
+</head>
+
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="https://motardo.github.io/fts/">Full Time Snacking</a></h1>
+                <nav><ul>
+                    <li><a href="https://motardo.github.io/fts/pages/about.html">About</a></li>
+                    <li class="active"><a href="https://motardo.github.io/fts/category/exile.html">Exile</a></li>
+                    <li><a href="https://motardo.github.io/fts/category/posts.html">posts</a></li>
+                </ul></nav>
+        </header><!-- /#banner -->
+<section id="content" class="body">
+  <article>
+    <header>
+      <h1 class="entry-title">
+        <a href="https://motardo.github.io/fts/thrown-missile-skill.html" rel="bookmark"
+           title="Permalink to Thrown Missile Skill">Thrown Missile Skill</a></h1>
+    </header>
+
+    <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2020-06-01T16:16:47-04:00">
+                Published: Mon 01 June 2020
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="https://motardo.github.io/fts/author/nathan-wilson.html">Nathan Wilson</a>
+        </address>
+<p>In <a href="https://motardo.github.io/fts/category/exile.html">Exile</a>.</p>
+
+</footer><!-- /.post-info -->      <h2>Motivation</h2>
+<p>Thrown weapons are common in Exile, and throwing skill is cheap in both gold and
+skill points. Unfortunately, in all versions of Exile, throwing skill does not
+actually do anything. The chance to hit with a thrown missile attack depends
+strangely on the PC's defense skill. It would be nice if throwing skill actually
+increased the chance to hit.</p>
+<h2>Remedy</h2>
+<p>Make the chance to hit with thrown missiles depend on throwing skill instead of
+defense.</p>
+<h2>Method</h2>
+<p>We just need to swap <code>defense</code> for <code>thrown</code> in the code that calculates the
+chance to hit with a thrown missile. It is a matter of subtracting 4 from the
+value of a single byte in the executable<sup id="fnref:1"><a class="footnote-ref" href="#fn:1">1</a></sup>.</p>
+<h3>Windows Versions</h3>
+<p>Use any hex editor to replace the byte as shown at the specified offset in the
+specified file.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">File</th>
+<th style="text-align: left;">Version</th>
+<th style="text-align: left;">Offset (Decimal)</th>
+<th style="text-align: left;">Change (subtract 4)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">BLADES.EXE</td>
+<td style="text-align: left;">v1.0.1</td>
+<td style="text-align: left;">0x8B5DA (570842)</td>
+<td style="text-align: left;">0x7a should be 0x76</td>
+</tr>
+<tr>
+<td style="text-align: left;">EXILE3.EXE</td>
+<td style="text-align: left;">v1.0b</td>
+<td style="text-align: left;">0x7AF17 (503575)</td>
+<td style="text-align: left;">0x4c should be 0x48</td>
+</tr>
+<tr>
+<td style="text-align: left;">EXILE2.EXE</td>
+<td style="text-align: left;">v2.0.1</td>
+<td style="text-align: left;">0xC25DD (796125)</td>
+<td style="text-align: left;">0xd8 should be 0xd4</td>
+</tr>
+<tr>
+<td style="text-align: left;">EXILE.EXE</td>
+<td style="text-align: left;">v2.0</td>
+<td style="text-align: left;">0x5ABD9 (371673)</td>
+<td style="text-align: left;">0x26 should be 0x22</td>
+</tr>
+</tbody>
+</table>
+<h3>Macintosh Versions (68k<sup id="fnref:2"><a class="footnote-ref" href="#fn:2">2</a></sup> )</h3>
+<p>Use a resource editor such as <em>ResEdit</em> to replace the byte <code>0x26</code> with the byte
+<code>0x22</code> at the specified offset of the specified <code>CODE</code> resource in the resource
+fork of the specified file.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">File</th>
+<th style="text-align: left;">CODE resource</th>
+<th style="text-align: left;">Offset</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">Blades of Exile (fat) v1.0.2</td>
+<td style="text-align: left;">CODE 7</td>
+<td style="text-align: left;">0x3a0d</td>
+</tr>
+<tr>
+<td style="text-align: left;">Exile III (fat) v1.0.3</td>
+<td style="text-align: left;">CODE 7</td>
+<td style="text-align: left;">0x363b</td>
+</tr>
+<tr>
+<td style="text-align: left;">Exile II v2.0.3</td>
+<td style="text-align: left;">CODE 1</td>
+<td style="text-align: left;">0x4e91</td>
+</tr>
+<tr>
+<td style="text-align: left;">Exile v2.0.1</td>
+<td style="text-align: left;">CODE 3</td>
+<td style="text-align: left;">0x82e1</td>
+</tr>
+</tbody>
+</table>
+<h4>Alternative Method without <em>ResEdit</em></h4>
+<p>Normally we would use a resource editor such as <em>ResEdit</em> to modify the resource
+fork of any Macintosh files. However, since we are only changing the value of a
+constant, it is okay to use a plain hex editor in this case. Search the resource
+fork of the executable for the hex bytes <code>3d 70 08 26</code>. The sequence will only
+appear once in each file. Change the <code>0x26</code> at the end of the sequence to
+<code>0x22</code>.</p>
+<h2>Conclusion</h2>
+<p>Now when we spend skill points on throwing skill, it's not a total waste.</p>
+<p>Happy Adventuring!</p>
+<hr>
+<p>Footnotes:</p>
+<div class="footnote">
+<hr>
+<ol>
+<li id="fn:1">
+<p>These are the free registered versions available for download from
+  <a href="http://spiderwebsoftware.com/productsOld.html">Spiderweb Software</a>.&#160;<a class="footnote-backref" href="#fnref:1" title="Jump back to footnote 1 in the text">&#8617;</a></p>
+</li>
+<li id="fn:2">
+<p>Although some of the executables are FAT, these patches only change the 68k parts.&#160;<a class="footnote-backref" href="#fnref:2" title="Jump back to footnote 2 in the text">&#8617;</a></p>
+</li>
+</ol>
+</div>
+    </div><!-- /.entry-content -->
+
+  </article>
+</section>
+        <section id="extras" class="body">
+                <div class="blogroll">
+                        <h2>links</h2>
+                        <ul>
+                            <li><a href="https://getpelican.com/">Pelican</a></li>
+                            <li><a href="https://www.python.org/">Python.org</a></li>
+                            <li><a href="https://palletsprojects.com/p/jinja/">Jinja2</a></li>
+                            <li><a href="#">You can modify those links in your config file</a></li>
+                        </ul>
+                </div><!-- /.blogroll -->
+                <div class="social">
+                        <h2>social</h2>
+                        <ul>
+                            <li><a href="https://motardo.github.io/fts/feeds/all.atom.xml" type="application/atom+xml" rel="alternate">atom feed</a></li>
+
+                            <li><a href="#">You can add links in your config file</a></li>
+                            <li><a href="#">Another social link</a></li>
+                        </ul>
+                </div><!-- /.social -->
+        </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="https://getpelican.com/">Pelican</a>, which takes great advantage of <a href="https://www.python.org/">Python</a>.
+                </address><!-- /#about -->
+
+                <p>The theme is by <a href="https://www.smashingmagazine.com/2009/08/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
+        </footer><!-- /#contentinfo -->
+
+</body>
+</html>

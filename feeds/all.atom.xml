@@ -1,5 +1,390 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>Full Time Snacking</title><link href="https://motardo.github.io/fts/" rel="alternate"></link><link href="https://motardo.github.io/fts/feeds/all.atom.xml" rel="self"></link><id>https://motardo.github.io/fts/</id><updated>2021-07-22T11:16:47-04:00</updated><entry><title>Movement Keys Without a Numeric Keypad</title><link href="https://motardo.github.io/fts/movement-keys-without-a-numeric-keypad.html" rel="alternate"></link><published>2021-07-22T11:16:47-04:00</published><updated>2021-07-22T11:16:47-04:00</updated><author><name>Nathan Wilson</name></author><id>tag:motardo.github.io,2021-07-22:/fts/movement-keys-without-a-numeric-keypad.html</id><summary type="html">&lt;h2&gt;Motivation&lt;/h2&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title>Full Time Snacking</title><link href="https://motardo.github.io/fts/" rel="alternate"></link><link href="https://motardo.github.io/fts/feeds/all.atom.xml" rel="self"></link><id>https://motardo.github.io/fts/</id><updated>2021-07-22T11:16:47-04:00</updated><entry><title>Let Thrown Weapons Be Poisoned</title><link href="https://motardo.github.io/fts/let-thrown-weapons-be-poisoned.html" rel="alternate"></link><published>2021-07-22T11:16:47-04:00</published><updated>2021-07-22T11:16:47-04:00</updated><author><name>Nathan Wilson</name></author><id>tag:motardo.github.io,2021-07-22:/fts/let-thrown-weapons-be-poisoned.html</id><summary type="html">&lt;h2&gt;Motivation&lt;/h2&gt;
+&lt;p&gt;In Exile, thrown weapons are pretty ineffective. They do very little damage,
+have a short range, miss a lot, are consumed in a single use, heavy, and
+overpriced. As if that wasn't bad enough, for some strange reason, they are the
+only type of weapons in Exile which are …&lt;/p&gt;</summary><content type="html">&lt;h2&gt;Motivation&lt;/h2&gt;
+&lt;p&gt;In Exile, thrown weapons are pretty ineffective. They do very little damage,
+have a short range, miss a lot, are consumed in a single use, heavy, and
+overpriced. As if that wasn't bad enough, for some strange reason, they are the
+only type of weapons in Exile which are unable to be poisoned. The only good
+thing about thrown weapons is that throwing skill is cheaper than other weapon
+skills. Let's make thrown weapons a little more interesting by allowing them to
+be poisoned.&lt;/p&gt;
+&lt;h2&gt;Remedy&lt;/h2&gt;
+&lt;p&gt;Looking through the source code for Blades (Windows version[1]), we find that,
+when a PC uses poison, the game calls the &lt;code&gt;poison_weapon&lt;/code&gt; function in
+&lt;code&gt;PARTY.CPP&lt;/code&gt; This function loops over the PC's inventory finding the first item
+that is equipped and is also a weapon. Then it applies the poison to that item.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="n"&gt;Boolean&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nf"&gt;poison_weapon&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="kt"&gt;short&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;pc_num&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="kt"&gt;short&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;how_much&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="kt"&gt;short&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;safe&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="o"&gt;//&lt;/span&gt;&lt;span class="kt"&gt;short&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;safe&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="c1"&gt;// 1 - always succeeds&lt;/span&gt;
+&lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="kt"&gt;short&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;i&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="n"&gt;weap&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="mi"&gt;24&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="n"&gt;p_level&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="n"&gt;r1&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="kt"&gt;short&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;p_chance&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;21&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="mi"&gt;40&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="mi"&gt;72&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="mi"&gt;81&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="mi"&gt;85&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="mi"&gt;88&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="mi"&gt;89&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="mi"&gt;90&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="w"&gt;                            &lt;/span&gt;&lt;span class="mi"&gt;91&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="mi"&gt;92&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="mi"&gt;93&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="mi"&gt;94&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="mi"&gt;94&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="mi"&gt;95&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="mi"&gt;95&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="mi"&gt;96&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="mi"&gt;97&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="mi"&gt;98&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="mi"&gt;100&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="mi"&gt;100&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="mi"&gt;100&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="mi"&gt;100&lt;/span&gt;&lt;span class="p"&gt;};&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="k"&gt;for&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;i&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;i&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="mi"&gt;24&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;i&lt;/span&gt;&lt;span class="o"&gt;++&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="w"&gt;        &lt;/span&gt;&lt;span class="k"&gt;if&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;((&lt;/span&gt;&lt;span class="n"&gt;adven&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;pc_num&lt;/span&gt;&lt;span class="p"&gt;].&lt;/span&gt;&lt;span class="n"&gt;equip&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;i&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;==&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;TRUE&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;&amp;amp;&amp;amp;&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;is_weapon&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;pc_num&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="n"&gt;i&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;==&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;TRUE&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="w"&gt;            &lt;/span&gt;&lt;span class="n"&gt;weap&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;i&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="w"&gt;            &lt;/span&gt;&lt;span class="n"&gt;i&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="mi"&gt;30&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="w"&gt;            &lt;/span&gt;&lt;span class="p"&gt;}&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="k"&gt;if&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;weap&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;==&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="mi"&gt;24&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="w"&gt;        &lt;/span&gt;&lt;span class="n"&gt;add_string_to_buf&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;  No weapon equipped.       &amp;quot;&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="p"&gt;...&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Interestingly, that &lt;code&gt;i = 30&lt;/code&gt; statement is used to break out of the loop after a weapon is found. &lt;/p&gt;
+&lt;p&gt;The &lt;code&gt;is_weapon&lt;/code&gt; function returns true for one and two-handed melee weapons
+(varieties 1 and 2), bows (5), and crossbows (24), and it returns false
+otherwise.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="n"&gt;Boolean&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nf"&gt;is_weapon&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="kt"&gt;short&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;pc_num&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="kt"&gt;short&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;item&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="k"&gt;if&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;((&lt;/span&gt;&lt;span class="n"&gt;adven&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;pc_num&lt;/span&gt;&lt;span class="p"&gt;].&lt;/span&gt;&lt;span class="n"&gt;items&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;item&lt;/span&gt;&lt;span class="p"&gt;].&lt;/span&gt;&lt;span class="n"&gt;variety&lt;/span&gt;&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="o"&gt;==&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;||&lt;/span&gt;&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="c1"&gt;// one-handed melee&lt;/span&gt;
+&lt;span class="w"&gt;        &lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;adven&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;pc_num&lt;/span&gt;&lt;span class="p"&gt;].&lt;/span&gt;&lt;span class="n"&gt;items&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;item&lt;/span&gt;&lt;span class="p"&gt;].&lt;/span&gt;&lt;span class="n"&gt;variety&lt;/span&gt;&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="o"&gt;==&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;||&lt;/span&gt;&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="c1"&gt;// two-handed melee&lt;/span&gt;
+&lt;span class="w"&gt;        &lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;adven&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;pc_num&lt;/span&gt;&lt;span class="p"&gt;].&lt;/span&gt;&lt;span class="n"&gt;items&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;item&lt;/span&gt;&lt;span class="p"&gt;].&lt;/span&gt;&lt;span class="n"&gt;variety&lt;/span&gt;&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="o"&gt;==&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="mi"&gt;5&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;||&lt;/span&gt;&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="c1"&gt;// bows&lt;/span&gt;
+&lt;span class="w"&gt;        &lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;adven&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;pc_num&lt;/span&gt;&lt;span class="p"&gt;].&lt;/span&gt;&lt;span class="n"&gt;items&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;item&lt;/span&gt;&lt;span class="p"&gt;].&lt;/span&gt;&lt;span class="n"&gt;variety&lt;/span&gt;&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="o"&gt;==&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="mi"&gt;24&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;&lt;span class="w"&gt;   &lt;/span&gt;&lt;span class="c1"&gt;// crossbows&lt;/span&gt;
+&lt;span class="w"&gt;            &lt;/span&gt;&lt;span class="k"&gt;return&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;TRUE&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="w"&gt;            &lt;/span&gt;&lt;span class="k"&gt;else&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="k"&gt;return&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;FALSE&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="p"&gt;}&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;So in order to allow thrown weapons to be poisoned, we just need to patch
+&lt;code&gt;is_weapon&lt;/code&gt; to return &lt;code&gt;true&lt;/code&gt; for thrown weapons, which are item variety &lt;code&gt;6&lt;/code&gt; (By
+the way, item variety &lt;code&gt;3&lt;/code&gt; is gold pieces and &lt;code&gt;4&lt;/code&gt; is arrows). Next, let's look at the
+&lt;code&gt;BLADES.EXE&lt;/code&gt; binary to think about how we might proceed.&lt;/p&gt;
+&lt;p&gt;Notice the string "No weapon equipped" in the &lt;code&gt;poison_weapon&lt;/code&gt; function above.
+Strings like these will help us find the function in the game's binary. I used a
+hex editor to search for this string in BLADES.EXE and located it at around
+offset &lt;code&gt;0xdabb0.&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img alt="wxHexEditor finding text in BLADES.EXE" src="https://motardo.github.io/fts/exile/poison/search_nick.png" style="width:100%;"&gt;&lt;/p&gt;
+&lt;p&gt;Let's find the next routine after &lt;code&gt;0xdabb0&lt;/code&gt; and disassemble it. We can tell by
+the inclusion of the file &lt;code&gt;BC450RTL.DLL&lt;/code&gt; in the game directory that &lt;code&gt;Blades&lt;/code&gt;
+(and indeed all of the Exile games for Windows) was compiled with &lt;em&gt;Borland Turbo C++
+4.5&lt;/em&gt;. This compiler begins C subroutines with the bytes &lt;code&gt;8c d0 90 45&lt;/code&gt;, so we can
+search for those bytes after &lt;code&gt;0xdabb0&lt;/code&gt; and locate a subroutine at &lt;code&gt;0xdac60&lt;/code&gt;.
+Let's examine the disassembly.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;$ ndisasm -k0,0xdac60 BLADES.EXE &lt;span class="p"&gt;|&lt;/span&gt;head -n &lt;span class="m"&gt;50&lt;/span&gt; &lt;span class="p"&gt;|&lt;/span&gt;nl
+     &lt;span class="m"&gt;1&lt;/span&gt;  &lt;span class="m"&gt;00000000&lt;/span&gt;  skipping 0xDAC60 bytes
+     &lt;span class="m"&gt;2&lt;/span&gt;  000DAC60  8CD0              mov ax,ss
+     &lt;span class="m"&gt;3&lt;/span&gt;  000DAC62  &lt;span class="m"&gt;90&lt;/span&gt;                nop
+     &lt;span class="m"&gt;4&lt;/span&gt;  000DAC63  &lt;span class="m"&gt;45&lt;/span&gt;                inc bp
+     &lt;span class="m"&gt;5&lt;/span&gt;  000DAC64  &lt;span class="m"&gt;55&lt;/span&gt;                push bp
+     &lt;span class="m"&gt;6&lt;/span&gt;  000DAC65  8BEC              mov bp,sp
+     &lt;span class="m"&gt;7&lt;/span&gt;  000DAC67  1E                push ds
+     &lt;span class="m"&gt;8&lt;/span&gt;  000DAC68  8ED8              mov ds,ax
+     &lt;span class="m"&gt;9&lt;/span&gt;  000DAC6A  83EC30            sub sp,byte +0x30
+    &lt;span class="m"&gt;10&lt;/span&gt;  000DAC6D  &lt;span class="m"&gt;56&lt;/span&gt;                push si
+    &lt;span class="m"&gt;11&lt;/span&gt;  000DAC6E  &lt;span class="m"&gt;57&lt;/span&gt;                push di
+    &lt;span class="m"&gt;12&lt;/span&gt;  000DAC6F  8B7606            mov si,&lt;span class="o"&gt;[&lt;/span&gt;bp+0x6&lt;span class="o"&gt;]&lt;/span&gt;
+    &lt;span class="m"&gt;13&lt;/span&gt;  000DAC72  C746FC1800        mov word &lt;span class="o"&gt;[&lt;/span&gt;bp-0x4&lt;span class="o"&gt;]&lt;/span&gt;,0x18
+    &lt;span class="m"&gt;14&lt;/span&gt;  000DAC77  8D46CE            lea ax,&lt;span class="o"&gt;[&lt;/span&gt;bp-0x32&lt;span class="o"&gt;]&lt;/span&gt;
+    &lt;span class="m"&gt;15&lt;/span&gt;  000DAC7A  &lt;span class="m"&gt;16&lt;/span&gt;                push ss
+    &lt;span class="m"&gt;16&lt;/span&gt;  000DAC7B  &lt;span class="m"&gt;50&lt;/span&gt;                push ax
+    &lt;span class="m"&gt;17&lt;/span&gt;  000DAC7C  1E                push ds
+    &lt;span class="m"&gt;18&lt;/span&gt;  000DAC7D  68BA3A            push word 0x3aba
+    &lt;span class="m"&gt;19&lt;/span&gt;  000DAC80  B92A00            mov cx,0x2a
+    &lt;span class="m"&gt;20&lt;/span&gt;  000DAC83  9AFFFF0000        call 0x0:0xffff
+    &lt;span class="m"&gt;21&lt;/span&gt;  000DAC88  33FF              xor di,di
+    &lt;span class="m"&gt;22&lt;/span&gt;  000DAC8A  EB2D              jmp short 0xacb9
+    &lt;span class="m"&gt;23&lt;/span&gt;  000DAC8C  8BDE              mov bx,si
+    &lt;span class="m"&gt;24&lt;/span&gt;  000DAC8E  69DB6A07          imul bx,bx,word 0x76a
+    &lt;span class="m"&gt;25&lt;/span&gt;  000DAC92  B80000            mov ax,0x0
+    &lt;span class="m"&gt;26&lt;/span&gt;  000DAC95  8EC0              mov es,ax
+    &lt;span class="m"&gt;27&lt;/span&gt;  000DAC97  268A8102BA        mov al,&lt;span class="o"&gt;[&lt;/span&gt;es:bx+di-0x45fe&lt;span class="o"&gt;]&lt;/span&gt;
+    &lt;span class="m"&gt;28&lt;/span&gt;  000DAC9C  &lt;span class="m"&gt;98&lt;/span&gt;                cbw
+    &lt;span class="m"&gt;29&lt;/span&gt;  000DAC9D  3D0100            cmp ax,0x1
+    &lt;span class="m"&gt;30&lt;/span&gt;  000DACA0  &lt;span class="m"&gt;7516&lt;/span&gt;              jnz 0xacb8
+    &lt;span class="m"&gt;31&lt;/span&gt;  000DACA2  &lt;span class="m"&gt;57&lt;/span&gt;                push di
+    &lt;span class="m"&gt;32&lt;/span&gt;  000DACA3  &lt;span class="m"&gt;56&lt;/span&gt;                push si
+    &lt;span class="m"&gt;33&lt;/span&gt;  000DACA4  &lt;span class="m"&gt;90&lt;/span&gt;                nop
+    &lt;span class="m"&gt;34&lt;/span&gt;  000DACA5  0E                push cs
+    &lt;span class="m"&gt;35&lt;/span&gt;  000DACA6  E85001            call 0xadf9
+    &lt;span class="m"&gt;36&lt;/span&gt;  000DACA9  83C404            add sp,byte +0x4
+    &lt;span class="m"&gt;37&lt;/span&gt;  000DACAC  &lt;span class="m"&gt;98&lt;/span&gt;                cbw
+    &lt;span class="m"&gt;38&lt;/span&gt;  000DACAD  3D0100            cmp ax,0x1
+    &lt;span class="m"&gt;39&lt;/span&gt;  000DACB0  &lt;span class="m"&gt;7506&lt;/span&gt;              jnz 0xacb8
+    &lt;span class="m"&gt;40&lt;/span&gt;  000DACB2  897EFC            mov &lt;span class="o"&gt;[&lt;/span&gt;bp-0x4&lt;span class="o"&gt;]&lt;/span&gt;,di
+    &lt;span class="m"&gt;41&lt;/span&gt;  000DACB5  BF1E00            mov di,0x1e
+    &lt;span class="m"&gt;42&lt;/span&gt;  000DACB8  &lt;span class="m"&gt;47&lt;/span&gt;                inc di
+    &lt;span class="m"&gt;43&lt;/span&gt;  000DACB9  83FF18            cmp di,byte +0x18
+    &lt;span class="m"&gt;44&lt;/span&gt;  000DACBC  7CCE              jl 0xac8c
+    &lt;span class="m"&gt;45&lt;/span&gt;  000DACBE  837EFC18          cmp word &lt;span class="o"&gt;[&lt;/span&gt;bp-0x4&lt;span class="o"&gt;]&lt;/span&gt;,byte +0x18
+    &lt;span class="m"&gt;46&lt;/span&gt;  000DACC2  &lt;span class="m"&gt;7514&lt;/span&gt;              jnz 0xacd8
+    &lt;span class="m"&gt;47&lt;/span&gt;  000DACC4  0E                push cs
+    &lt;span class="m"&gt;48&lt;/span&gt;  000DACC5  68E339            push word 0x39e3
+    &lt;span class="m"&gt;49&lt;/span&gt;  000DACC8  9AFFFF0000        call 0x0:0xffff
+    &lt;span class="m"&gt;50&lt;/span&gt;  000DACCD  83C404            add sp,byte +0x4
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Lines 2-8 are the standard function prolog which sets up the stack frame. Line 9
+makes room on the stack for the function's local variables, and lines 10-21
+initialize the local variables and save registers. The function begins execution
+at line 22. Note that lines 22-44 make a loop which executes 24 times (line 43).
+Also note how line 41 breaks the loop early by injecting a value of 30. This is
+clearly the &lt;code&gt;poison_weapon&lt;/code&gt; function we saw in the source code earlier. Line 35
+calls the &lt;code&gt;is_weapon&lt;/code&gt; function that we want to change. We can see the call is to
+offset &lt;code&gt;0xadf9&lt;/code&gt;, but it's not necessarily in the same segment. Although it is in
+this case.&lt;/p&gt;
+&lt;p&gt;In the source code, &lt;code&gt;is_weapon&lt;/code&gt; comes right after &lt;code&gt;poison_weapon&lt;/code&gt; in the same
+&lt;code&gt;PARTY.CPP&lt;/code&gt; file, so there's a good chance it does in the binary as well. When
+we search forward for the bytes &lt;code&gt;8c d0 90 45&lt;/code&gt;, we do indeed find the next
+routine at offset &lt;code&gt;0xadf9&lt;/code&gt;. Let's examine the disassembly.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;$ ndisasm -k0,0xdadf9 BLADES.EXE &lt;span class="p"&gt;|&lt;/span&gt;head -n &lt;span class="m"&gt;55&lt;/span&gt; &lt;span class="p"&gt;|&lt;/span&gt;nl
+     &lt;span class="m"&gt;1&lt;/span&gt;  &lt;span class="m"&gt;00000000&lt;/span&gt;  skipping 0xDADF9 bytes
+     &lt;span class="m"&gt;2&lt;/span&gt;  000DADF9  8CD0              mov ax,ss
+     &lt;span class="m"&gt;3&lt;/span&gt;  000DADFB  &lt;span class="m"&gt;90&lt;/span&gt;                nop
+     &lt;span class="m"&gt;4&lt;/span&gt;  000DADFC  &lt;span class="m"&gt;45&lt;/span&gt;                inc bp
+     &lt;span class="m"&gt;5&lt;/span&gt;  000DADFD  &lt;span class="m"&gt;55&lt;/span&gt;                push bp
+     &lt;span class="m"&gt;6&lt;/span&gt;  000DADFE  8BEC              mov bp,sp
+     &lt;span class="m"&gt;7&lt;/span&gt;  000DAE00  1E                push ds
+     &lt;span class="m"&gt;8&lt;/span&gt;  000DAE01  8ED8              mov ds,ax
+     &lt;span class="m"&gt;9&lt;/span&gt;  000DAE03  8B5606            mov dx,&lt;span class="o"&gt;[&lt;/span&gt;bp+0x6&lt;span class="o"&gt;]&lt;/span&gt;
+    &lt;span class="m"&gt;10&lt;/span&gt;  000DAE06  8B4E08            mov cx,&lt;span class="o"&gt;[&lt;/span&gt;bp+0x8&lt;span class="o"&gt;]&lt;/span&gt;
+    &lt;span class="m"&gt;11&lt;/span&gt;  000DAE09  8BDA              mov bx,dx
+    &lt;span class="m"&gt;12&lt;/span&gt;  000DAE0B  69DB6A07          imul bx,bx,word 0x76a
+    &lt;span class="m"&gt;13&lt;/span&gt;  000DAE0F  8BC1              mov ax,cx
+    &lt;span class="m"&gt;14&lt;/span&gt;  000DAE11  6BC042            imul ax,ax,byte +0x42
+    &lt;span class="m"&gt;15&lt;/span&gt;  000DAE14  03D8              add bx,ax
+    &lt;span class="m"&gt;16&lt;/span&gt;  000DAE16  B80000            mov ax,0x0
+    &lt;span class="m"&gt;17&lt;/span&gt;  000DAE19  8EC0              mov es,ax
+    &lt;span class="m"&gt;18&lt;/span&gt;  000DAE1B  2683BFD2B301      cmp word &lt;span class="o"&gt;[&lt;/span&gt;es:bx-0x4c2e&lt;span class="o"&gt;]&lt;/span&gt;,byte +0x1
+    &lt;span class="m"&gt;19&lt;/span&gt;  000DAE21  744E              jz 0xae71
+    &lt;span class="m"&gt;20&lt;/span&gt;  000DAE23  8BDA              mov bx,dx
+    &lt;span class="m"&gt;21&lt;/span&gt;  000DAE25  69DB6A07          imul bx,bx,word 0x76a
+    &lt;span class="m"&gt;22&lt;/span&gt;  000DAE29  8BC1              mov ax,cx
+    &lt;span class="m"&gt;23&lt;/span&gt;  000DAE2B  6BC042            imul ax,ax,byte +0x42
+    &lt;span class="m"&gt;24&lt;/span&gt;  000DAE2E  03D8              add bx,ax
+    &lt;span class="m"&gt;25&lt;/span&gt;  000DAE30  B80000            mov ax,0x0
+    &lt;span class="m"&gt;26&lt;/span&gt;  000DAE33  8EC0              mov es,ax
+    &lt;span class="m"&gt;27&lt;/span&gt;  000DAE35  2683BFD2B302      cmp word &lt;span class="o"&gt;[&lt;/span&gt;es:bx-0x4c2e&lt;span class="o"&gt;]&lt;/span&gt;,byte +0x2
+    &lt;span class="m"&gt;28&lt;/span&gt;  000DAE3B  &lt;span class="m"&gt;7434&lt;/span&gt;              jz 0xae71
+    &lt;span class="m"&gt;29&lt;/span&gt;  000DAE3D  8BDA              mov bx,dx
+    &lt;span class="m"&gt;30&lt;/span&gt;  000DAE3F  69DB6A07          imul bx,bx,word 0x76a
+    &lt;span class="m"&gt;31&lt;/span&gt;  000DAE43  8BC1              mov ax,cx
+    &lt;span class="m"&gt;32&lt;/span&gt;  000DAE45  6BC042            imul ax,ax,byte +0x42
+    &lt;span class="m"&gt;33&lt;/span&gt;  000DAE48  03D8              add bx,ax
+    &lt;span class="m"&gt;34&lt;/span&gt;  000DAE4A  B80000            mov ax,0x0
+    &lt;span class="m"&gt;35&lt;/span&gt;  000DAE4D  8EC0              mov es,ax
+    &lt;span class="m"&gt;36&lt;/span&gt;  000DAE4F  2683BFD2B305      cmp word &lt;span class="o"&gt;[&lt;/span&gt;es:bx-0x4c2e&lt;span class="o"&gt;]&lt;/span&gt;,byte +0x5
+    &lt;span class="m"&gt;37&lt;/span&gt;  000DAE55  741A              jz 0xae71
+    &lt;span class="m"&gt;38&lt;/span&gt;  000DAE57  8BDA              mov bx,dx
+    &lt;span class="m"&gt;39&lt;/span&gt;  000DAE59  69DB6A07          imul bx,bx,word 0x76a
+    &lt;span class="m"&gt;40&lt;/span&gt;  000DAE5D  8BC1              mov ax,cx
+    &lt;span class="m"&gt;41&lt;/span&gt;  000DAE5F  6BC042            imul ax,ax,byte +0x42
+    &lt;span class="m"&gt;42&lt;/span&gt;  000DAE62  03D8              add bx,ax
+    &lt;span class="m"&gt;43&lt;/span&gt;  000DAE64  B80000            mov ax,0x0
+    &lt;span class="m"&gt;44&lt;/span&gt;  000DAE67  8EC0              mov es,ax
+    &lt;span class="m"&gt;45&lt;/span&gt;  000DAE69  2683BFD2B318      cmp word &lt;span class="o"&gt;[&lt;/span&gt;es:bx-0x4c2e&lt;span class="o"&gt;]&lt;/span&gt;,byte +0x18
+    &lt;span class="m"&gt;46&lt;/span&gt;  000DAE6F  &lt;span class="m"&gt;7506&lt;/span&gt;              jnz 0xae77
+    &lt;span class="m"&gt;47&lt;/span&gt;  000DAE71  B001              mov al,0x1
+    &lt;span class="m"&gt;48&lt;/span&gt;  000DAE73  EB06              jmp short 0xae7b
+    &lt;span class="m"&gt;49&lt;/span&gt;  000DAE75  EB04              jmp short 0xae7b
+    &lt;span class="m"&gt;50&lt;/span&gt;  000DAE77  B000              mov al,0x0
+    &lt;span class="m"&gt;51&lt;/span&gt;  000DAE79  EB00              jmp short 0xae7b
+    &lt;span class="m"&gt;52&lt;/span&gt;  000DAE7B  1F                pop ds
+    &lt;span class="m"&gt;53&lt;/span&gt;  000DAE7C  5D                pop bp
+    &lt;span class="m"&gt;54&lt;/span&gt;  000DAE7D  4D                dec bp
+    &lt;span class="m"&gt;55&lt;/span&gt;  000DAE7E  CB                retf
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;aside style="font-size:80%;"&gt;
+&lt;h5&gt;Aside&lt;/h5&gt;
+&lt;p&gt;Wow, that's really inefficient! Every pair of compare and branch instructions is
+preceded by 7 identical instructions to compute the same value. The value could
+have just been computed once, which would have made the code both shorter and
+faster by 4.5 times. I wonder how different the whole Exile experience would
+have been in the 90's if the games had been compiled with optimizations turned
+on.&lt;/p&gt;
+&lt;/aside&gt;
+
+&lt;h2&gt;Method&lt;/h2&gt;
+&lt;p&gt;So, we have four comparisons for item varieties 1, 2, 5, and 24, and we want to
+squeeze an extra comparison for variety 6 in somehow without taking up more
+space and with minimal disruption to the existing structure. Since we also know
+that variety 0 (nothing) and variety 3 (gold) can never be equipped, we don't
+need to worry about filtering those values. So for any variety less than or
+equal to 6, we can safely return &lt;code&gt;true&lt;/code&gt; for everything except 4 (arrows), which
+should return false. And if it's 7 or greater, we only need to check for variety
+24 (crossbows). So we can actually get away with just 3 comparisons to implement
+our new game logic (6, 4, and 24). Let's throw in an unnecessary comparison for
+variety 0 just to maintain the original number of four comparisons. So our patch
+will look like this.&lt;/p&gt;
+&lt;p&gt;&lt;a href="https://motardo.github.io/fts/exile/poison/poison_asm_diff.png" target="_blank"&gt;
+&lt;img alt="vimdiff showing new assembly code for is_weapon" src="https://motardo.github.io/fts/exile/poison/poison_asm_diff.png" style="width:100%;"&gt;
+&lt;/a&gt;&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;$ cat patch.txt 
+000dae20: &lt;span class="m"&gt;0074&lt;/span&gt; &lt;span class="m"&gt;54&lt;/span&gt;  &amp;lt;- &lt;span class="m"&gt;0174&lt;/span&gt; 4e
+000dae3a: &lt;span class="m"&gt;0474&lt;/span&gt; 3a  &amp;lt;- &lt;span class="m"&gt;0274&lt;/span&gt; &lt;span class="m"&gt;34&lt;/span&gt;
+000dae54: 067e 1a  &amp;lt;- &lt;span class="m"&gt;0574&lt;/span&gt; 1a
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;We just changed the first three compare and jump pairs. The fourth one for
+crossbows stays the same.&lt;/p&gt;
+&lt;p&gt;Let's apply the patch to a copy of &lt;code&gt;BLADES.EXE&lt;/code&gt;&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;$ nasm -o wb-poison wb-poison.asm
+$ ndisasm -o 0xdae1b wb-poison
+000DAE1B  2683BFD2B300      cmp word &lt;span class="o"&gt;[&lt;/span&gt;es:bx-0x4c2e&lt;span class="o"&gt;]&lt;/span&gt;,byte +0x0
+000DAE21  &lt;span class="m"&gt;7454&lt;/span&gt;              jz 0xae77
+000DAE23  89D3              mov bx,dx
+000DAE25  69DB6A07          imul bx,bx,word 0x76a
+000DAE29  89C8              mov ax,cx
+000DAE2B  6BC042            imul ax,ax,byte +0x42
+000DAE2E  01C3              add bx,ax
+000DAE30  B80000            mov ax,0x0
+000DAE33  8EC0              mov es,ax
+000DAE35  2683BFD2B304      cmp word &lt;span class="o"&gt;[&lt;/span&gt;es:bx-0x4c2e&lt;span class="o"&gt;]&lt;/span&gt;,byte +0x4
+000DAE3B  743A              jz 0xae77
+000DAE3D  89D3              mov bx,dx
+000DAE3F  69DB6A07          imul bx,bx,word 0x76a
+000DAE43  89C8              mov ax,cx
+000DAE45  6BC042            imul ax,ax,byte +0x42
+000DAE48  01C3              add bx,ax
+000DAE4A  B80000            mov ax,0x0
+000DAE4D  8EC0              mov es,ax
+000DAE4F  2683BFD2B306      cmp word &lt;span class="o"&gt;[&lt;/span&gt;es:bx-0x4c2e&lt;span class="o"&gt;]&lt;/span&gt;,byte +0x6
+000DAE55  7E1A              jng 0xae71
+000DAE57  89D3              mov bx,dx
+
+$ cp BLADES.EXE BLADESPT.EXE
+$ &lt;span class="nb"&gt;alias&lt;/span&gt; &lt;span class="nv"&gt;dd&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;dd iflag=count_bytes oflag=seek_bytes conv=notrunc&amp;#39;&lt;/span&gt;
+$ dd &lt;span class="nv"&gt;count&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="m"&gt;64&lt;/span&gt; &lt;span class="nv"&gt;seek&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="k"&gt;$((&lt;/span&gt;&lt;span class="m"&gt;0&lt;/span&gt;xdae1b&lt;span class="k"&gt;))&lt;/span&gt; &lt;span class="k"&gt;if&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;wb-poison &lt;span class="nv"&gt;of&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;BLADESPT.EXE 
+&lt;span class="m"&gt;0&lt;/span&gt;+1 records &lt;span class="k"&gt;in&lt;/span&gt;
+&lt;span class="m"&gt;0&lt;/span&gt;+1 records out
+&lt;span class="m"&gt;64&lt;/span&gt; bytes copied, &lt;span class="m"&gt;0&lt;/span&gt;.000366593 s, &lt;span class="m"&gt;175&lt;/span&gt; kB/s
+$ cmp B*
+BLADES.EXE BLADESPT.EXE differ: byte &lt;span class="m"&gt;896545&lt;/span&gt;, line &lt;span class="m"&gt;2844&lt;/span&gt;
+$ ndisasm -k &lt;span class="m"&gt;0&lt;/span&gt;,0xdae1b BLADESPT.EXE &lt;span class="p"&gt;|&lt;/span&gt;head -n &lt;span class="m"&gt;30&lt;/span&gt;
+&lt;span class="m"&gt;00000000&lt;/span&gt;  skipping 0xDAE1B bytes
+000DAE1B  2683BFD2B300      cmp word &lt;span class="o"&gt;[&lt;/span&gt;es:bx-0x4c2e&lt;span class="o"&gt;]&lt;/span&gt;,byte +0x0
+000DAE21  &lt;span class="m"&gt;7454&lt;/span&gt;              jz 0xae77
+000DAE23  89D3              mov bx,dx
+000DAE25  69DB6A07          imul bx,bx,word 0x76a
+000DAE29  89C8              mov ax,cx
+000DAE2B  6BC042            imul ax,ax,byte +0x42
+000DAE2E  01C3              add bx,ax
+000DAE30  B80000            mov ax,0x0
+000DAE33  8EC0              mov es,ax
+000DAE35  2683BFD2B304      cmp word &lt;span class="o"&gt;[&lt;/span&gt;es:bx-0x4c2e&lt;span class="o"&gt;]&lt;/span&gt;,byte +0x4
+000DAE3B  743A              jz 0xae77
+000DAE3D  89D3              mov bx,dx
+000DAE3F  69DB6A07          imul bx,bx,word 0x76a
+000DAE43  89C8              mov ax,cx
+000DAE45  6BC042            imul ax,ax,byte +0x42
+000DAE48  01C3              add bx,ax
+000DAE4A  B80000            mov ax,0x0
+000DAE4D  8EC0              mov es,ax
+000DAE4F  2683BFD2B306      cmp word &lt;span class="o"&gt;[&lt;/span&gt;es:bx-0x4c2e&lt;span class="o"&gt;]&lt;/span&gt;,byte +0x6
+000DAE55  7E1A              jng 0xae71
+000DAE57  89D3              mov bx,dx
+000DAE59  69DB6A07          imul bx,bx,word 0x76a
+000DAE5D  8BC1              mov ax,cx
+000DAE5F  6BC042            imul ax,ax,byte +0x42
+000DAE62  03D8              add bx,ax
+000DAE64  B80000            mov ax,0x0
+000DAE67  8EC0              mov es,ax
+000DAE69  2683BFD2B318      cmp word &lt;span class="o"&gt;[&lt;/span&gt;es:bx-0x4c2e&lt;span class="o"&gt;]&lt;/span&gt;,byte +0x18
+000DAE6F  &lt;span class="m"&gt;7506&lt;/span&gt;              jnz 0xae77
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Everything looks good. Let's fire it up in DOSBox and see if it works.&lt;/p&gt;
+&lt;p&gt;&lt;img alt="Frrr with darts equiped and poisoned" src="https://motardo.github.io/fts/exile/poison/poison-darts.png" style="width:100%;"&gt;&lt;/p&gt;
+&lt;p&gt;Success!&lt;/p&gt;
+&lt;h2&gt;Macintosh Versions&lt;/h2&gt;
+&lt;p&gt;I prefer to play the Mac versions of the Exile games using the BasiliskII emulator,
+so let's make the same modification to them. Here is the &lt;code&gt;is_weapon&lt;/code&gt; function
+in 68k disassembly from the Mac version of Blades of Exile:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="m"&gt;3430&lt;/span&gt; 087E   move.w    &lt;span class="nv"&gt;$7&lt;/span&gt;E&lt;span class="o"&gt;(&lt;/span&gt;a0,d0.l&lt;span class="o"&gt;)&lt;/span&gt;,d2
+0C42 &lt;span class="m"&gt;0001&lt;/span&gt;   cmpi.w    &lt;span class="c1"&gt;#$01,d2&lt;/span&gt;
+&lt;span class="m"&gt;6712&lt;/span&gt;        beq.s     True
+0C42 &lt;span class="m"&gt;0002&lt;/span&gt;   cmpi.w    &lt;span class="c1"&gt;#$02,d2&lt;/span&gt;
+670C        beq.s     True
+0C42 &lt;span class="m"&gt;0005&lt;/span&gt;   cmpi.w    &lt;span class="c1"&gt;#$05,d2&lt;/span&gt;
+&lt;span class="m"&gt;6706&lt;/span&gt;        beq.s     True
+0C42 &lt;span class="m"&gt;0018&lt;/span&gt;   cmpi.w    &lt;span class="c1"&gt;#$18,d2&lt;/span&gt;
+&lt;span class="m"&gt;6604&lt;/span&gt;        bne.s     False
+True:   &lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="nb"&gt;true&lt;/span&gt;
+&lt;span class="m"&gt;7001&lt;/span&gt;        moveq     &lt;span class="c1"&gt;#$01,d0&lt;/span&gt;
+&lt;span class="m"&gt;6002&lt;/span&gt;        bra.s     Continue
+False:  &lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="nb"&gt;false&lt;/span&gt;
+&lt;span class="m"&gt;7000&lt;/span&gt;        moveq     &lt;span class="c1"&gt;#$00,d0&lt;/span&gt;
+Continue:
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Just like the x86 version, it returns true for item varieties &lt;code&gt;1&lt;/code&gt;, &lt;code&gt;2&lt;/code&gt;, &lt;code&gt;5&lt;/code&gt;, and &lt;code&gt;24&lt;/code&gt;.
+The new code will return &lt;code&gt;false&lt;/code&gt; for varieties &lt;code&gt;0&lt;/code&gt; and &lt;code&gt;4&lt;/code&gt;, or return &lt;code&gt;true&lt;/code&gt; for 
+anything less than &lt;code&gt;7&lt;/code&gt; or &lt;code&gt;24&lt;/code&gt;. It will look like this:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="m"&gt;3430&lt;/span&gt; 087E   move.w    &lt;span class="nv"&gt;$7&lt;/span&gt;E&lt;span class="o"&gt;(&lt;/span&gt;a0,d0.l&lt;span class="o"&gt;)&lt;/span&gt;,d2
+0C42 &lt;span class="m"&gt;0000&lt;/span&gt;   cmpi.w    &lt;span class="c1"&gt;#$00,d2&lt;/span&gt;
+&lt;span class="m"&gt;6716&lt;/span&gt;        beq.s     False
+0C42 &lt;span class="m"&gt;0004&lt;/span&gt;   cmpi.w    &lt;span class="c1"&gt;#$04,d2&lt;/span&gt;
+&lt;span class="m"&gt;6710&lt;/span&gt;        beq.s     False
+0C42 &lt;span class="m"&gt;0006&lt;/span&gt;   cmpi.w    &lt;span class="c1"&gt;#$06,d2&lt;/span&gt;
+6F06        ble.s     True
+0C42 &lt;span class="m"&gt;0018&lt;/span&gt;   cmpi.w    &lt;span class="c1"&gt;#$18,d2&lt;/span&gt;
+&lt;span class="m"&gt;6604&lt;/span&gt;        bne.s     False
+True:   &lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="nb"&gt;true&lt;/span&gt;
+&lt;span class="m"&gt;7001&lt;/span&gt;        moveq     &lt;span class="c1"&gt;#$01,d0&lt;/span&gt;
+&lt;span class="m"&gt;6002&lt;/span&gt;        bra.s     Continue
+False:  &lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="nb"&gt;false&lt;/span&gt;
+&lt;span class="m"&gt;7000&lt;/span&gt;        moveq     &lt;span class="c1"&gt;#$00,d0&lt;/span&gt;
+Continue:
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;In &lt;em&gt;Exile III&lt;/em&gt;, the original code and patch are identical to &lt;em&gt;Blades of Exile&lt;/em&gt;.
+For &lt;em&gt;Exile II&lt;/em&gt; and &lt;em&gt;Exile I&lt;/em&gt;, there were no crossbows, so the code is a little bit
+different. &lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;Original Exile I and Exile II:
+&lt;span class="m"&gt;3430&lt;/span&gt; 087E   move.w    &lt;span class="nv"&gt;$7&lt;/span&gt;E&lt;span class="o"&gt;(&lt;/span&gt;a0,d0.l&lt;span class="o"&gt;)&lt;/span&gt;,d2
+0C42 &lt;span class="m"&gt;0001&lt;/span&gt;   cmpi.w    &lt;span class="c1"&gt;#$01,d2&lt;/span&gt;
+670C        beq.s     True
+0C42 &lt;span class="m"&gt;0002&lt;/span&gt;   cmpi.w    &lt;span class="c1"&gt;#$02,d2&lt;/span&gt;
+&lt;span class="m"&gt;6706&lt;/span&gt;        beq.s     True
+0C42 &lt;span class="m"&gt;0005&lt;/span&gt;   cmpi.w    &lt;span class="c1"&gt;#$05,d2&lt;/span&gt;
+&lt;span class="m"&gt;6604&lt;/span&gt;        bne.s     False
+True:
+&lt;span class="m"&gt;7001&lt;/span&gt;        moveq     &lt;span class="c1"&gt;#$01,d0&lt;/span&gt;
+&lt;span class="m"&gt;6002&lt;/span&gt;        bra.s     Continue
+False:
+&lt;span class="m"&gt;7000&lt;/span&gt;        moveq     &lt;span class="c1"&gt;#$00,d0&lt;/span&gt;
+Continue:
+
+New Exile I and Exile II:
+&lt;span class="m"&gt;3430&lt;/span&gt; 087E   move.w    &lt;span class="nv"&gt;$7&lt;/span&gt;E&lt;span class="o"&gt;(&lt;/span&gt;a0,d0.l&lt;span class="o"&gt;)&lt;/span&gt;,d2
+0C42 &lt;span class="m"&gt;0000&lt;/span&gt;   cmpi.w    &lt;span class="c1"&gt;#$00,d2&lt;/span&gt;
+&lt;span class="m"&gt;6710&lt;/span&gt;        beq.s     False
+0C42 &lt;span class="m"&gt;0004&lt;/span&gt;   cmpi.w    &lt;span class="c1"&gt;#$04,d2&lt;/span&gt;
+670a        beq.s     False
+0C42 &lt;span class="m"&gt;0006&lt;/span&gt;   cmpi.w    &lt;span class="c1"&gt;#$06,d2&lt;/span&gt;
+6E04        bgt.s     False
+True:
+&lt;span class="m"&gt;7001&lt;/span&gt;        moveq     &lt;span class="c1"&gt;#$01,d0&lt;/span&gt;
+&lt;span class="m"&gt;6002&lt;/span&gt;        bra.s     Continue
+False:
+&lt;span class="m"&gt;7000&lt;/span&gt;        moveq     &lt;span class="c1"&gt;#$00,d0&lt;/span&gt;
+Continue:
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;So the patches for the Mac versions look like this:&lt;/p&gt;
+&lt;p&gt;&lt;em&gt;Blades&lt;/em&gt; and &lt;em&gt;Exile III&lt;/em&gt;:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;Original: &lt;span class="m"&gt;0001&lt;/span&gt; &lt;span class="m"&gt;6712&lt;/span&gt; 0c42 &lt;span class="m"&gt;0002&lt;/span&gt; 670c 0c42 &lt;span class="m"&gt;0005&lt;/span&gt; &lt;span class="m"&gt;6706&lt;/span&gt;
+Patched:  &lt;span class="m"&gt;0000&lt;/span&gt; &lt;span class="m"&gt;6716&lt;/span&gt; 0c42 &lt;span class="m"&gt;0004&lt;/span&gt; &lt;span class="m"&gt;6710&lt;/span&gt; 0c42 &lt;span class="m"&gt;0006&lt;/span&gt; 6f06
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;&lt;em&gt;Exile I&lt;/em&gt; and &lt;em&gt;Exile II&lt;/em&gt;:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="n"&gt;Original&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="mi"&gt;0001&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="mi"&gt;670&lt;/span&gt;&lt;span class="n"&gt;c&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="n"&gt;c42&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="mi"&gt;0002&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="mi"&gt;6706&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="n"&gt;c42&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="mi"&gt;0005&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="mi"&gt;6604&lt;/span&gt;&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="o"&gt;..&lt;/span&gt;&lt;span class="n"&gt;g&lt;/span&gt;&lt;span class="o"&gt;..&lt;/span&gt;&lt;span class="n"&gt;B&lt;/span&gt;&lt;span class="o"&gt;..&lt;/span&gt;&lt;span class="n"&gt;g&lt;/span&gt;&lt;span class="o"&gt;..&lt;/span&gt;&lt;span class="n"&gt;B&lt;/span&gt;&lt;span class="o"&gt;..&lt;/span&gt;&lt;span class="n"&gt;f&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="n"&gt;Patched&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="mi"&gt;0000&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="mi"&gt;6710&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="n"&gt;c42&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="mi"&gt;0004&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="mi"&gt;670&lt;/span&gt;&lt;span class="n"&gt;a&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="n"&gt;c42&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="mi"&gt;0006&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="mi"&gt;6&lt;/span&gt;&lt;span class="n"&gt;e04&lt;/span&gt;&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="o"&gt;..&lt;/span&gt;&lt;span class="n"&gt;g&lt;/span&gt;&lt;span class="o"&gt;..&lt;/span&gt;&lt;span class="n"&gt;B&lt;/span&gt;&lt;span class="o"&gt;..&lt;/span&gt;&lt;span class="n"&gt;g&lt;/span&gt;&lt;span class="o"&gt;..&lt;/span&gt;&lt;span class="n"&gt;B&lt;/span&gt;&lt;span class="o"&gt;..&lt;/span&gt;&lt;span class="n"&gt;f&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Here is a screenshot of the Mac version of Exile I showing John having 
+darts successfully envenomed.&lt;/p&gt;
+&lt;p&gt;&lt;img alt="Darts equiped and poisoned in the Mac version of Exile I" src="https://motardo.github.io/fts/exile/poison/ExilePoisonThrown.png" style="width:100%;"&gt;&lt;/p&gt;
+&lt;h2&gt;Conclusion&lt;/h2&gt;
+&lt;p&gt;Allowing thrown weapons to be poisoned should make them slightly less useless.
+It might be just the nudge needed to try playing a throwing-based character. In
+fact, a hasted character with 8 action points could hit an enemy with 4 poison
+darts in one turn. I'm not sure if poison stacks like that, but that could
+potentially be quite effective.&lt;/p&gt;
+&lt;p&gt;Happy Adventuring!&lt;/p&gt;</content><category term="Exile"></category></entry><entry><title>Movement Keys Without a Numeric Keypad</title><link href="https://motardo.github.io/fts/movement-keys-without-a-numeric-keypad.html" rel="alternate"></link><published>2021-07-22T11:16:47-04:00</published><updated>2021-07-22T11:16:47-04:00</updated><author><name>Nathan Wilson</name></author><id>tag:motardo.github.io,2021-07-22:/fts/movement-keys-without-a-numeric-keypad.html</id><summary type="html">&lt;h2&gt;Motivation&lt;/h2&gt;
 &lt;p&gt;Movement in the Exile games is controlled either by clicking on the terrain in
 the desired direction, or by using the keys on the numeric keypad. Clicking with
 the mouse seems tedious to me, so I have always used the keypad. In the past, I
@@ -245,4 +630,299 @@ $ xxd -r e1-keypad-patch.txt e1-no-keypad.bin
 &lt;h2&gt;Conclusion&lt;/h2&gt;
 &lt;p&gt;We can copy the &lt;a href="https://motardo.github.io/fts/exile/keypad/e1-no-keypad.bin"&gt;patched game file&lt;/a&gt; back over to BasiliskII, extract the
 application program from the MacBinary format, and test out our new motion keys.&lt;/p&gt;
-&lt;p&gt;Good luck and have fun!&lt;/p&gt;</content><category term="Exile"></category><category term="exile"></category><category term="patches"></category></entry></feed>
+&lt;p&gt;Good luck and have fun!&lt;/p&gt;</content><category term="Exile"></category><category term="exile"></category><category term="patches"></category></entry><entry><title>PC Status Icons</title><link href="https://motardo.github.io/fts/pc-status-icons.html" rel="alternate"></link><published>2020-08-07T16:16:47-04:00</published><updated>2020-08-07T16:16:47-04:00</updated><author><name>Nathan Wilson</name></author><id>tag:motardo.github.io,2020-08-07:/fts/pc-status-icons.html</id><summary type="html">&lt;h2&gt;Motivation&lt;/h2&gt;
+&lt;p&gt;There are many effects in &lt;em&gt;Exile&lt;/em&gt; which modify the PCs status. For example, a PC
+could be &lt;code&gt;slowed&lt;/code&gt;, &lt;code&gt;hasted&lt;/code&gt;, &lt;code&gt;blessed&lt;/code&gt;, &lt;code&gt;cursed&lt;/code&gt;, or &lt;code&gt;poisoned&lt;/code&gt;. These effects
+are indicated by the presence of small icons next to the PC's name.&lt;/p&gt;
+&lt;p&gt;&lt;img alt="PC status area of game screen" src="https://motardo.github.io/fts/exile/staticons/orig-staticons-w3.png" style="width:100%;"&gt;&lt;/p&gt;
+&lt;p&gt;The &lt;code&gt;poisoned&lt;/code&gt; icon takes two different forms depending on the level …&lt;/p&gt;</summary><content type="html">&lt;h2&gt;Motivation&lt;/h2&gt;
+&lt;p&gt;There are many effects in &lt;em&gt;Exile&lt;/em&gt; which modify the PCs status. For example, a PC
+could be &lt;code&gt;slowed&lt;/code&gt;, &lt;code&gt;hasted&lt;/code&gt;, &lt;code&gt;blessed&lt;/code&gt;, &lt;code&gt;cursed&lt;/code&gt;, or &lt;code&gt;poisoned&lt;/code&gt;. These effects
+are indicated by the presence of small icons next to the PC's name.&lt;/p&gt;
+&lt;p&gt;&lt;img alt="PC status area of game screen" src="https://motardo.github.io/fts/exile/staticons/orig-staticons-w3.png" style="width:100%;"&gt;&lt;/p&gt;
+&lt;p&gt;The &lt;code&gt;poisoned&lt;/code&gt; icon takes two different forms depending on the level of
+poisoning. The other effects icons only have one form regardless of intensity.
+It would be useful if the other effects icons also varied with the strength of
+their effects. For example, when a PC is &lt;code&gt;diseased&lt;/code&gt;, it would be helpful to know
+the severity of their illness. Should you cast an expensive &lt;code&gt;Cleanse&lt;/code&gt; to cure
+them, or would a less costly &lt;code&gt;Cure Disease&lt;/code&gt; suffice?&lt;/p&gt;
+&lt;h2&gt;Remedy&lt;/h2&gt;
+&lt;p&gt;Make all status icons vary with intensity.&lt;/p&gt;
+&lt;h2&gt;Method&lt;/h2&gt;
+&lt;p&gt;We will create new icons that indicate the level of their effects using pie
+charts like this:&lt;/p&gt;
+&lt;p&gt;&lt;img alt="Status icons with pie charts in background" src="https://motardo.github.io/fts/exile/staticons/staticons.png" style="width:100%;"&gt;&lt;/p&gt;
+&lt;p&gt;We will append the new icons to the graphics file. And we will patch the code
+that draws the status icons to use the appropriate new icons.&lt;/p&gt;
+&lt;h3&gt;Patches for Windows Versions&lt;sup id="fnref:1"&gt;&lt;a class="footnote-ref" href="#fn:1"&gt;1&lt;/a&gt;&lt;/sup&gt;&lt;/h3&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th style="text-align: left;"&gt;Patched Executable&lt;/th&gt;
+&lt;th style="text-align: left;"&gt;Version&lt;/th&gt;
+&lt;th style="text-align: left;"&gt;Patch File&lt;/th&gt;
+&lt;th style="text-align: left;"&gt;Modified Graphics&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td style="text-align: left;"&gt;&lt;a href="https://motardo.github.io/fts/exile/staticons/wb/BLADES.EXE"&gt;BLADES.EXE&lt;/a&gt;&lt;/td&gt;
+&lt;td style="text-align: left;"&gt;v1.0.1&lt;/td&gt;
+&lt;td style="text-align: left;"&gt;&lt;a href="https://motardo.github.io/fts/exile/staticons/wb-staticons-patch.txt"&gt;BoE patch&lt;/a&gt;&lt;/td&gt;
+&lt;td style="text-align: left;"&gt;&lt;a href="https://motardo.github.io/fts/exile/staticons/wb/MIXED.BMP"&gt;MIXED.BMP&lt;/a&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="text-align: left;"&gt;&lt;a href="https://motardo.github.io/fts/exile/staticons/w3/EXILE3.EXE"&gt;EXILE3.EXE&lt;/a&gt;&lt;/td&gt;
+&lt;td style="text-align: left;"&gt;v1.0b&lt;/td&gt;
+&lt;td style="text-align: left;"&gt;&lt;a href="https://motardo.github.io/fts/exile/staticons/w3-staticons-patch.txt"&gt;Exile 3 patch&lt;/a&gt;&lt;/td&gt;
+&lt;td style="text-align: left;"&gt;&lt;a href="https://motardo.github.io/fts/exile/staticons/w3/MIXED.BMP"&gt;MIXED.BMP&lt;/a&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="text-align: left;"&gt;&lt;a href="https://motardo.github.io/fts/exile/staticons/w2/EXILE2.EXE"&gt;EXILE2.EXE&lt;/a&gt;&lt;/td&gt;
+&lt;td style="text-align: left;"&gt;v2.0.1&lt;/td&gt;
+&lt;td style="text-align: left;"&gt;&lt;a href="https://motardo.github.io/fts/exile/staticons/w2-staticons-patch.txt"&gt;Exile 2 patch&lt;/a&gt;&lt;/td&gt;
+&lt;td style="text-align: left;"&gt;&lt;a href="https://motardo.github.io/fts/exile/staticons/w2/MIXED.BMP"&gt;MIXED.BMP&lt;/a&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="text-align: left;"&gt;EXILE.EXE (tbd)&lt;/td&gt;
+&lt;td style="text-align: left;"&gt;v2.0&lt;/td&gt;
+&lt;td style="text-align: left;"&gt;tbd&lt;/td&gt;
+&lt;td style="text-align: left;"&gt;tbd&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;h3&gt;Simple Install&lt;/h3&gt;
+&lt;p&gt;Replace the original executable and graphics file with the patched executable
+and modified graphics files from the table above. For example, replace &lt;code&gt;EXILE3.EXE&lt;/code&gt;
+and &lt;code&gt;MIXED.BMP&lt;/code&gt; files in the original &lt;code&gt;EXILE3&lt;/code&gt; directory with the new versions
+in the links above.&lt;/p&gt;
+&lt;h3&gt;Custom Install&lt;/h3&gt;
+&lt;p&gt;If your copy of the executable already contains other patches or modifications
+that you want to keep, you can install just the status icons patch onto your
+executable. The patch files are in hex dump text format. For example, to install
+the Exile 3 patch file onto your executable at &lt;code&gt;C/EXILE3/EXILE3.EXE&lt;/code&gt; using
+&lt;code&gt;xxd&lt;/code&gt;:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;xxd -r staticons-patch-w3.txt C/EXILE3/EXILE3.EXE
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;You will also need to either install the modified graphics file, or add the new
+icons in the modified graphics file into your existing graphics file. If the x,y
+positions of the new icons change, you will need to update these positions in
+the patch file to match. The offsets of the icons are given in the first few
+lines of each patch file.&lt;/p&gt;
+&lt;h3&gt;Patches for Macintosh Versions&lt;/h3&gt;
+&lt;p&gt;TBD&lt;/p&gt;
+&lt;h2&gt;Discussion&lt;/h2&gt;
+&lt;p&gt;Here is an example of the new status icons in &lt;em&gt;Exile 2&lt;/em&gt;. I never knew that the
+&lt;code&gt;Invisibility&lt;/code&gt; spell gave 8 levels of &lt;code&gt;Magic Resistance&lt;/code&gt; and eight levels of
+&lt;code&gt;Hidden&lt;/code&gt; for a cost of only two spell points.&lt;/p&gt;
+&lt;p&gt;&lt;img alt="PC status area of Exile 2" src="https://motardo.github.io/fts/exile/staticons/new-staticons-w2.png" style="width:100%;"&gt;&lt;/p&gt;
+&lt;p&gt;And here is an example of the new status icons in &lt;em&gt;Exile 3&lt;/em&gt;.&lt;/p&gt;
+&lt;p&gt;&lt;img alt="PC status area of Exile 3" src="https://motardo.github.io/fts/exile/staticons/new-staticons-w3.png" style="width:100%;"&gt;&lt;/p&gt;
+&lt;p&gt;Above, we can see that Jenneke and Thissa are heavily &lt;code&gt;cursed&lt;/code&gt; while Michael is
+only slightly &lt;code&gt;cursed&lt;/code&gt;. Adrianna is almost fully &lt;code&gt;hasted&lt;/code&gt;, and Frrrrrr is
+completely &lt;code&gt;webbed&lt;/code&gt; and will get no action points on the next round.&lt;/p&gt;
+&lt;h2&gt;Contributing&lt;/h2&gt;
+&lt;p&gt;I encourage you to customize the new status icons to suite your taste and needs,
+and to share your creations. Suggestions for improvements are welcome.&lt;/p&gt;
+&lt;h2&gt;Conclusion&lt;/h2&gt;
+&lt;p&gt;Now we can answer questions such as whether three &lt;code&gt;Minor Haste&lt;/code&gt;s are more or
+less effective than one regular &lt;code&gt;Haste&lt;/code&gt;, and how many &lt;code&gt;Envenom&lt;/code&gt;s does it
+take to max out the &lt;code&gt;poisoned weapon&lt;/code&gt; effect&lt;sup id="fnref:2"&gt;&lt;a class="footnote-ref" href="#fn:2"&gt;2&lt;/a&gt;&lt;/sup&gt;.&lt;/p&gt;
+&lt;p&gt;Happy Adventuring!&lt;/p&gt;
+&lt;hr&gt;
+&lt;p&gt;Footnotes:&lt;/p&gt;
+&lt;div class="footnote"&gt;
+&lt;hr&gt;
+&lt;ol&gt;
+&lt;li id="fn:1"&gt;
+&lt;p&gt;These are the free registered versions available for download from
+  &lt;a href="http://spiderwebsoftware.com/productsOld.html"&gt;Spiderweb Software&lt;/a&gt;.&amp;#160;&lt;a class="footnote-backref" href="#fnref:1" title="Jump back to footnote 1 in the text"&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li id="fn:2"&gt;
+&lt;p&gt;This is a trick question. &lt;code&gt;Envenom&lt;/code&gt; does not stack.&amp;#160;&lt;a class="footnote-backref" href="#fnref:2" title="Jump back to footnote 2 in the text"&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/div&gt;</content><category term="posts"></category></entry><entry><title>BoE Locked Door Keyboard Shortcuts</title><link href="https://motardo.github.io/fts/boe-locked-door-keyboard-shortcuts.html" rel="alternate"></link><published>2020-07-15T16:16:47-04:00</published><updated>2020-07-15T16:16:47-04:00</updated><author><name>Nathan Wilson</name></author><id>tag:motardo.github.io,2020-07-15:/fts/boe-locked-door-keyboard-shortcuts.html</id><summary type="html">&lt;h2&gt;Motivation&lt;/h2&gt;
+&lt;p&gt;&lt;img alt="Blades of Exile &amp;quot;Door is Locked&amp;quot; dialog box" src="https://motardo.github.io/fts/images/locked_door.png" style="width:100%;"&gt;
+{: style="float:right;padding-left:5px;width:66%;" }
+In both &lt;em&gt;Exile 3&lt;/em&gt; and &lt;em&gt;Blades of Exile&lt;/em&gt;, walking into a locked door triggers a
+dialog that presents &lt;code&gt;Bash Door&lt;/code&gt;, &lt;code&gt;Pick Lock&lt;/code&gt;, and &lt;code&gt;Leave&lt;/code&gt; buttons.&lt;/p&gt;
+&lt;p&gt;In &lt;em&gt;Exile 3&lt;/em&gt;, the desired action can quickly be selected from the keyboard with
+&lt;code&gt;b&lt;/code&gt; and &lt;code&gt;p …&lt;/code&gt;&lt;/p&gt;</summary><content type="html">&lt;h2&gt;Motivation&lt;/h2&gt;
+&lt;p&gt;&lt;img alt="Blades of Exile &amp;quot;Door is Locked&amp;quot; dialog box" src="https://motardo.github.io/fts/images/locked_door.png" style="width:100%;"&gt;
+{: style="float:right;padding-left:5px;width:66%;" }
+In both &lt;em&gt;Exile 3&lt;/em&gt; and &lt;em&gt;Blades of Exile&lt;/em&gt;, walking into a locked door triggers a
+dialog that presents &lt;code&gt;Bash Door&lt;/code&gt;, &lt;code&gt;Pick Lock&lt;/code&gt;, and &lt;code&gt;Leave&lt;/code&gt; buttons.&lt;/p&gt;
+&lt;p&gt;In &lt;em&gt;Exile 3&lt;/em&gt;, the desired action can quickly be selected from the keyboard with
+&lt;code&gt;b&lt;/code&gt; and &lt;code&gt;p&lt;/code&gt; shortcut keys. However in &lt;em&gt;Blades of Exile&lt;/em&gt;, these handy shortcuts
+are inexplicably missing, and opening locked doors requires reaching for the
+mouse to click the dialog buttons.&lt;/p&gt;
+&lt;h2&gt;Remedy&lt;/h2&gt;
+&lt;p&gt;Make locked door dialogs in &lt;em&gt;Blades of Exile&lt;/em&gt; respond to &lt;code&gt;b&lt;/code&gt; and &lt;code&gt;p&lt;/code&gt; key presses the
+way &lt;em&gt;Exile 3&lt;/em&gt; does.&lt;/p&gt;
+&lt;h2&gt;Method&lt;/h2&gt;
+&lt;p&gt;In order to restore the keyboard shortcuts in &lt;em&gt;Blades of Exile&lt;/em&gt;, we simply insert
+the ascii bytes &lt;code&gt;b&lt;/code&gt; and &lt;code&gt;p&lt;/code&gt; at the appropriate location in the executable&lt;sup id="fnref:1"&gt;&lt;a class="footnote-ref" href="#fn:1"&gt;1&lt;/a&gt;&lt;/sup&gt;.&lt;/p&gt;
+&lt;h3&gt;Windows Version&lt;/h3&gt;
+&lt;p&gt;Patching the Windows version of &lt;em&gt;Blades of Exile v1.0.1&lt;/em&gt; requires modifying two
+bytes in the file &lt;em&gt;BLADES.EXE&lt;/em&gt;. The shortcut keys for the &lt;code&gt;Bash Door&lt;/code&gt; and &lt;code&gt;Pick
+Lock&lt;/code&gt; buttons are at offset &lt;code&gt;0x72912&lt;/code&gt; and &lt;code&gt;0x72913&lt;/code&gt;. Use a hex editor to replace
+the two &lt;code&gt;0x00&lt;/code&gt; bytes at those offsets with the two bytes &lt;code&gt;0x62&lt;/code&gt; and &lt;code&gt;0x70&lt;/code&gt;
+(ascii for &lt;code&gt;b&lt;/code&gt; and &lt;code&gt;p&lt;/code&gt;). Alternatively, use &lt;code&gt;xxd&lt;/code&gt; or &lt;code&gt;dd&lt;/code&gt; as a command line hex
+editor. For example:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="nb"&gt;echo&lt;/span&gt; -n bp &lt;span class="p"&gt;|&lt;/span&gt;xxd -o 0x72912 &lt;span class="p"&gt;|&lt;/span&gt;xxd -r -c &lt;span class="m"&gt;2&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;-&amp;#39;&lt;/span&gt; BLADES.EXE
+-or-
+&lt;span class="nb"&gt;echo&lt;/span&gt; -n bp &lt;span class="p"&gt;|&lt;/span&gt;dd &lt;span class="nv"&gt;iflag&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;count_bytes &lt;span class="nv"&gt;oflag&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;seek_bytes &lt;span class="nv"&gt;count&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="m"&gt;2&lt;/span&gt; &lt;span class="nv"&gt;seek&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="k"&gt;$((&lt;/span&gt;&lt;span class="m"&gt;0&lt;/span&gt;x72912&lt;span class="k"&gt;))&lt;/span&gt; &lt;span class="nv"&gt;conv&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;notrunc &lt;span class="nv"&gt;of&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;BLADES.EXE
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;h3&gt;Macintosh Version (68k&lt;sup id="fnref:2"&gt;&lt;a class="footnote-ref" href="#fn:2"&gt;2&lt;/a&gt;&lt;/sup&gt;)&lt;/h3&gt;
+&lt;p&gt;Patching the Mac version is a bit more complicated because the data are in a
+compressed format within the &lt;em&gt;Blades of Exile (fat) v1.0.2&lt;/em&gt; file. For the 68k
+executable, the resource of type &lt;code&gt;DATA&lt;/code&gt; with id &lt;code&gt;0&lt;/code&gt; must be modified using a
+resource editor&lt;sup id="fnref:3"&gt;&lt;a class="footnote-ref" href="#fn:3"&gt;3&lt;/a&gt;&lt;/sup&gt; such as &lt;em&gt;ResEdit&lt;/em&gt;. Two changes are required:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;at offset &lt;code&gt;0x0003&lt;/code&gt;, the byte &lt;code&gt;0x7b&lt;/code&gt; must be changed to &lt;code&gt;0x7f&lt;/code&gt; to account
+   for the increased size of the resource in step 2.&lt;/li&gt;
+&lt;li&gt;at offset &lt;code&gt;0x777b&lt;/code&gt;, the byte &lt;code&gt;0x4c&lt;/code&gt; must be replaced with the five bytes
+   &lt;code&gt;0x46 0x81 0x62 0x70 0x43&lt;/code&gt; This will cause everything after &lt;code&gt;0x777b&lt;/code&gt; to
+   shift forward increasing the size of the resource by four bytes.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2&gt;Conclusion&lt;/h2&gt;
+&lt;p&gt;Now we can open doors without reaching for the mouse.&lt;/p&gt;
+&lt;p&gt;Happy Adventuring!&lt;/p&gt;
+&lt;hr&gt;
+&lt;p&gt;Footnotes:&lt;/p&gt;
+&lt;div class="footnote"&gt;
+&lt;hr&gt;
+&lt;ol&gt;
+&lt;li id="fn:1"&gt;
+&lt;p&gt;These are the free registered versions available for download from
+  &lt;a href="http://spiderwebsoftware.com/productsOld.html"&gt;Spiderweb Software&lt;/a&gt;.&amp;#160;&lt;a class="footnote-backref" href="#fnref:1" title="Jump back to footnote 1 in the text"&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li id="fn:2"&gt;
+&lt;p&gt;Although the executable is FAT, this patch only changes the 68k part.
+  Patching the PPC part requires similar shenanigans to the data fork.
+  I don't currently have any way to run PPC code, so I won't speculate on
+  the procedure.&amp;#160;&lt;a class="footnote-backref" href="#fnref:2" title="Jump back to footnote 2 in the text"&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li id="fn:3"&gt;
+&lt;p&gt;Be sure to use a resource-aware editor and not a simple hex editor when
+  modifying resources.&amp;#160;&lt;a class="footnote-backref" href="#fnref:3" title="Jump back to footnote 3 in the text"&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/div&gt;</content><category term="Exile"></category></entry><entry><title>Thrown Missile Skill</title><link href="https://motardo.github.io/fts/thrown-missile-skill.html" rel="alternate"></link><published>2020-06-01T16:16:47-04:00</published><updated>2020-06-01T16:16:47-04:00</updated><author><name>Nathan Wilson</name></author><id>tag:motardo.github.io,2020-06-01:/fts/thrown-missile-skill.html</id><summary type="html">&lt;h2&gt;Motivation&lt;/h2&gt;
+&lt;p&gt;Thrown weapons are common in Exile, and throwing skill is cheap in both gold and
+skill points. Unfortunately, in all versions of Exile, throwing skill does not
+actually do anything. The chance to hit with a thrown missile attack depends
+strangely on the PC's defense skill. It would be …&lt;/p&gt;</summary><content type="html">&lt;h2&gt;Motivation&lt;/h2&gt;
+&lt;p&gt;Thrown weapons are common in Exile, and throwing skill is cheap in both gold and
+skill points. Unfortunately, in all versions of Exile, throwing skill does not
+actually do anything. The chance to hit with a thrown missile attack depends
+strangely on the PC's defense skill. It would be nice if throwing skill actually
+increased the chance to hit.&lt;/p&gt;
+&lt;h2&gt;Remedy&lt;/h2&gt;
+&lt;p&gt;Make the chance to hit with thrown missiles depend on throwing skill instead of
+defense.&lt;/p&gt;
+&lt;h2&gt;Method&lt;/h2&gt;
+&lt;p&gt;We just need to swap &lt;code&gt;defense&lt;/code&gt; for &lt;code&gt;thrown&lt;/code&gt; in the code that calculates the
+chance to hit with a thrown missile. It is a matter of subtracting 4 from the
+value of a single byte in the executable&lt;sup id="fnref:1"&gt;&lt;a class="footnote-ref" href="#fn:1"&gt;1&lt;/a&gt;&lt;/sup&gt;.&lt;/p&gt;
+&lt;h3&gt;Windows Versions&lt;/h3&gt;
+&lt;p&gt;Use any hex editor to replace the byte as shown at the specified offset in the
+specified file.&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th style="text-align: left;"&gt;File&lt;/th&gt;
+&lt;th style="text-align: left;"&gt;Version&lt;/th&gt;
+&lt;th style="text-align: left;"&gt;Offset (Decimal)&lt;/th&gt;
+&lt;th style="text-align: left;"&gt;Change (subtract 4)&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td style="text-align: left;"&gt;BLADES.EXE&lt;/td&gt;
+&lt;td style="text-align: left;"&gt;v1.0.1&lt;/td&gt;
+&lt;td style="text-align: left;"&gt;0x8B5DA (570842)&lt;/td&gt;
+&lt;td style="text-align: left;"&gt;0x7a should be 0x76&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="text-align: left;"&gt;EXILE3.EXE&lt;/td&gt;
+&lt;td style="text-align: left;"&gt;v1.0b&lt;/td&gt;
+&lt;td style="text-align: left;"&gt;0x7AF17 (503575)&lt;/td&gt;
+&lt;td style="text-align: left;"&gt;0x4c should be 0x48&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="text-align: left;"&gt;EXILE2.EXE&lt;/td&gt;
+&lt;td style="text-align: left;"&gt;v2.0.1&lt;/td&gt;
+&lt;td style="text-align: left;"&gt;0xC25DD (796125)&lt;/td&gt;
+&lt;td style="text-align: left;"&gt;0xd8 should be 0xd4&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="text-align: left;"&gt;EXILE.EXE&lt;/td&gt;
+&lt;td style="text-align: left;"&gt;v2.0&lt;/td&gt;
+&lt;td style="text-align: left;"&gt;0x5ABD9 (371673)&lt;/td&gt;
+&lt;td style="text-align: left;"&gt;0x26 should be 0x22&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;h3&gt;Macintosh Versions (68k&lt;sup id="fnref:2"&gt;&lt;a class="footnote-ref" href="#fn:2"&gt;2&lt;/a&gt;&lt;/sup&gt; )&lt;/h3&gt;
+&lt;p&gt;Use a resource editor such as &lt;em&gt;ResEdit&lt;/em&gt; to replace the byte &lt;code&gt;0x26&lt;/code&gt; with the byte
+&lt;code&gt;0x22&lt;/code&gt; at the specified offset of the specified &lt;code&gt;CODE&lt;/code&gt; resource in the resource
+fork of the specified file.&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th style="text-align: left;"&gt;File&lt;/th&gt;
+&lt;th style="text-align: left;"&gt;CODE resource&lt;/th&gt;
+&lt;th style="text-align: left;"&gt;Offset&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td style="text-align: left;"&gt;Blades of Exile (fat) v1.0.2&lt;/td&gt;
+&lt;td style="text-align: left;"&gt;CODE 7&lt;/td&gt;
+&lt;td style="text-align: left;"&gt;0x3a0d&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="text-align: left;"&gt;Exile III (fat) v1.0.3&lt;/td&gt;
+&lt;td style="text-align: left;"&gt;CODE 7&lt;/td&gt;
+&lt;td style="text-align: left;"&gt;0x363b&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="text-align: left;"&gt;Exile II v2.0.3&lt;/td&gt;
+&lt;td style="text-align: left;"&gt;CODE 1&lt;/td&gt;
+&lt;td style="text-align: left;"&gt;0x4e91&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="text-align: left;"&gt;Exile v2.0.1&lt;/td&gt;
+&lt;td style="text-align: left;"&gt;CODE 3&lt;/td&gt;
+&lt;td style="text-align: left;"&gt;0x82e1&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;h4&gt;Alternative Method without &lt;em&gt;ResEdit&lt;/em&gt;&lt;/h4&gt;
+&lt;p&gt;Normally we would use a resource editor such as &lt;em&gt;ResEdit&lt;/em&gt; to modify the resource
+fork of any Macintosh files. However, since we are only changing the value of a
+constant, it is okay to use a plain hex editor in this case. Search the resource
+fork of the executable for the hex bytes &lt;code&gt;3d 70 08 26&lt;/code&gt;. The sequence will only
+appear once in each file. Change the &lt;code&gt;0x26&lt;/code&gt; at the end of the sequence to
+&lt;code&gt;0x22&lt;/code&gt;.&lt;/p&gt;
+&lt;h2&gt;Conclusion&lt;/h2&gt;
+&lt;p&gt;Now when we spend skill points on throwing skill, it's not a total waste.&lt;/p&gt;
+&lt;p&gt;Happy Adventuring!&lt;/p&gt;
+&lt;hr&gt;
+&lt;p&gt;Footnotes:&lt;/p&gt;
+&lt;div class="footnote"&gt;
+&lt;hr&gt;
+&lt;ol&gt;
+&lt;li id="fn:1"&gt;
+&lt;p&gt;These are the free registered versions available for download from
+  &lt;a href="http://spiderwebsoftware.com/productsOld.html"&gt;Spiderweb Software&lt;/a&gt;.&amp;#160;&lt;a class="footnote-backref" href="#fnref:1" title="Jump back to footnote 1 in the text"&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li id="fn:2"&gt;
+&lt;p&gt;Although some of the executables are FAT, these patches only change the 68k parts.&amp;#160;&lt;a class="footnote-backref" href="#fnref:2" title="Jump back to footnote 2 in the text"&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/div&gt;</content><category term="Exile"></category></entry></feed>

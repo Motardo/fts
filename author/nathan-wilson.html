@@ -13,13 +13,420 @@
         <header id="banner" class="body">
                 <h1><a href="https://motardo.github.io/fts/">Full Time Snacking</a></h1>
                 <nav><ul>
+                    <li><a href="https://motardo.github.io/fts/pages/about.html">About</a></li>
                     <li><a href="https://motardo.github.io/fts/category/exile.html">Exile</a></li>
+                    <li><a href="https://motardo.github.io/fts/category/posts.html">posts</a></li>
                 </ul></nav>
         </header><!-- /#banner -->
 
             <aside id="featured" class="body">
                 <article>
-                    <h1 class="entry-title"><a href="https://motardo.github.io/fts/movement-keys-without-a-numeric-keypad.html">Movement Keys Without a Numeric Keypad</a></h1>
+                    <h1 class="entry-title"><a href="https://motardo.github.io/fts/let-thrown-weapons-be-poisoned.html">Let Thrown Weapons Be Poisoned</a></h1>
+<footer class="post-info">
+        <abbr class="published" title="2021-07-22T11:16:47-04:00">
+                Published: Thu 22 July 2021
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="https://motardo.github.io/fts/author/nathan-wilson.html">Nathan Wilson</a>
+        </address>
+<p>In <a href="https://motardo.github.io/fts/category/exile.html">Exile</a>.</p>
+
+</footer><!-- /.post-info --><h2>Motivation</h2>
+<p>In Exile, thrown weapons are pretty ineffective. They do very little damage,
+have a short range, miss a lot, are consumed in a single use, heavy, and
+overpriced. As if that wasn't bad enough, for some strange reason, they are the
+only type of weapons in Exile which are unable to be poisoned. The only good
+thing about thrown weapons is that throwing skill is cheaper than other weapon
+skills. Let's make thrown weapons a little more interesting by allowing them to
+be poisoned.</p>
+<h2>Remedy</h2>
+<p>Looking through the source code for Blades (Windows version[1]), we find that,
+when a PC uses poison, the game calls the <code>poison_weapon</code> function in
+<code>PARTY.CPP</code> This function loops over the PC's inventory finding the first item
+that is equipped and is also a weapon. Then it applies the poison to that item.</p>
+<div class="highlight"><pre><span></span><code><span class="n">Boolean</span><span class="w"> </span><span class="nf">poison_weapon</span><span class="p">(</span><span class="w"> </span><span class="kt">short</span><span class="w"> </span><span class="n">pc_num</span><span class="p">,</span><span class="w"> </span><span class="kt">short</span><span class="w"> </span><span class="n">how_much</span><span class="p">,</span><span class="kt">short</span><span class="w"> </span><span class="n">safe</span><span class="p">)</span><span class="w"></span>
+<span class="o">//</span><span class="kt">short</span><span class="w"> </span><span class="n">safe</span><span class="p">;</span><span class="w"> </span><span class="c1">// 1 - always succeeds</span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="kt">short</span><span class="w"> </span><span class="n">i</span><span class="p">,</span><span class="n">weap</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">24</span><span class="p">,</span><span class="n">p_level</span><span class="p">,</span><span class="n">r1</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="kt">short</span><span class="w"> </span><span class="n">p_chance</span><span class="p">[</span><span class="mi">21</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="mi">40</span><span class="p">,</span><span class="mi">72</span><span class="p">,</span><span class="mi">81</span><span class="p">,</span><span class="mi">85</span><span class="p">,</span><span class="mi">88</span><span class="p">,</span><span class="mi">89</span><span class="p">,</span><span class="mi">90</span><span class="p">,</span><span class="w"></span>
+<span class="w">                            </span><span class="mi">91</span><span class="p">,</span><span class="mi">92</span><span class="p">,</span><span class="mi">93</span><span class="p">,</span><span class="mi">94</span><span class="p">,</span><span class="mi">94</span><span class="p">,</span><span class="mi">95</span><span class="p">,</span><span class="mi">95</span><span class="p">,</span><span class="mi">96</span><span class="p">,</span><span class="mi">97</span><span class="p">,</span><span class="mi">98</span><span class="p">,</span><span class="mi">100</span><span class="p">,</span><span class="mi">100</span><span class="p">,</span><span class="mi">100</span><span class="p">,</span><span class="mi">100</span><span class="p">};</span><span class="w"></span>
+
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">24</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"></span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">((</span><span class="n">adven</span><span class="p">[</span><span class="n">pc_num</span><span class="p">].</span><span class="n">equip</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">TRUE</span><span class="p">)</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="p">(</span><span class="n">is_weapon</span><span class="p">(</span><span class="n">pc_num</span><span class="p">,</span><span class="n">i</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">TRUE</span><span class="p">))</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">            </span><span class="n">weap</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">i</span><span class="p">;</span><span class="w"></span>
+<span class="w">            </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">30</span><span class="p">;</span><span class="w"></span>
+<span class="w">            </span><span class="p">}</span><span class="w"></span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">weap</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">24</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="n">add_string_to_buf</span><span class="p">(</span><span class="s">&quot;  No weapon equipped.       &quot;</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="p">...</span><span class="w"></span>
+</code></pre></div>
+
+<p>Interestingly, that <code>i = 30</code> statement is used to break out of the loop after a weapon is found. </p>
+<p>The <code>is_weapon</code> function returns true for one and two-handed melee weapons
+(varieties 1 and 2), bows (5), and crossbows (24), and it returns false
+otherwise.</p>
+<div class="highlight"><pre><span></span><code><span class="n">Boolean</span><span class="w"> </span><span class="nf">is_weapon</span><span class="p">(</span><span class="kt">short</span><span class="w"> </span><span class="n">pc_num</span><span class="p">,</span><span class="kt">short</span><span class="w"> </span><span class="n">item</span><span class="p">)</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">((</span><span class="n">adven</span><span class="p">[</span><span class="n">pc_num</span><span class="p">].</span><span class="n">items</span><span class="p">[</span><span class="n">item</span><span class="p">].</span><span class="n">variety</span><span class="w">  </span><span class="o">==</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="o">||</span><span class="w">  </span><span class="c1">// one-handed melee</span>
+<span class="w">        </span><span class="p">(</span><span class="n">adven</span><span class="p">[</span><span class="n">pc_num</span><span class="p">].</span><span class="n">items</span><span class="p">[</span><span class="n">item</span><span class="p">].</span><span class="n">variety</span><span class="w">  </span><span class="o">==</span><span class="w"> </span><span class="mi">2</span><span class="p">)</span><span class="w"> </span><span class="o">||</span><span class="w">  </span><span class="c1">// two-handed melee</span>
+<span class="w">        </span><span class="p">(</span><span class="n">adven</span><span class="p">[</span><span class="n">pc_num</span><span class="p">].</span><span class="n">items</span><span class="p">[</span><span class="n">item</span><span class="p">].</span><span class="n">variety</span><span class="w">  </span><span class="o">==</span><span class="w"> </span><span class="mi">5</span><span class="p">)</span><span class="w"> </span><span class="o">||</span><span class="w">  </span><span class="c1">// bows</span>
+<span class="w">        </span><span class="p">(</span><span class="n">adven</span><span class="p">[</span><span class="n">pc_num</span><span class="p">].</span><span class="n">items</span><span class="p">[</span><span class="n">item</span><span class="p">].</span><span class="n">variety</span><span class="w">  </span><span class="o">==</span><span class="w"> </span><span class="mi">24</span><span class="p">))</span><span class="w">   </span><span class="c1">// crossbows</span>
+<span class="w">            </span><span class="k">return</span><span class="w"> </span><span class="n">TRUE</span><span class="p">;</span><span class="w"></span>
+<span class="w">            </span><span class="k">else</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="n">FALSE</span><span class="p">;</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</code></pre></div>
+
+<p>So in order to allow thrown weapons to be poisoned, we just need to patch
+<code>is_weapon</code> to return <code>true</code> for thrown weapons, which are item variety <code>6</code> (By
+the way, item variety <code>3</code> is gold pieces and <code>4</code> is arrows). Next, let's look at the
+<code>BLADES.EXE</code> binary to think about how we might proceed.</p>
+<p>Notice the string "No weapon equipped" in the <code>poison_weapon</code> function above.
+Strings like these will help us find the function in the game's binary. I used a
+hex editor to search for this string in BLADES.EXE and located it at around
+offset <code>0xdabb0.</code></p>
+<p><img alt="wxHexEditor finding text in BLADES.EXE" src="https://motardo.github.io/fts/exile/poison/search_nick.png" style="width:100%;"></p>
+<p>Let's find the next routine after <code>0xdabb0</code> and disassemble it. We can tell by
+the inclusion of the file <code>BC450RTL.DLL</code> in the game directory that <code>Blades</code>
+(and indeed all of the Exile games for Windows) was compiled with <em>Borland Turbo C++
+4.5</em>. This compiler begins C subroutines with the bytes <code>8c d0 90 45</code>, so we can
+search for those bytes after <code>0xdabb0</code> and locate a subroutine at <code>0xdac60</code>.
+Let's examine the disassembly.</p>
+<div class="highlight"><pre><span></span><code>$ ndisasm -k0,0xdac60 BLADES.EXE <span class="p">|</span>head -n <span class="m">50</span> <span class="p">|</span>nl
+     <span class="m">1</span>  <span class="m">00000000</span>  skipping 0xDAC60 bytes
+     <span class="m">2</span>  000DAC60  8CD0              mov ax,ss
+     <span class="m">3</span>  000DAC62  <span class="m">90</span>                nop
+     <span class="m">4</span>  000DAC63  <span class="m">45</span>                inc bp
+     <span class="m">5</span>  000DAC64  <span class="m">55</span>                push bp
+     <span class="m">6</span>  000DAC65  8BEC              mov bp,sp
+     <span class="m">7</span>  000DAC67  1E                push ds
+     <span class="m">8</span>  000DAC68  8ED8              mov ds,ax
+     <span class="m">9</span>  000DAC6A  83EC30            sub sp,byte +0x30
+    <span class="m">10</span>  000DAC6D  <span class="m">56</span>                push si
+    <span class="m">11</span>  000DAC6E  <span class="m">57</span>                push di
+    <span class="m">12</span>  000DAC6F  8B7606            mov si,<span class="o">[</span>bp+0x6<span class="o">]</span>
+    <span class="m">13</span>  000DAC72  C746FC1800        mov word <span class="o">[</span>bp-0x4<span class="o">]</span>,0x18
+    <span class="m">14</span>  000DAC77  8D46CE            lea ax,<span class="o">[</span>bp-0x32<span class="o">]</span>
+    <span class="m">15</span>  000DAC7A  <span class="m">16</span>                push ss
+    <span class="m">16</span>  000DAC7B  <span class="m">50</span>                push ax
+    <span class="m">17</span>  000DAC7C  1E                push ds
+    <span class="m">18</span>  000DAC7D  68BA3A            push word 0x3aba
+    <span class="m">19</span>  000DAC80  B92A00            mov cx,0x2a
+    <span class="m">20</span>  000DAC83  9AFFFF0000        call 0x0:0xffff
+    <span class="m">21</span>  000DAC88  33FF              xor di,di
+    <span class="m">22</span>  000DAC8A  EB2D              jmp short 0xacb9
+    <span class="m">23</span>  000DAC8C  8BDE              mov bx,si
+    <span class="m">24</span>  000DAC8E  69DB6A07          imul bx,bx,word 0x76a
+    <span class="m">25</span>  000DAC92  B80000            mov ax,0x0
+    <span class="m">26</span>  000DAC95  8EC0              mov es,ax
+    <span class="m">27</span>  000DAC97  268A8102BA        mov al,<span class="o">[</span>es:bx+di-0x45fe<span class="o">]</span>
+    <span class="m">28</span>  000DAC9C  <span class="m">98</span>                cbw
+    <span class="m">29</span>  000DAC9D  3D0100            cmp ax,0x1
+    <span class="m">30</span>  000DACA0  <span class="m">7516</span>              jnz 0xacb8
+    <span class="m">31</span>  000DACA2  <span class="m">57</span>                push di
+    <span class="m">32</span>  000DACA3  <span class="m">56</span>                push si
+    <span class="m">33</span>  000DACA4  <span class="m">90</span>                nop
+    <span class="m">34</span>  000DACA5  0E                push cs
+    <span class="m">35</span>  000DACA6  E85001            call 0xadf9
+    <span class="m">36</span>  000DACA9  83C404            add sp,byte +0x4
+    <span class="m">37</span>  000DACAC  <span class="m">98</span>                cbw
+    <span class="m">38</span>  000DACAD  3D0100            cmp ax,0x1
+    <span class="m">39</span>  000DACB0  <span class="m">7506</span>              jnz 0xacb8
+    <span class="m">40</span>  000DACB2  897EFC            mov <span class="o">[</span>bp-0x4<span class="o">]</span>,di
+    <span class="m">41</span>  000DACB5  BF1E00            mov di,0x1e
+    <span class="m">42</span>  000DACB8  <span class="m">47</span>                inc di
+    <span class="m">43</span>  000DACB9  83FF18            cmp di,byte +0x18
+    <span class="m">44</span>  000DACBC  7CCE              jl 0xac8c
+    <span class="m">45</span>  000DACBE  837EFC18          cmp word <span class="o">[</span>bp-0x4<span class="o">]</span>,byte +0x18
+    <span class="m">46</span>  000DACC2  <span class="m">7514</span>              jnz 0xacd8
+    <span class="m">47</span>  000DACC4  0E                push cs
+    <span class="m">48</span>  000DACC5  68E339            push word 0x39e3
+    <span class="m">49</span>  000DACC8  9AFFFF0000        call 0x0:0xffff
+    <span class="m">50</span>  000DACCD  83C404            add sp,byte +0x4
+</code></pre></div>
+
+<p>Lines 2-8 are the standard function prolog which sets up the stack frame. Line 9
+makes room on the stack for the function's local variables, and lines 10-21
+initialize the local variables and save registers. The function begins execution
+at line 22. Note that lines 22-44 make a loop which executes 24 times (line 43).
+Also note how line 41 breaks the loop early by injecting a value of 30. This is
+clearly the <code>poison_weapon</code> function we saw in the source code earlier. Line 35
+calls the <code>is_weapon</code> function that we want to change. We can see the call is to
+offset <code>0xadf9</code>, but it's not necessarily in the same segment. Although it is in
+this case.</p>
+<p>In the source code, <code>is_weapon</code> comes right after <code>poison_weapon</code> in the same
+<code>PARTY.CPP</code> file, so there's a good chance it does in the binary as well. When
+we search forward for the bytes <code>8c d0 90 45</code>, we do indeed find the next
+routine at offset <code>0xadf9</code>. Let's examine the disassembly.</p>
+<div class="highlight"><pre><span></span><code>$ ndisasm -k0,0xdadf9 BLADES.EXE <span class="p">|</span>head -n <span class="m">55</span> <span class="p">|</span>nl
+     <span class="m">1</span>  <span class="m">00000000</span>  skipping 0xDADF9 bytes
+     <span class="m">2</span>  000DADF9  8CD0              mov ax,ss
+     <span class="m">3</span>  000DADFB  <span class="m">90</span>                nop
+     <span class="m">4</span>  000DADFC  <span class="m">45</span>                inc bp
+     <span class="m">5</span>  000DADFD  <span class="m">55</span>                push bp
+     <span class="m">6</span>  000DADFE  8BEC              mov bp,sp
+     <span class="m">7</span>  000DAE00  1E                push ds
+     <span class="m">8</span>  000DAE01  8ED8              mov ds,ax
+     <span class="m">9</span>  000DAE03  8B5606            mov dx,<span class="o">[</span>bp+0x6<span class="o">]</span>
+    <span class="m">10</span>  000DAE06  8B4E08            mov cx,<span class="o">[</span>bp+0x8<span class="o">]</span>
+    <span class="m">11</span>  000DAE09  8BDA              mov bx,dx
+    <span class="m">12</span>  000DAE0B  69DB6A07          imul bx,bx,word 0x76a
+    <span class="m">13</span>  000DAE0F  8BC1              mov ax,cx
+    <span class="m">14</span>  000DAE11  6BC042            imul ax,ax,byte +0x42
+    <span class="m">15</span>  000DAE14  03D8              add bx,ax
+    <span class="m">16</span>  000DAE16  B80000            mov ax,0x0
+    <span class="m">17</span>  000DAE19  8EC0              mov es,ax
+    <span class="m">18</span>  000DAE1B  2683BFD2B301      cmp word <span class="o">[</span>es:bx-0x4c2e<span class="o">]</span>,byte +0x1
+    <span class="m">19</span>  000DAE21  744E              jz 0xae71
+    <span class="m">20</span>  000DAE23  8BDA              mov bx,dx
+    <span class="m">21</span>  000DAE25  69DB6A07          imul bx,bx,word 0x76a
+    <span class="m">22</span>  000DAE29  8BC1              mov ax,cx
+    <span class="m">23</span>  000DAE2B  6BC042            imul ax,ax,byte +0x42
+    <span class="m">24</span>  000DAE2E  03D8              add bx,ax
+    <span class="m">25</span>  000DAE30  B80000            mov ax,0x0
+    <span class="m">26</span>  000DAE33  8EC0              mov es,ax
+    <span class="m">27</span>  000DAE35  2683BFD2B302      cmp word <span class="o">[</span>es:bx-0x4c2e<span class="o">]</span>,byte +0x2
+    <span class="m">28</span>  000DAE3B  <span class="m">7434</span>              jz 0xae71
+    <span class="m">29</span>  000DAE3D  8BDA              mov bx,dx
+    <span class="m">30</span>  000DAE3F  69DB6A07          imul bx,bx,word 0x76a
+    <span class="m">31</span>  000DAE43  8BC1              mov ax,cx
+    <span class="m">32</span>  000DAE45  6BC042            imul ax,ax,byte +0x42
+    <span class="m">33</span>  000DAE48  03D8              add bx,ax
+    <span class="m">34</span>  000DAE4A  B80000            mov ax,0x0
+    <span class="m">35</span>  000DAE4D  8EC0              mov es,ax
+    <span class="m">36</span>  000DAE4F  2683BFD2B305      cmp word <span class="o">[</span>es:bx-0x4c2e<span class="o">]</span>,byte +0x5
+    <span class="m">37</span>  000DAE55  741A              jz 0xae71
+    <span class="m">38</span>  000DAE57  8BDA              mov bx,dx
+    <span class="m">39</span>  000DAE59  69DB6A07          imul bx,bx,word 0x76a
+    <span class="m">40</span>  000DAE5D  8BC1              mov ax,cx
+    <span class="m">41</span>  000DAE5F  6BC042            imul ax,ax,byte +0x42
+    <span class="m">42</span>  000DAE62  03D8              add bx,ax
+    <span class="m">43</span>  000DAE64  B80000            mov ax,0x0
+    <span class="m">44</span>  000DAE67  8EC0              mov es,ax
+    <span class="m">45</span>  000DAE69  2683BFD2B318      cmp word <span class="o">[</span>es:bx-0x4c2e<span class="o">]</span>,byte +0x18
+    <span class="m">46</span>  000DAE6F  <span class="m">7506</span>              jnz 0xae77
+    <span class="m">47</span>  000DAE71  B001              mov al,0x1
+    <span class="m">48</span>  000DAE73  EB06              jmp short 0xae7b
+    <span class="m">49</span>  000DAE75  EB04              jmp short 0xae7b
+    <span class="m">50</span>  000DAE77  B000              mov al,0x0
+    <span class="m">51</span>  000DAE79  EB00              jmp short 0xae7b
+    <span class="m">52</span>  000DAE7B  1F                pop ds
+    <span class="m">53</span>  000DAE7C  5D                pop bp
+    <span class="m">54</span>  000DAE7D  4D                dec bp
+    <span class="m">55</span>  000DAE7E  CB                retf
+</code></pre></div>
+
+<aside style="font-size:80%;">
+<h5>Aside</h5>
+<p>Wow, that's really inefficient! Every pair of compare and branch instructions is
+preceded by 7 identical instructions to compute the same value. The value could
+have just been computed once, which would have made the code both shorter and
+faster by 4.5 times. I wonder how different the whole Exile experience would
+have been in the 90's if the games had been compiled with optimizations turned
+on.</p>
+</aside>
+
+<h2>Method</h2>
+<p>So, we have four comparisons for item varieties 1, 2, 5, and 24, and we want to
+squeeze an extra comparison for variety 6 in somehow without taking up more
+space and with minimal disruption to the existing structure. Since we also know
+that variety 0 (nothing) and variety 3 (gold) can never be equipped, we don't
+need to worry about filtering those values. So for any variety less than or
+equal to 6, we can safely return <code>true</code> for everything except 4 (arrows), which
+should return false. And if it's 7 or greater, we only need to check for variety
+24 (crossbows). So we can actually get away with just 3 comparisons to implement
+our new game logic (6, 4, and 24). Let's throw in an unnecessary comparison for
+variety 0 just to maintain the original number of four comparisons. So our patch
+will look like this.</p>
+<p><a href="https://motardo.github.io/fts/exile/poison/poison_asm_diff.png" target="_blank">
+<img alt="vimdiff showing new assembly code for is_weapon" src="https://motardo.github.io/fts/exile/poison/poison_asm_diff.png" style="width:100%;">
+</a></p>
+<div class="highlight"><pre><span></span><code>$ cat patch.txt 
+000dae20: <span class="m">0074</span> <span class="m">54</span>  &lt;- <span class="m">0174</span> 4e
+000dae3a: <span class="m">0474</span> 3a  &lt;- <span class="m">0274</span> <span class="m">34</span>
+000dae54: 067e 1a  &lt;- <span class="m">0574</span> 1a
+</code></pre></div>
+
+<p>We just changed the first three compare and jump pairs. The fourth one for
+crossbows stays the same.</p>
+<p>Let's apply the patch to a copy of <code>BLADES.EXE</code></p>
+<div class="highlight"><pre><span></span><code>$ nasm -o wb-poison wb-poison.asm
+$ ndisasm -o 0xdae1b wb-poison
+000DAE1B  2683BFD2B300      cmp word <span class="o">[</span>es:bx-0x4c2e<span class="o">]</span>,byte +0x0
+000DAE21  <span class="m">7454</span>              jz 0xae77
+000DAE23  89D3              mov bx,dx
+000DAE25  69DB6A07          imul bx,bx,word 0x76a
+000DAE29  89C8              mov ax,cx
+000DAE2B  6BC042            imul ax,ax,byte +0x42
+000DAE2E  01C3              add bx,ax
+000DAE30  B80000            mov ax,0x0
+000DAE33  8EC0              mov es,ax
+000DAE35  2683BFD2B304      cmp word <span class="o">[</span>es:bx-0x4c2e<span class="o">]</span>,byte +0x4
+000DAE3B  743A              jz 0xae77
+000DAE3D  89D3              mov bx,dx
+000DAE3F  69DB6A07          imul bx,bx,word 0x76a
+000DAE43  89C8              mov ax,cx
+000DAE45  6BC042            imul ax,ax,byte +0x42
+000DAE48  01C3              add bx,ax
+000DAE4A  B80000            mov ax,0x0
+000DAE4D  8EC0              mov es,ax
+000DAE4F  2683BFD2B306      cmp word <span class="o">[</span>es:bx-0x4c2e<span class="o">]</span>,byte +0x6
+000DAE55  7E1A              jng 0xae71
+000DAE57  89D3              mov bx,dx
+
+$ cp BLADES.EXE BLADESPT.EXE
+$ <span class="nb">alias</span> <span class="nv">dd</span><span class="o">=</span><span class="s1">&#39;dd iflag=count_bytes oflag=seek_bytes conv=notrunc&#39;</span>
+$ dd <span class="nv">count</span><span class="o">=</span><span class="m">64</span> <span class="nv">seek</span><span class="o">=</span><span class="k">$((</span><span class="m">0</span>xdae1b<span class="k">))</span> <span class="k">if</span><span class="o">=</span>wb-poison <span class="nv">of</span><span class="o">=</span>BLADESPT.EXE 
+<span class="m">0</span>+1 records <span class="k">in</span>
+<span class="m">0</span>+1 records out
+<span class="m">64</span> bytes copied, <span class="m">0</span>.000366593 s, <span class="m">175</span> kB/s
+$ cmp B*
+BLADES.EXE BLADESPT.EXE differ: byte <span class="m">896545</span>, line <span class="m">2844</span>
+$ ndisasm -k <span class="m">0</span>,0xdae1b BLADESPT.EXE <span class="p">|</span>head -n <span class="m">30</span>
+<span class="m">00000000</span>  skipping 0xDAE1B bytes
+000DAE1B  2683BFD2B300      cmp word <span class="o">[</span>es:bx-0x4c2e<span class="o">]</span>,byte +0x0
+000DAE21  <span class="m">7454</span>              jz 0xae77
+000DAE23  89D3              mov bx,dx
+000DAE25  69DB6A07          imul bx,bx,word 0x76a
+000DAE29  89C8              mov ax,cx
+000DAE2B  6BC042            imul ax,ax,byte +0x42
+000DAE2E  01C3              add bx,ax
+000DAE30  B80000            mov ax,0x0
+000DAE33  8EC0              mov es,ax
+000DAE35  2683BFD2B304      cmp word <span class="o">[</span>es:bx-0x4c2e<span class="o">]</span>,byte +0x4
+000DAE3B  743A              jz 0xae77
+000DAE3D  89D3              mov bx,dx
+000DAE3F  69DB6A07          imul bx,bx,word 0x76a
+000DAE43  89C8              mov ax,cx
+000DAE45  6BC042            imul ax,ax,byte +0x42
+000DAE48  01C3              add bx,ax
+000DAE4A  B80000            mov ax,0x0
+000DAE4D  8EC0              mov es,ax
+000DAE4F  2683BFD2B306      cmp word <span class="o">[</span>es:bx-0x4c2e<span class="o">]</span>,byte +0x6
+000DAE55  7E1A              jng 0xae71
+000DAE57  89D3              mov bx,dx
+000DAE59  69DB6A07          imul bx,bx,word 0x76a
+000DAE5D  8BC1              mov ax,cx
+000DAE5F  6BC042            imul ax,ax,byte +0x42
+000DAE62  03D8              add bx,ax
+000DAE64  B80000            mov ax,0x0
+000DAE67  8EC0              mov es,ax
+000DAE69  2683BFD2B318      cmp word <span class="o">[</span>es:bx-0x4c2e<span class="o">]</span>,byte +0x18
+000DAE6F  <span class="m">7506</span>              jnz 0xae77
+</code></pre></div>
+
+<p>Everything looks good. Let's fire it up in DOSBox and see if it works.</p>
+<p><img alt="Frrr with darts equiped and poisoned" src="https://motardo.github.io/fts/exile/poison/poison-darts.png" style="width:100%;"></p>
+<p>Success!</p>
+<h2>Macintosh Versions</h2>
+<p>I prefer to play the Mac versions of the Exile games using the BasiliskII emulator,
+so let's make the same modification to them. Here is the <code>is_weapon</code> function
+in 68k disassembly from the Mac version of Blades of Exile:</p>
+<div class="highlight"><pre><span></span><code><span class="m">3430</span> 087E   move.w    <span class="nv">$7</span>E<span class="o">(</span>a0,d0.l<span class="o">)</span>,d2
+0C42 <span class="m">0001</span>   cmpi.w    <span class="c1">#$01,d2</span>
+<span class="m">6712</span>        beq.s     True
+0C42 <span class="m">0002</span>   cmpi.w    <span class="c1">#$02,d2</span>
+670C        beq.s     True
+0C42 <span class="m">0005</span>   cmpi.w    <span class="c1">#$05,d2</span>
+<span class="m">6706</span>        beq.s     True
+0C42 <span class="m">0018</span>   cmpi.w    <span class="c1">#$18,d2</span>
+<span class="m">6604</span>        bne.s     False
+True:   <span class="p">;</span> <span class="k">return</span> <span class="nb">true</span>
+<span class="m">7001</span>        moveq     <span class="c1">#$01,d0</span>
+<span class="m">6002</span>        bra.s     Continue
+False:  <span class="p">;</span> <span class="k">return</span> <span class="nb">false</span>
+<span class="m">7000</span>        moveq     <span class="c1">#$00,d0</span>
+Continue:
+</code></pre></div>
+
+<p>Just like the x86 version, it returns true for item varieties <code>1</code>, <code>2</code>, <code>5</code>, and <code>24</code>.
+The new code will return <code>false</code> for varieties <code>0</code> and <code>4</code>, or return <code>true</code> for 
+anything less than <code>7</code> or <code>24</code>. It will look like this:</p>
+<div class="highlight"><pre><span></span><code><span class="m">3430</span> 087E   move.w    <span class="nv">$7</span>E<span class="o">(</span>a0,d0.l<span class="o">)</span>,d2
+0C42 <span class="m">0000</span>   cmpi.w    <span class="c1">#$00,d2</span>
+<span class="m">6716</span>        beq.s     False
+0C42 <span class="m">0004</span>   cmpi.w    <span class="c1">#$04,d2</span>
+<span class="m">6710</span>        beq.s     False
+0C42 <span class="m">0006</span>   cmpi.w    <span class="c1">#$06,d2</span>
+6F06        ble.s     True
+0C42 <span class="m">0018</span>   cmpi.w    <span class="c1">#$18,d2</span>
+<span class="m">6604</span>        bne.s     False
+True:   <span class="p">;</span> <span class="k">return</span> <span class="nb">true</span>
+<span class="m">7001</span>        moveq     <span class="c1">#$01,d0</span>
+<span class="m">6002</span>        bra.s     Continue
+False:  <span class="p">;</span> <span class="k">return</span> <span class="nb">false</span>
+<span class="m">7000</span>        moveq     <span class="c1">#$00,d0</span>
+Continue:
+</code></pre></div>
+
+<p>In <em>Exile III</em>, the original code and patch are identical to <em>Blades of Exile</em>.
+For <em>Exile II</em> and <em>Exile I</em>, there were no crossbows, so the code is a little bit
+different. </p>
+<div class="highlight"><pre><span></span><code>Original Exile I and Exile II:
+<span class="m">3430</span> 087E   move.w    <span class="nv">$7</span>E<span class="o">(</span>a0,d0.l<span class="o">)</span>,d2
+0C42 <span class="m">0001</span>   cmpi.w    <span class="c1">#$01,d2</span>
+670C        beq.s     True
+0C42 <span class="m">0002</span>   cmpi.w    <span class="c1">#$02,d2</span>
+<span class="m">6706</span>        beq.s     True
+0C42 <span class="m">0005</span>   cmpi.w    <span class="c1">#$05,d2</span>
+<span class="m">6604</span>        bne.s     False
+True:
+<span class="m">7001</span>        moveq     <span class="c1">#$01,d0</span>
+<span class="m">6002</span>        bra.s     Continue
+False:
+<span class="m">7000</span>        moveq     <span class="c1">#$00,d0</span>
+Continue:
+
+New Exile I and Exile II:
+<span class="m">3430</span> 087E   move.w    <span class="nv">$7</span>E<span class="o">(</span>a0,d0.l<span class="o">)</span>,d2
+0C42 <span class="m">0000</span>   cmpi.w    <span class="c1">#$00,d2</span>
+<span class="m">6710</span>        beq.s     False
+0C42 <span class="m">0004</span>   cmpi.w    <span class="c1">#$04,d2</span>
+670a        beq.s     False
+0C42 <span class="m">0006</span>   cmpi.w    <span class="c1">#$06,d2</span>
+6E04        bgt.s     False
+True:
+<span class="m">7001</span>        moveq     <span class="c1">#$01,d0</span>
+<span class="m">6002</span>        bra.s     Continue
+False:
+<span class="m">7000</span>        moveq     <span class="c1">#$00,d0</span>
+Continue:
+</code></pre></div>
+
+<p>So the patches for the Mac versions look like this:</p>
+<p><em>Blades</em> and <em>Exile III</em>:</p>
+<div class="highlight"><pre><span></span><code>Original: <span class="m">0001</span> <span class="m">6712</span> 0c42 <span class="m">0002</span> 670c 0c42 <span class="m">0005</span> <span class="m">6706</span>
+Patched:  <span class="m">0000</span> <span class="m">6716</span> 0c42 <span class="m">0004</span> <span class="m">6710</span> 0c42 <span class="m">0006</span> 6f06
+</code></pre></div>
+
+<p><em>Exile I</em> and <em>Exile II</em>:</p>
+<div class="highlight"><pre><span></span><code><span class="n">Original</span><span class="o">:</span><span class="w"> </span><span class="mi">0001</span><span class="w"> </span><span class="mi">670</span><span class="n">c</span><span class="w"> </span><span class="mi">0</span><span class="n">c42</span><span class="w"> </span><span class="mi">0002</span><span class="w"> </span><span class="mi">6706</span><span class="w"> </span><span class="mi">0</span><span class="n">c42</span><span class="w"> </span><span class="mi">0005</span><span class="w"> </span><span class="mi">6604</span><span class="w">  </span><span class="o">..</span><span class="n">g</span><span class="o">..</span><span class="n">B</span><span class="o">..</span><span class="n">g</span><span class="o">..</span><span class="n">B</span><span class="o">..</span><span class="n">f</span><span class="o">.</span><span class="w"></span>
+<span class="n">Patched</span><span class="o">:</span><span class="w">  </span><span class="mi">0000</span><span class="w"> </span><span class="mi">6710</span><span class="w"> </span><span class="mi">0</span><span class="n">c42</span><span class="w"> </span><span class="mi">0004</span><span class="w"> </span><span class="mi">670</span><span class="n">a</span><span class="w"> </span><span class="mi">0</span><span class="n">c42</span><span class="w"> </span><span class="mi">0006</span><span class="w"> </span><span class="mi">6</span><span class="n">e04</span><span class="w">  </span><span class="o">..</span><span class="n">g</span><span class="o">..</span><span class="n">B</span><span class="o">..</span><span class="n">g</span><span class="o">..</span><span class="n">B</span><span class="o">..</span><span class="n">f</span><span class="o">.</span><span class="w"></span>
+</code></pre></div>
+
+<p>Here is a screenshot of the Mac version of Exile I showing John having 
+darts successfully envenomed.</p>
+<p><img alt="Darts equiped and poisoned in the Mac version of Exile I" src="https://motardo.github.io/fts/exile/poison/ExilePoisonThrown.png" style="width:100%;"></p>
+<h2>Conclusion</h2>
+<p>Allowing thrown weapons to be poisoned should make them slightly less useless.
+It might be just the nudge needed to try playing a throwing-based character. In
+fact, a hasted character with 8 action points could hit an enemy with 4 poison
+darts in one turn. I'm not sure if poison stacks like that, but that could
+potentially be quite effective.</p>
+<p>Happy Adventuring!</p>                </article>
+            </aside><!-- /#featured -->
+                <section id="content" class="body">
+                    <h1>Other articles</h1>
+                    <hr />
+                    <ol id="posts-list" class="hfeed">
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="https://motardo.github.io/fts/movement-keys-without-a-numeric-keypad.html" rel="bookmark"
+                           title="Permalink to Movement Keys Without a Numeric Keypad">Movement Keys Without a Numeric Keypad</a></h1>
+                </header>
+
+                <div class="entry-content">
 <footer class="post-info">
         <abbr class="published" title="2021-07-22T11:16:47-04:00">
                 Published: Thu 22 July 2021
@@ -30,250 +437,97 @@
         </address>
 <p>In <a href="https://motardo.github.io/fts/category/exile.html">Exile</a>.</p>
 <p>tags: <a href="https://motardo.github.io/fts/tag/exile.html">exile</a> <a href="https://motardo.github.io/fts/tag/patches.html">patches</a> </p>
-</footer><!-- /.post-info --><h2>Motivation</h2>
+</footer><!-- /.post-info -->                <h2>Motivation</h2>
 <p>Movement in the Exile games is controlled either by clicking on the terrain in
 the desired direction, or by using the keys on the numeric keypad. Clicking with
 the mouse seems tedious to me, so I have always used the keypad. In the past, I
-have even specifically bought a laptop with a numeric keypad just to play Exile.
-However, for my newest laptop, there were not a lot of choices with a keypad,
-and I ended up getting something without one.</p>
-<p>So now it is time to modify the game to use different keys for movement.</p>
-<h2>Remedy</h2>
-<p>I have decided to substitute <code>[m,.][jkl][uio]</code> for the keypad's <code>1-9</code> keys. This
-will make them easy to find without looking by placing my right hand on the home
-row with my index finger on <code>j</code>, just like the normal touch typing position that
-I am used to. Of course, this means I will have to choose substitutes for the
-<code>l</code> and <code>m</code> keys, which are used in Exile for <em>L</em>ooking and casting <em>M</em>age
-spells. I will choose <code>h</code> and <code>n</code> for these, just because they are convenient
-and unused.</p>
-<h2>Method</h2>
-<p>I will start with the free, registered version of <a href="http://www.spiderwebsoftware.com/ftp/installers/mac/ExileInstaller.zip">Exile I for
-Macintosh</a>
-that is available for download from Spiderweb Software. After copying the
-Installer to a virtual HFS volume and running it in BasiliskII, the Exile
-program file is ready to play. I want to get a copy of the executable code on my
-native Linux filesystem so that I can use modern unix tools to examine and
-modify it. From BasiliskII, I used a program to convert the Exile game file to
-MacBinary format. This combines the data and resource forks into a file with a
-single fork that unix understands.</p>
-<p>Now I have the game code on my Linux filesystem as a MacBinary encoded file
-called <a href="https://motardo.github.io/fts/exile/e1orig.bin"><code>e1orig.bin</code></a>. Let's find those keycodes.</p>
-<p>The Exile games were written in C and compiled with <em>Metrowerk's Code Warrior</em>, a
-popular Macintosh IDE from the 1990s. Code Warrior inserts so called <code>macsbug</code>
-strings into the executable code it generates. These strings contain the names
-of the functions that were given in the original C source code. This makes it
-very easy to locate particular sections of code in an executable. Let's search
-the <code>macsbug</code> strings for the word <code>keystroke</code>.</p>
-<div class="highlight"><pre><span></span><code>$ python3 -c <span class="s2">&quot;print(open(&#39;e1orig.bin&#39;,&#39;rb&#39;).read().find(b&#39;keystroke&#39;))&quot;</span>
-<span class="m">2425898</span>
-$ xxd -s <span class="m">2425888</span> -l <span class="m">32</span> e1orig.bin
-<span class="m">00250420</span>: 4e75 <span class="m">9068</span> 616e 646c 655f 6b65 <span class="m">7973</span> <span class="m">7472</span>  Nu.handle_keystr
-<span class="m">00250430</span>: 6f6b <span class="m">6500</span> <span class="m">0000</span> 4e56 <span class="m">0000</span> 2f0a 594f 3f3c  oke...NV../.YO?&lt;
-</code></pre></div>
+have even specifically bought …</p>
+                <a class="readmore" href="https://motardo.github.io/fts/movement-keys-without-a-numeric-keypad.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
 
-<p>We found a procedure called <code>handle_keystroke</code>. The name immediately follows the
-end of the function, so will search backwards from the name to find the start of
-the function. Macintosh procedures start with a <code>LINK A6</code> (<code>4e56</code>) instruction
-and end with a <code>RTS</code> instruction (<code>4e75</code> as seen above).</p>
-<p>Disassembling the <code>handle_keystroke</code> function from the beginning yields:</p>
-<div class="highlight"><pre><span></span><code>$ d68 e1orig.bin <span class="m">2424198</span> <span class="m">128</span>
-<span class="m">00000000</span> : 4e56 ffac      LINK     A6,#-84
-<span class="m">00000004</span> : 48e7 1f30      MOVEM.L  D4,D5,A0-A4,-<span class="o">(</span>A7<span class="o">)</span>
-<span class="m">00000008</span> : 1a2e <span class="m">0009</span>      MOVE.B   +9<span class="o">(</span>A6<span class="o">)</span>,D5
-0000000c : 1c2e 000b      MOVE.B   +11<span class="o">(</span>A6<span class="o">)</span>,D6
-<span class="m">00000010</span> : <span class="m">7800</span>           MOVEQ    <span class="c1">#$00,D4</span>
-<span class="m">00000012</span> : 42ae fff8      CLR.L    -8<span class="o">(</span>A6<span class="o">)</span>
-<span class="m">00000016</span> : 2d79 <span class="m">0001</span> 094c ffb4 MOVE.L   <span class="nv">$0001094</span>c,-76<span class="o">(</span>A6<span class="o">)</span>
-0000001e : 2d79 <span class="m">0001</span> <span class="m">0948</span> ffb0 MOVE.L   <span class="nv">$00010948</span>,-80<span class="o">(</span>A6<span class="o">)</span>
-<span class="m">00000026</span> : 2d79 <span class="m">0001</span> 093e ffc6 MOVE.L   <span class="nv">$0001093</span>e,-58<span class="o">(</span>A6<span class="o">)</span>
-0000002e : 2d79 <span class="m">0001</span> <span class="m">0942</span> ffca MOVE.L   <span class="nv">$00010942</span>,-54<span class="o">(</span>A6<span class="o">)</span>
-<span class="m">00000036</span> : 3d79 <span class="m">0001</span> <span class="m">0946</span> ffce MOVE.W   <span class="nv">$00010946</span>,-50<span class="o">(</span>A6<span class="o">)</span>
-0000003e : 41f9 <span class="m">0001</span> <span class="m">0916</span> LEA      <span class="nv">$00010916</span>,A0
-<span class="m">00000044</span> : 43ee ffd0      LEA      -48<span class="o">(</span>A6<span class="o">)</span>,A1
-<span class="m">00000048</span> : <span class="m">7009</span>           MOVEQ    <span class="c1">#$09,D0</span>
-0000004a : 22d8           MOVE.L   <span class="o">(</span>A0<span class="o">)</span>+,<span class="o">(</span>A1<span class="o">)</span>+
-0000004c : 51c8 fffc      DBF      D0,<span class="nv">$0000004</span>a
-<span class="m">00000050</span> : 594f           SUBQ.W   <span class="c1">#4,A7</span>
-<span class="m">00000052</span> : a924           ???
-<span class="m">00000054</span> : 205f           MOVEA.L  <span class="o">(</span>A7<span class="o">)</span>+,A0
-... output truncated ...
-</code></pre></div>
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="https://motardo.github.io/fts/pc-status-icons.html" rel="bookmark"
+                           title="Permalink to PC Status Icons">PC Status Icons</a></h1>
+                </header>
 
-<p>A-trap instructions such as <code>a924</code> are not yet recognized by the dis68k disassembler.
-Maybe someday I will add them. Let's look a little farther into the procedure:</p>
-<div class="highlight"><pre><span></span><code>$ d68 e1orig.bin <span class="k">$((</span><span class="m">0</span>x24ff60<span class="k">))</span> <span class="m">192</span>
-<span class="m">00000000</span> : <span class="m">1005</span>           MOVE.B   D5,D0
-<span class="m">00000002</span> : <span class="m">4880</span>           EXT.W    D0
-<span class="m">00000004</span> : <span class="m">0440</span> <span class="m">0030</span>      SUBI.W   <span class="c1">#$0030,D0    0</span>
-<span class="m">00000008</span> : <span class="m">6700</span> <span class="m">0134</span>      BEQ      <span class="nv">$0000013</span>e
-0000000c : <span class="m">5340</span>           SUBQ.W   <span class="c1">#1,D0    1</span>
-0000000e : <span class="m">6700</span> 00b0      BEQ      <span class="nv">$000000</span>c0
-<span class="m">00000012</span> : <span class="m">5340</span>           SUBQ.W   <span class="c1">#1,D0    2</span>
-<span class="m">00000014</span> : <span class="m">6700</span> 00aa      BEQ      <span class="nv">$000000</span>c0
-<span class="m">00000018</span> : <span class="m">5340</span>           SUBQ.W   <span class="c1">#1,D0    3</span>
-0000001a : <span class="m">6700</span> 00a4      BEQ      <span class="nv">$000000</span>c0
-0000001e : <span class="m">5340</span>           SUBQ.W   <span class="c1">#1,D0    4</span>
-<span class="m">00000020</span> : <span class="m">6700</span> 009e      BEQ      <span class="nv">$000000</span>c0
-<span class="m">00000024</span> : <span class="m">5340</span>           SUBQ.W   <span class="c1">#1,D0    5</span>
-<span class="m">00000026</span> : <span class="m">6700</span> <span class="m">0098</span>      BEQ      <span class="nv">$000000</span>c0
-0000002a : <span class="m">5340</span>           SUBQ.W   <span class="c1">#1,D0    6</span>
-0000002c : <span class="m">6700</span> <span class="m">0092</span>      BEQ      <span class="nv">$000000</span>c0
-<span class="m">00000030</span> : <span class="m">5740</span>           SUBQ.W   <span class="c1">#3,D0    9</span>
-<span class="m">00000032</span> : <span class="m">6700</span> 00ee      BEQ      <span class="nv">$00000122</span>
-<span class="m">00000036</span> : <span class="m">5940</span>           SUBQ.W   <span class="c1">#4,D0    =</span>
-<span class="m">00000038</span> : <span class="m">6700</span> <span class="m">0104</span>      BEQ      <span class="nv">$0000013</span>e
-0000003c : <span class="m">5940</span>           SUBQ.W   <span class="c1">#4,D0    A</span>
-0000003e : <span class="m">6700</span> 023a      BEQ      <span class="nv">$0000027</span>a
-<span class="m">00000042</span> : 5b40           SUBQ.W   <span class="c1">#5,D0    F</span>
-<span class="m">00000044</span> : <span class="m">6700</span> <span class="m">0188</span>      BEQ      <span class="nv">$000001</span>ce
-<span class="m">00000048</span> : <span class="m">5340</span>           SUBQ.W   <span class="c1">#1,D0    G</span>
-0000004a : <span class="m">6700</span> 01b4      BEQ      <span class="nv">$00000200</span>
-0000004e : 5b40           SUBQ.W   <span class="c1">#5,D0    L -&gt; H subq.w #1,d0 5340</span>
-<span class="m">00000050</span> : <span class="m">6700</span> <span class="m">0228</span>      BEQ      <span class="nv">$0000027</span>a
-<span class="m">00000054</span> : <span class="m">5340</span>           SUBQ.W   <span class="c1">#1,D0    M -&gt; N subq.w #6,d0 5d40</span>
-<span class="m">00000056</span> : <span class="m">6700</span> 02d6      BEQ      <span class="nv">$0000032</span>e
-0000005a : <span class="m">5740</span>           SUBQ.W   <span class="c1">#3,D0    P -&gt; P subq.w #2,d0 5540</span>
-0000005c : <span class="m">6700</span> 02d0      BEQ      <span class="nv">$0000032</span>e
-<span class="m">00000060</span> : <span class="m">0440</span> <span class="m">0011</span>      SUBI.W   <span class="c1">#$0011,D0    a</span>
-<span class="m">00000064</span> : <span class="m">6700</span> 01c6      BEQ      <span class="nv">$0000022</span>c
-<span class="m">00000068</span> : <span class="m">5340</span>           SUBQ.W   <span class="c1">#1,D0    b</span>
-0000006a : <span class="m">6700</span> 020e      BEQ      <span class="nv">$0000027</span>a
-0000006e : <span class="m">5540</span>           SUBQ.W   <span class="c1">#2,D0    d</span>
-<span class="m">00000070</span> : <span class="m">6700</span> 02bc      BEQ      <span class="nv">$0000032</span>e
-<span class="m">00000074</span> : <span class="m">5340</span>           SUBQ.W   <span class="c1">#1,D0    e</span>
-<span class="m">00000076</span> : <span class="m">6700</span> 025c      BEQ      <span class="nv">$000002</span>d4
-0000007a : <span class="m">5340</span>           SUBQ.W   <span class="c1">#1,D0    f</span>
-0000007c : <span class="m">6700</span> 02b0      BEQ      <span class="nv">$0000032</span>e
-<span class="m">00000080</span> : <span class="m">5340</span>           SUBQ.W   <span class="c1">#1,D0    g</span>
-<span class="m">00000082</span> : <span class="m">6700</span> 02aa      BEQ      <span class="nv">$0000032</span>e
-<span class="m">00000086</span> : 5b40           SUBQ.W   <span class="c1">#5,D0    l -&gt; h subq.w #1,d0 5340</span>
-<span class="m">00000088</span> : <span class="m">6700</span> 02a4      BEQ      <span class="nv">$0000032</span>e
-0000008c : <span class="m">5340</span>           SUBQ.W   <span class="c1">#1,D0    m -&gt; n subq.w #6,d0 5d40</span>
-0000008e : <span class="m">6700</span> 029e      BEQ      <span class="nv">$0000032</span>e
-<span class="m">00000092</span> : <span class="m">5740</span>           SUBQ.W   <span class="c1">#3,D0    p -&gt; p subq.w #2,d0 5540</span>
-<span class="m">00000094</span> : <span class="m">6700</span> <span class="m">0298</span>      BEQ      <span class="nv">$0000032</span>e
-<span class="m">00000098</span> : <span class="m">5540</span>           SUBQ.W   <span class="c1">#2,D0    r</span>
-0000009a : <span class="m">6700</span> <span class="m">0292</span>      BEQ      <span class="nv">$0000032</span>e
-0000009e : <span class="m">5340</span>           SUBQ.W   <span class="c1">#1,D0    s</span>
-000000a0 : <span class="m">6700</span> <span class="m">0232</span>      BEQ      <span class="nv">$000002</span>d4
-000000a4 : <span class="m">5340</span>           SUBQ.W   <span class="c1">#1,D0    t</span>
-000000a6 : <span class="m">6700</span> <span class="m">0286</span>      BEQ      <span class="nv">$0000032</span>e
-000000aa : <span class="m">5740</span>           SUBQ.W   <span class="c1">#3,D0    w</span>
-000000ac : <span class="m">6700</span> <span class="m">0280</span>      BEQ      <span class="nv">$0000032</span>e
-000000b0 : <span class="m">5340</span>           SUBQ.W   <span class="c1">#1,D0    x</span>
-000000b2 : <span class="m">6700</span> <span class="m">0220</span>      BEQ      <span class="nv">$000002</span>d4
-000000b6 : <span class="m">5540</span>           SUBQ.W   <span class="c1">#2,D0    z</span>
-000000b8 : <span class="m">6700</span> 009e      BEQ      <span class="nv">$00000158</span>
-</code></pre></div>
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2020-08-07T16:16:47-04:00">
+                Published: Fri 07 August 2020
+        </abbr>
 
-<p>I added the letters for the keycodes in the rightmost column to the listing
-above. We can see that the routine reads the keycode of the key that was pressed
-from register D5 and then compares it to a series of values and branches to the
-corresponding code when a match is found. The first keycode that is compared is
-<code>0x30</code> (regular, non-numpad <code>0</code>), followed by the (regular, non-numpad) digits
-<code>1</code> through <code>6</code>. Farther down, the letters <code>g</code>, <code>l</code>, <code>m</code>, and <code>p</code> are checked.
-This is were the code should be modified to substitute <code>h</code> and <code>n</code> instead. The
-modification is accomplished simply by changing the immediate value of the
-<code>subq.w #_,d0</code> instructions as shown above. Following the branches above for the
-<code>l</code> and <code>m</code> keys, there are two more locations that need similar modifications:</p>
-<div class="highlight"><pre><span></span><code>0000034c : <span class="m">1005</span>           MOVE.B   D5,D0
-0000034e : <span class="m">4880</span>           EXT.W    D0
-<span class="m">00000350</span> : <span class="m">0440</span> 004d      SUBI.W   <span class="c1">#$004D,D0    M -&gt; N  0440 004e</span>
-<span class="m">00000354</span> : <span class="m">6734</span>           BEQ      <span class="nv">$0000038</span>a
-<span class="m">00000356</span> : <span class="m">5740</span>           SUBQ.W   <span class="c1">#3,D0        P -&gt; P  5540</span>
-<span class="m">00000358</span> : <span class="m">6744</span>           BEQ      <span class="nv">$0000039</span>e
-0000035a : <span class="m">0440</span> <span class="m">0014</span>      SUBI.W   <span class="c1">#$0014,D0    d</span>
-0000035e : <span class="m">6700</span> 00de      BEQ      <span class="nv">$0000043</span>e
-<span class="m">00000362</span> : <span class="m">5540</span>           SUBQ.W   <span class="c1">#2,D0        f</span>
-<span class="m">00000364</span> : <span class="m">6700</span> 00fa      BEQ      <span class="nv">$00000460</span>
-<span class="m">00000368</span> : <span class="m">5340</span>           SUBQ.W   <span class="c1">#1,D0        g</span>
-0000036a : <span class="m">6700</span> 00e4      BEQ      <span class="nv">$00000450</span>
-0000036e : 5b40           SUBQ.W   <span class="c1">#5,D0        l -&gt; h subq.w #1,d0 5340</span>
-<span class="m">00000370</span> : <span class="m">6740</span>           BEQ      <span class="nv">$000003</span>b2
-<span class="m">00000372</span> : <span class="m">5340</span>           SUBQ.W   <span class="c1">#1,D0        m -&gt; n subq.w #6,d0 5d40</span>
-<span class="m">00000374</span> : <span class="m">6722</span>           BEQ      <span class="nv">$00000398</span>
-<span class="m">00000376</span> : <span class="m">5740</span>           SUBQ.W   <span class="c1">#3,D0        p -&gt; p subq.w #2,d0 5540</span>
-<span class="m">00000378</span> : <span class="m">6732</span>           BEQ      <span class="nv">$000003</span>ac
-0000037a : <span class="m">5540</span>           SUBQ.W   <span class="c1">#2,D0        r</span>
-0000037c : 673a           BEQ      <span class="nv">$000003</span>b8
-0000037e : <span class="m">5540</span>           SUBQ.W   <span class="c1">#2,D0        t</span>
-<span class="m">00000380</span> : 674a           BEQ      <span class="nv">$000003</span>cc
-<span class="m">00000382</span> : <span class="m">5740</span>           SUBQ.W   <span class="c1">#3,D0        w</span>
-<span class="m">00000384</span> : 675c           BEQ      <span class="nv">$000003</span>e2
-</code></pre></div>
+        <address class="vcard author">
+                By                         <a class="url fn" href="https://motardo.github.io/fts/author/nathan-wilson.html">Nathan Wilson</a>
+        </address>
+<p>In <a href="https://motardo.github.io/fts/category/posts.html">posts</a>.</p>
 
-<p>That takes care of substituting <code>l</code> and <code>m</code> with <code>h</code> and <code>n</code>. Now we can work on
-changing the numeric keypad motion keys. This is actually much easier to change
-because the motion keys are stored as an array of keycodes in a statically
-initialized data block.</p>
-<p>The listing below shows that the keycode is compared to each value in a ten
-element array, and if a match is found, another routine is called with arguments
-based on which element was matched.</p>
-<div class="highlight"><pre><span></span><code>$ d68 e1orig.bin <span class="m">2424502</span> <span class="m">92</span>
-<span class="m">00000000</span> : <span class="m">7600</span>           MOVEQ    <span class="c1">#$00,D3        ;d3 is the array index</span>
-<span class="m">00000002</span> : <span class="m">6052</span>           BRA      <span class="nv">$00000056</span>
-<span class="m">00000004</span> : 41ee ffc6      LEA      -58<span class="o">(</span>A6<span class="o">)</span>,A0
-<span class="m">00000008</span> : bc30 <span class="m">3000</span>      CMP.B    +0<span class="o">(</span>A0,D3.W<span class="o">)</span>,D6 <span class="p">;</span>compare d6 to each value <span class="k">in</span> the array
-0000000c : <span class="m">6646</span>           BNE      <span class="nv">$00000054</span>
-0000000e : 4a43           TST      D3
-<span class="m">00000010</span> : <span class="m">6604</span>           BNE      <span class="nv">$00000016</span>
-<span class="m">00000012</span> : 7a7a           MOVEQ    <span class="c1">#$7A,D5</span>
-<span class="m">00000014</span> : 603e           BRA      <span class="nv">$00000054</span>
-<span class="m">00000016</span> : <span class="m">3443</span>           MOVEA.W  D3,A2          <span class="p">;</span>lookup arguments based on matched index
-<span class="m">00000018</span> : 200a           MOVE.L   A2,D0
-0000001a : e588           LSL.L    <span class="c1">#2,D0</span>
-0000001c : 45ee ffd0      LEA      -48<span class="o">(</span>A6<span class="o">)</span>,A2
-<span class="m">00000020</span> : d5c0           ADDA.L   D0,A0
-<span class="m">00000022</span> : 3d52 fffe      MOVE.W   <span class="o">(</span>A2<span class="o">)</span>,-2<span class="o">(</span>A6<span class="o">)</span>
-<span class="m">00000026</span> : 3d6a <span class="m">0002</span> fffc MOVE.W   +2<span class="o">(</span>A2<span class="o">)</span>,-4<span class="o">(</span>A6<span class="o">)</span>
-0000002c : 486e fffc      PEA      -4<span class="o">(</span>A6<span class="o">)</span>
-<span class="m">00000030</span> : a870           ???
-<span class="m">00000032</span> : 2d6e fffc <span class="m">0016</span> MOVE.L   -4<span class="o">(</span>A6<span class="o">)</span>,+22<span class="o">(</span>A6<span class="o">)</span>
-<span class="m">00000038</span> : 41ee 001c      LEA      +28<span class="o">(</span>A6<span class="o">)</span>,A0
-0000003c : 2f20           MOVE.L   -<span class="o">(</span>A0<span class="o">)</span>,-<span class="o">(</span>A7<span class="o">)</span>    <span class="p">;</span>push args on stack and call new routine
-0000003e : 2f20           MOVE.L   -<span class="o">(</span>A0<span class="o">)</span>,-<span class="o">(</span>A7<span class="o">)</span>
-<span class="m">00000040</span> : 2f20           MOVE.L   -<span class="o">(</span>A0<span class="o">)</span>,-<span class="o">(</span>A7<span class="o">)</span>
-<span class="m">00000042</span> : 2f20           MOVE.L   -<span class="o">(</span>A0<span class="o">)</span>,-<span class="o">(</span>A7<span class="o">)</span>
-<span class="m">00000044</span> : 4eba df0e      JSR      -8434<span class="o">(</span>PC<span class="o">)</span> <span class="o">{</span><span class="nv">$4294958932</span><span class="o">}</span>
-<span class="m">00000048</span> : <span class="m">1800</span>           MOVE.B   D0,D4
-0000004a : <span class="m">1004</span>           MOVE.B   D4,D0
-0000004c : 4fef <span class="m">0010</span>      LEA      +16<span class="o">(</span>A7<span class="o">)</span>,A7
-<span class="m">00000050</span> : <span class="m">6000</span> <span class="m">0512</span>      BRA      <span class="nv">$00000564</span>
-<span class="m">00000054</span> : <span class="m">5243</span>           ADDQ.W   <span class="c1">#1,D3</span>
-<span class="m">00000056</span> : 0c43 000a      CMPI.W   <span class="c1">#$000A,D3</span>
-0000005a : 6da8           BLT      <span class="nv">$00000004</span>
-</code></pre></div>
+</footer><!-- /.post-info -->                <h2>Motivation</h2>
+<p>There are many effects in <em>Exile</em> which modify the PCs status. For example, a PC
+could be <code>slowed</code>, <code>hasted</code>, <code>blessed</code>, <code>cursed</code>, or <code>poisoned</code>. These effects
+are indicated by the presence of small icons next to the PC's name.</p>
+<p><img alt="PC status area of game screen" src="https://motardo.github.io/fts/exile/staticons/orig-staticons-w3.png" style="width:100%;"></p>
+<p>The <code>poisoned</code> icon takes two different forms depending on the level …</p>
+                <a class="readmore" href="https://motardo.github.io/fts/pc-status-icons.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
 
-<p>The only thing left to do is locate the array of keypad codes. The Macintosh's
-keyboard encodes the numeric keypad keys as <code>0x52-0x5c</code> for <code>0-9</code> with <code>0x5a</code>
-being skipped. Searching the game file for an array of those values yields:</p>
-<div class="highlight"><pre><span></span><code>$ python3 -c <span class="s2">&quot;print(open(&#39;e1orig.bin&#39;,&#39;rb&#39;).read().find(b&#39;\x52\x53\x54\x55\x56\x57\x58\x59\x5b\x5c&#39;))&quot;</span>
-<span class="m">2371181</span>
-$ xxd -s <span class="m">2371181</span> -l <span class="m">16</span> e1orig.bin
-00242e6d: <span class="m">5253</span> <span class="m">5455</span> <span class="m">5657</span> <span class="m">5859</span> 5b5c <span class="m">2325</span> <span class="m">0100</span> <span class="m">2125</span>  RSTUVWXY<span class="o">[</span><span class="se">\#</span>%..!%
-</code></pre></div>
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="https://motardo.github.io/fts/boe-locked-door-keyboard-shortcuts.html" rel="bookmark"
+                           title="Permalink to BoE Locked Door Keyboard Shortcuts">BoE Locked Door Keyboard Shortcuts</a></h1>
+                </header>
 
-<p>The Macintosh key codes for the replacement keys (<code>[m,.][jkl][uio]</code>) are
-<code>[2e2b2f][262825][20221f]</code>. Finally let's substitute numeric keypad <code>0</code> with <code>y</code>
-(<code>0x10</code> on the Mac). I don't actually know what keypad <code>0</code> does in the game, but we
-might as well grab it while we're here just in case.</p>
-<p>Putting it all together, the patch file for the Mac version of Exile I looks
-like this:</p>
-<div class="highlight"><pre><span></span><code>$ cat e1-keypad-patch.txt
-00242e6d: 102e 2b2f <span class="m">2628</span> <span class="m">2520</span> 221f <span class="m">2325</span> <span class="m">0100</span> <span class="m">2125</span>
-0024ffae: <span class="m">5340</span> <span class="m">6700</span> <span class="m">0228</span> 5d40 <span class="m">6700</span> 02d6 <span class="m">5540</span> <span class="m">6700</span>
-0024ffe6: <span class="m">5340</span> <span class="m">6700</span> 02a4 5d40 <span class="m">6700</span> 029e <span class="m">5540</span> <span class="m">6700</span>
-002502b0: <span class="m">0440</span> 004e <span class="m">6734</span> <span class="m">5540</span> <span class="m">6744</span> <span class="m">0440</span> <span class="m">0014</span> <span class="m">6700</span>
-002502ce: <span class="m">5340</span> <span class="m">6740</span> 5d40 <span class="m">6722</span> <span class="m">5540</span> <span class="m">6732</span> <span class="m">5540</span> 673a
-$ cp e1orig.bin e1-no-keypad.bin
-$ xxd -r e1-keypad-patch.txt e1-no-keypad.bin
-</code></pre></div>
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2020-07-15T16:16:47-04:00">
+                Published: Wed 15 July 2020
+        </abbr>
 
-<h2>Conclusion</h2>
-<p>We can copy the <a href="https://motardo.github.io/fts/exile/keypad/e1-no-keypad.bin">patched game file</a> back over to BasiliskII, extract the
-application program from the MacBinary format, and test out our new motion keys.</p>
-<p>Good luck and have fun!</p>                </article>
-            </aside><!-- /#featured -->
+        <address class="vcard author">
+                By                         <a class="url fn" href="https://motardo.github.io/fts/author/nathan-wilson.html">Nathan Wilson</a>
+        </address>
+<p>In <a href="https://motardo.github.io/fts/category/exile.html">Exile</a>.</p>
+
+</footer><!-- /.post-info -->                <h2>Motivation</h2>
+<p><img alt="Blades of Exile &quot;Door is Locked&quot; dialog box" src="https://motardo.github.io/fts/images/locked_door.png" style="width:100%;">
+{: style="float:right;padding-left:5px;width:66%;" }
+In both <em>Exile 3</em> and <em>Blades of Exile</em>, walking into a locked door triggers a
+dialog that presents <code>Bash Door</code>, <code>Pick Lock</code>, and <code>Leave</code> buttons.</p>
+<p>In <em>Exile 3</em>, the desired action can quickly be selected from the keyboard with
+<code>b</code> and <code>p …</code></p>
+                <a class="readmore" href="https://motardo.github.io/fts/boe-locked-door-keyboard-shortcuts.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="https://motardo.github.io/fts/thrown-missile-skill.html" rel="bookmark"
+                           title="Permalink to Thrown Missile Skill">Thrown Missile Skill</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2020-06-01T16:16:47-04:00">
+                Published: Mon 01 June 2020
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="https://motardo.github.io/fts/author/nathan-wilson.html">Nathan Wilson</a>
+        </address>
+<p>In <a href="https://motardo.github.io/fts/category/exile.html">Exile</a>.</p>
+
+</footer><!-- /.post-info -->                <h2>Motivation</h2>
+<p>Thrown weapons are common in Exile, and throwing skill is cheap in both gold and
+skill points. Unfortunately, in all versions of Exile, throwing skill does not
+actually do anything. The chance to hit with a thrown missile attack depends
+strangely on the PC's defense skill. It would be …</p>
+                <a class="readmore" href="https://motardo.github.io/fts/thrown-missile-skill.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+                </ol><!-- /#posts-list -->
+                </section><!-- /#content -->
         <section id="extras" class="body">
                 <div class="blogroll">
                         <h2>links</h2>

@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="generator" content="Pelican" />
+        <title>BoE Locked Door Keyboard Shortcuts</title>
+        <link rel="stylesheet" href="https://motardo.github.io/fts/theme/css/main.css" />
+        <link href="https://motardo.github.io/fts/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="Full Time Snacking Atom Feed" />
+        <meta name="description" content="Motivation {: style="float:right;padding-left:5px;width:66%;" } In both Exile 3 and Blades of Exile, walking into a locked door triggers a dialog..." />
+</head>
+
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="https://motardo.github.io/fts/">Full Time Snacking</a></h1>
+                <nav><ul>
+                    <li><a href="https://motardo.github.io/fts/pages/about.html">About</a></li>
+                    <li class="active"><a href="https://motardo.github.io/fts/category/exile.html">Exile</a></li>
+                    <li><a href="https://motardo.github.io/fts/category/posts.html">posts</a></li>
+                </ul></nav>
+        </header><!-- /#banner -->
+<section id="content" class="body">
+  <article>
+    <header>
+      <h1 class="entry-title">
+        <a href="https://motardo.github.io/fts/boe-locked-door-keyboard-shortcuts.html" rel="bookmark"
+           title="Permalink to BoE Locked Door Keyboard Shortcuts">BoE Locked Door Keyboard Shortcuts</a></h1>
+    </header>
+
+    <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2020-07-15T16:16:47-04:00">
+                Published: Wed 15 July 2020
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="https://motardo.github.io/fts/author/nathan-wilson.html">Nathan Wilson</a>
+        </address>
+<p>In <a href="https://motardo.github.io/fts/category/exile.html">Exile</a>.</p>
+
+</footer><!-- /.post-info -->      <h2>Motivation</h2>
+<p><img alt="Blades of Exile &quot;Door is Locked&quot; dialog box" src="https://motardo.github.io/fts/images/locked_door.png" style="width:100%;">
+{: style="float:right;padding-left:5px;width:66%;" }
+In both <em>Exile 3</em> and <em>Blades of Exile</em>, walking into a locked door triggers a
+dialog that presents <code>Bash Door</code>, <code>Pick Lock</code>, and <code>Leave</code> buttons.</p>
+<p>In <em>Exile 3</em>, the desired action can quickly be selected from the keyboard with
+<code>b</code> and <code>p</code> shortcut keys. However in <em>Blades of Exile</em>, these handy shortcuts
+are inexplicably missing, and opening locked doors requires reaching for the
+mouse to click the dialog buttons.</p>
+<h2>Remedy</h2>
+<p>Make locked door dialogs in <em>Blades of Exile</em> respond to <code>b</code> and <code>p</code> key presses the
+way <em>Exile 3</em> does.</p>
+<h2>Method</h2>
+<p>In order to restore the keyboard shortcuts in <em>Blades of Exile</em>, we simply insert
+the ascii bytes <code>b</code> and <code>p</code> at the appropriate location in the executable<sup id="fnref:1"><a class="footnote-ref" href="#fn:1">1</a></sup>.</p>
+<h3>Windows Version</h3>
+<p>Patching the Windows version of <em>Blades of Exile v1.0.1</em> requires modifying two
+bytes in the file <em>BLADES.EXE</em>. The shortcut keys for the <code>Bash Door</code> and <code>Pick
+Lock</code> buttons are at offset <code>0x72912</code> and <code>0x72913</code>. Use a hex editor to replace
+the two <code>0x00</code> bytes at those offsets with the two bytes <code>0x62</code> and <code>0x70</code>
+(ascii for <code>b</code> and <code>p</code>). Alternatively, use <code>xxd</code> or <code>dd</code> as a command line hex
+editor. For example:</p>
+<div class="highlight"><pre><span></span><code><span class="nb">echo</span> -n bp <span class="p">|</span>xxd -o 0x72912 <span class="p">|</span>xxd -r -c <span class="m">2</span> <span class="s1">&#39;-&#39;</span> BLADES.EXE
+-or-
+<span class="nb">echo</span> -n bp <span class="p">|</span>dd <span class="nv">iflag</span><span class="o">=</span>count_bytes <span class="nv">oflag</span><span class="o">=</span>seek_bytes <span class="nv">count</span><span class="o">=</span><span class="m">2</span> <span class="nv">seek</span><span class="o">=</span><span class="k">$((</span><span class="m">0</span>x72912<span class="k">))</span> <span class="nv">conv</span><span class="o">=</span>notrunc <span class="nv">of</span><span class="o">=</span>BLADES.EXE
+</code></pre></div>
+
+<h3>Macintosh Version (68k<sup id="fnref:2"><a class="footnote-ref" href="#fn:2">2</a></sup>)</h3>
+<p>Patching the Mac version is a bit more complicated because the data are in a
+compressed format within the <em>Blades of Exile (fat) v1.0.2</em> file. For the 68k
+executable, the resource of type <code>DATA</code> with id <code>0</code> must be modified using a
+resource editor<sup id="fnref:3"><a class="footnote-ref" href="#fn:3">3</a></sup> such as <em>ResEdit</em>. Two changes are required:</p>
+<ol>
+<li>at offset <code>0x0003</code>, the byte <code>0x7b</code> must be changed to <code>0x7f</code> to account
+   for the increased size of the resource in step 2.</li>
+<li>at offset <code>0x777b</code>, the byte <code>0x4c</code> must be replaced with the five bytes
+   <code>0x46 0x81 0x62 0x70 0x43</code> This will cause everything after <code>0x777b</code> to
+   shift forward increasing the size of the resource by four bytes.</li>
+</ol>
+<h2>Conclusion</h2>
+<p>Now we can open doors without reaching for the mouse.</p>
+<p>Happy Adventuring!</p>
+<hr>
+<p>Footnotes:</p>
+<div class="footnote">
+<hr>
+<ol>
+<li id="fn:1">
+<p>These are the free registered versions available for download from
+  <a href="http://spiderwebsoftware.com/productsOld.html">Spiderweb Software</a>.&#160;<a class="footnote-backref" href="#fnref:1" title="Jump back to footnote 1 in the text">&#8617;</a></p>
+</li>
+<li id="fn:2">
+<p>Although the executable is FAT, this patch only changes the 68k part.
+  Patching the PPC part requires similar shenanigans to the data fork.
+  I don't currently have any way to run PPC code, so I won't speculate on
+  the procedure.&#160;<a class="footnote-backref" href="#fnref:2" title="Jump back to footnote 2 in the text">&#8617;</a></p>
+</li>
+<li id="fn:3">
+<p>Be sure to use a resource-aware editor and not a simple hex editor when
+  modifying resources.&#160;<a class="footnote-backref" href="#fnref:3" title="Jump back to footnote 3 in the text">&#8617;</a></p>
+</li>
+</ol>
+</div>
+    </div><!-- /.entry-content -->
+
+  </article>
+</section>
+        <section id="extras" class="body">
+                <div class="blogroll">
+                        <h2>links</h2>
+                        <ul>
+                            <li><a href="https://getpelican.com/">Pelican</a></li>
+                            <li><a href="https://www.python.org/">Python.org</a></li>
+                            <li><a href="https://palletsprojects.com/p/jinja/">Jinja2</a></li>
+                            <li><a href="#">You can modify those links in your config file</a></li>
+                        </ul>
+                </div><!-- /.blogroll -->
+                <div class="social">
+                        <h2>social</h2>
+                        <ul>
+                            <li><a href="https://motardo.github.io/fts/feeds/all.atom.xml" type="application/atom+xml" rel="alternate">atom feed</a></li>
+
+                            <li><a href="#">You can add links in your config file</a></li>
+                            <li><a href="#">Another social link</a></li>
+                        </ul>
+                </div><!-- /.social -->
+        </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="https://getpelican.com/">Pelican</a>, which takes great advantage of <a href="https://www.python.org/">Python</a>.
+                </address><!-- /#about -->
+
+                <p>The theme is by <a href="https://www.smashingmagazine.com/2009/08/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
+        </footer><!-- /#contentinfo -->
+
+</body>
+</html>
