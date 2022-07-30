@@ -1,9 +1,8 @@
 Title:  PC Status Icons
 Date:   2020-08-07 16:16:47
-Categories: exile patches
+Category: Exile
 
-Motivation
-----------------
+## Motivation
 
 There are many effects in _Exile_ which modify the PCs status. For example, a PC
 could be `slowed`, `hasted`, `blessed`, `cursed`, or `poisoned`. These effects
@@ -18,13 +17,11 @@ their effects. For example, when a PC is `diseased`, it would be helpful to know
 the severity of their illness. Should you cast an expensive `Cleanse` to cure
 them, or would a less costly `Cure Disease` suffice?
 
-Remedy
-----------------
+## Remedy
 
 Make all status icons vary with intensity.
 
-Method
-----------------
+## Method
 
 We will create new icons that indicate the level of their effects using pie
 charts like this:
@@ -82,8 +79,7 @@ lines of each patch file.
 
 TBD
 
-Discussion
------------------
+## Discussion
 
 Here is an example of the new status icons in _Exile 2_. I never knew that the
 `Invisibility` spell gave 8 levels of `Magic Resistance` and eight levels of
@@ -99,14 +95,12 @@ Above, we can see that Jenneke and Thissa are heavily `cursed` while Michael is
 only slightly `cursed`. Adrianna is almost fully `hasted`, and Frrrrrr is
 completely `webbed` and will get no action points on the next round.
 
-Contributing
------------------
+## Contributing
 
 I encourage you to customize the new status icons to suite your taste and needs,
 and to share your creations. Suggestions for improvements are welcome.
 
-Conclusion
------------------
+## Conclusion
 
 Now we can answer questions such as whether three `Minor Haste`s are more or
 less effective than one regular `Haste`, and how many `Envenom`s does it

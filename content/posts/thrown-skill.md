@@ -2,8 +2,7 @@ Title:  Thrown Missile Skill
 Date:   2020-06-01 16:16:47
 Category: Exile
 
-Motivation
-----------------
+## Motivation
 
 Thrown weapons are common in Exile, and throwing skill is cheap in both gold and
 skill points. Unfortunately, in all versions of Exile, throwing skill does not
@@ -11,14 +10,12 @@ actually do anything. The chance to hit with a thrown missile attack depends
 strangely on the PC's defense skill. It would be nice if throwing skill actually
 increased the chance to hit.
 
-Remedy
-----------------
+## Remedy
 
 Make the chance to hit with thrown missiles depend on throwing skill instead of
 defense.
 
-Method
-----------------
+## Method
 
 We just need to swap `defense` for `thrown` in the code that calculates the
 chance to hit with a thrown missile. It is a matter of subtracting 4 from the
@@ -58,8 +55,7 @@ fork of the executable for the hex bytes `3d 70 08 26`. The sequence will only
 appear once in each file. Change the `0x26` at the end of the sequence to
 `0x22`.
 
-Conclusion
------------------
+## Conclusion
 
 Now when we spend skill points on throwing skill, it's not a total waste.
 
