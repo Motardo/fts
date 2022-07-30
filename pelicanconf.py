@@ -21,7 +21,7 @@ LINKS = (('Spiderweb Software\'s Old Games Download', 'http://spiderwebsoftware.
 # Social widget
 SOCIAL_WIDGET_NAME = 'contact'
 SOCIAL = (('GitHub', 'https://github.com/Motardo'),
-          ('Email', 'mailto://nswilson@gmail.com'),)
+          ('nswilson@gmail.com', 'mailto://nswilson@gmail.com'),)
 
 DEFAULT_PAGINATION = False
 
