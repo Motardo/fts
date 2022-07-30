@@ -5,8 +5,7 @@ Category: Exile
 Motivation
 ----------------
 
-![Blades of Exile "Door is Locked" dialog box]({static}/images/locked_door.png){: style="width:100%;"}
-{: style="float:right;padding-left:5px;width:66%;" }
+![Blades of Exile "Door is Locked" dialog box]({static}/images/locked_door.png){: style="float:right;padding-left:5px;width:50%;"}
 In both *Exile 3* and *Blades of Exile*, walking into a locked door triggers a
 dialog that presents `Bash Door`, `Pick Lock`, and `Leave` buttons.
 
