@@ -7,7 +7,6 @@ TIMEZONE = 'America/New_York'
 
 DEFAULT_LANG = 'en'
 
-THEME = 'fresh'
 
 # Feed generation is usually not desired when developing
 FEED_ALL_ATOM = None

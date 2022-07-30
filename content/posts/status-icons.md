@@ -43,15 +43,15 @@ that draws the status icons to use the appropriate new icons.
 | [EXILE2.EXE][w2e]  | v2.0.1  | [Exile 2 patch][w2p] | [MIXED.BMP][w2g]         |
 | EXILE.EXE (tbd)    | v2.0    | tbd                  | tbd                      |
 
-[w2g]: /assets/exile/staticons/w2/MIXED.BMP
-[w3g]: /assets/exile/staticons/w3/MIXED.BMP
-[wbg]: /assets/exile/staticons/wb/MIXED.BMP
-[w2e]: /assets/exile/staticons/w2/EXILE2.EXE
-[w3e]: /assets/exile/staticons/w3/EXILE3.EXE
-[wbe]: /assets/exile/staticons/wb/BLADES.EXE
-[w2p]: /assets/exile/staticons/w2-staticons-patch.txt
-[w3p]: /assets/exile/staticons/w3-staticons-patch.txt
-[wbp]: /assets/exile/staticons/wb-staticons-patch.txt
+[w2g]: {static}/exile/staticons/w2/MIXED.BMP
+[w3g]: {static}/exile/staticons/w3/MIXED.BMP
+[wbg]: {static}/exile/staticons/wb/MIXED.BMP
+[w2e]: {static}/exile/staticons/w2/EXILE2.EXE
+[w3e]: {static}/exile/staticons/w3/EXILE3.EXE
+[wbe]: {static}/exile/staticons/wb/BLADES.EXE
+[w2p]: {static}/exile/staticons/w2-staticons-patch.txt
+[w3p]: {static}/exile/staticons/w3-staticons-patch.txt
+[wbp]: {static}/exile/staticons/wb-staticons-patch.txt
 
 ### Simple Install
 

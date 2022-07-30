@@ -1,4 +1,4 @@
-Title:  Let thrown weapons be poisoned
+Title:  Let Thrown Weapons Be Poisoned
 Date:   2021-07-22 11:16:47
 Category: Exile
 
