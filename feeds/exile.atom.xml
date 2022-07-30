@@ -744,14 +744,12 @@ take to max out the &lt;code&gt;poisoned weapon&lt;/code&gt; effect&lt;sup id="f
 &lt;/li&gt;
 &lt;/ol&gt;
 &lt;/div&gt;</content><category term="Exile"></category></entry><entry><title>BoE Locked Door Keyboard Shortcuts</title><link href="https://motardo.github.io/fts/boe-locked-door-keyboard-shortcuts.html" rel="alternate"></link><published>2020-07-15T16:16:47-04:00</published><updated>2020-07-15T16:16:47-04:00</updated><author><name>Nathan Wilson</name></author><id>tag:motardo.github.io,2020-07-15:/fts/boe-locked-door-keyboard-shortcuts.html</id><summary type="html">&lt;h2&gt;Motivation&lt;/h2&gt;
-&lt;p&gt;&lt;img alt="Blades of Exile &amp;quot;Door is Locked&amp;quot; dialog box" src="https://motardo.github.io/fts/images/locked_door.png" style="width:100%;"&gt;
-{: style="float:right;padding-left:5px;width:66%;" }
+&lt;p&gt;&lt;img alt="Blades of Exile &amp;quot;Door is Locked&amp;quot; dialog box" src="https://motardo.github.io/fts/images/locked_door.png" style="float:right;padding-left:5px;width:50%;"&gt;
 In both &lt;em&gt;Exile 3&lt;/em&gt; and &lt;em&gt;Blades of Exile&lt;/em&gt;, walking into a locked door triggers a
 dialog that presents &lt;code&gt;Bash Door&lt;/code&gt;, &lt;code&gt;Pick Lock&lt;/code&gt;, and &lt;code&gt;Leave&lt;/code&gt; buttons.&lt;/p&gt;
 &lt;p&gt;In &lt;em&gt;Exile 3&lt;/em&gt;, the desired action can quickly be selected from the keyboard with
-&lt;code&gt;b&lt;/code&gt; and &lt;code&gt;p …&lt;/code&gt;&lt;/p&gt;</summary><content type="html">&lt;h2&gt;Motivation&lt;/h2&gt;
-&lt;p&gt;&lt;img alt="Blades of Exile &amp;quot;Door is Locked&amp;quot; dialog box" src="https://motardo.github.io/fts/images/locked_door.png" style="width:100%;"&gt;
-{: style="float:right;padding-left:5px;width:66%;" }
+&lt;code&gt;b&lt;/code&gt; and &lt;code&gt;p&lt;/code&gt; shortcut keys. However in &lt;em&gt;Blades of Exile …&lt;/em&gt;&lt;/p&gt;</summary><content type="html">&lt;h2&gt;Motivation&lt;/h2&gt;
+&lt;p&gt;&lt;img alt="Blades of Exile &amp;quot;Door is Locked&amp;quot; dialog box" src="https://motardo.github.io/fts/images/locked_door.png" style="float:right;padding-left:5px;width:50%;"&gt;
 In both &lt;em&gt;Exile 3&lt;/em&gt; and &lt;em&gt;Blades of Exile&lt;/em&gt;, walking into a locked door triggers a
 dialog that presents &lt;code&gt;Bash Door&lt;/code&gt;, &lt;code&gt;Pick Lock&lt;/code&gt;, and &lt;code&gt;Leave&lt;/code&gt; buttons.&lt;/p&gt;
 &lt;p&gt;In &lt;em&gt;Exile 3&lt;/em&gt;, the desired action can quickly be selected from the keyboard with

@@ -18,9 +18,15 @@
                 </ul></nav>
         </header><!-- /#banner -->
 
-            <aside id="featured" class="body">
-                <article>
-                    <h1 class="entry-title"><a href="https://motardo.github.io/fts/let-thrown-weapons-be-poisoned.html">Let Thrown Weapons Be Poisoned</a></h1>
+                <section id="content" class="body">
+                    <ol id="posts-list" class="hfeed" start="4">
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="https://motardo.github.io/fts/let-thrown-weapons-be-poisoned.html" rel="bookmark"
+                           title="Permalink to Let Thrown Weapons Be Poisoned">Let Thrown Weapons Be Poisoned</a></h1>
+                </header>
+
+                <div class="entry-content">
 <footer class="post-info">
         <abbr class="published" title="2021-07-22T11:16:47-04:00">
                 Published: Thu 22 July 2021
@@ -31,393 +37,14 @@
         </address>
 <p>In <a href="https://motardo.github.io/fts/category/exile.html">Exile</a>.</p>
 
-</footer><!-- /.post-info --><h2>Motivation</h2>
+</footer><!-- /.post-info -->                <h2></h2>
 <p>In Exile, thrown weapons are pretty ineffective. They do very little damage,
 have a short range, miss a lot, are consumed in a single use, heavy, and
 overpriced. As if that wasn't bad enough, for some strange reason, they are the
-only type of weapons in Exile which are unable to be poisoned. The only good
-thing about thrown weapons is that throwing skill is cheaper than other weapon
-skills. Let's make thrown weapons a little more interesting by allowing them to
-be poisoned.</p>
-<h2>Remedy</h2>
-<p>Looking through the source code for Blades (Windows version[1]), we find that,
-when a PC uses poison, the game calls the <code>poison_weapon</code> function in
-<code>PARTY.CPP</code> This function loops over the PC's inventory finding the first item
-that is equipped and is also a weapon. Then it applies the poison to that item.</p>
-<div class="highlight"><pre><span></span><code><span class="n">Boolean</span><span class="w"> </span><span class="nf">poison_weapon</span><span class="p">(</span><span class="w"> </span><span class="kt">short</span><span class="w"> </span><span class="n">pc_num</span><span class="p">,</span><span class="w"> </span><span class="kt">short</span><span class="w"> </span><span class="n">how_much</span><span class="p">,</span><span class="kt">short</span><span class="w"> </span><span class="n">safe</span><span class="p">)</span><span class="w"></span>
-<span class="o">//</span><span class="kt">short</span><span class="w"> </span><span class="n">safe</span><span class="p">;</span><span class="w"> </span><span class="c1">// 1 - always succeeds</span>
-<span class="p">{</span><span class="w"></span>
-<span class="w">    </span><span class="kt">short</span><span class="w"> </span><span class="n">i</span><span class="p">,</span><span class="n">weap</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">24</span><span class="p">,</span><span class="n">p_level</span><span class="p">,</span><span class="n">r1</span><span class="p">;</span><span class="w"></span>
-<span class="w">    </span><span class="kt">short</span><span class="w"> </span><span class="n">p_chance</span><span class="p">[</span><span class="mi">21</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="mi">40</span><span class="p">,</span><span class="mi">72</span><span class="p">,</span><span class="mi">81</span><span class="p">,</span><span class="mi">85</span><span class="p">,</span><span class="mi">88</span><span class="p">,</span><span class="mi">89</span><span class="p">,</span><span class="mi">90</span><span class="p">,</span><span class="w"></span>
-<span class="w">                            </span><span class="mi">91</span><span class="p">,</span><span class="mi">92</span><span class="p">,</span><span class="mi">93</span><span class="p">,</span><span class="mi">94</span><span class="p">,</span><span class="mi">94</span><span class="p">,</span><span class="mi">95</span><span class="p">,</span><span class="mi">95</span><span class="p">,</span><span class="mi">96</span><span class="p">,</span><span class="mi">97</span><span class="p">,</span><span class="mi">98</span><span class="p">,</span><span class="mi">100</span><span class="p">,</span><span class="mi">100</span><span class="p">,</span><span class="mi">100</span><span class="p">,</span><span class="mi">100</span><span class="p">};</span><span class="w"></span>
-
-<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">24</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"></span>
-<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">((</span><span class="n">adven</span><span class="p">[</span><span class="n">pc_num</span><span class="p">].</span><span class="n">equip</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">TRUE</span><span class="p">)</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="p">(</span><span class="n">is_weapon</span><span class="p">(</span><span class="n">pc_num</span><span class="p">,</span><span class="n">i</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">TRUE</span><span class="p">))</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
-<span class="w">            </span><span class="n">weap</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">i</span><span class="p">;</span><span class="w"></span>
-<span class="w">            </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">30</span><span class="p">;</span><span class="w"></span>
-<span class="w">            </span><span class="p">}</span><span class="w"></span>
-<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">weap</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">24</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
-<span class="w">        </span><span class="n">add_string_to_buf</span><span class="p">(</span><span class="s">&quot;  No weapon equipped.       &quot;</span><span class="p">);</span><span class="w"></span>
-<span class="w">    </span><span class="p">...</span><span class="w"></span>
-</code></pre></div>
-
-<p>Interestingly, that <code>i = 30</code> statement is used to break out of the loop after a weapon is found. </p>
-<p>The <code>is_weapon</code> function returns true for one and two-handed melee weapons
-(varieties 1 and 2), bows (5), and crossbows (24), and it returns false
-otherwise.</p>
-<div class="highlight"><pre><span></span><code><span class="n">Boolean</span><span class="w"> </span><span class="nf">is_weapon</span><span class="p">(</span><span class="kt">short</span><span class="w"> </span><span class="n">pc_num</span><span class="p">,</span><span class="kt">short</span><span class="w"> </span><span class="n">item</span><span class="p">)</span><span class="w"></span>
-<span class="p">{</span><span class="w"></span>
-<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">((</span><span class="n">adven</span><span class="p">[</span><span class="n">pc_num</span><span class="p">].</span><span class="n">items</span><span class="p">[</span><span class="n">item</span><span class="p">].</span><span class="n">variety</span><span class="w">  </span><span class="o">==</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="o">||</span><span class="w">  </span><span class="c1">// one-handed melee</span>
-<span class="w">        </span><span class="p">(</span><span class="n">adven</span><span class="p">[</span><span class="n">pc_num</span><span class="p">].</span><span class="n">items</span><span class="p">[</span><span class="n">item</span><span class="p">].</span><span class="n">variety</span><span class="w">  </span><span class="o">==</span><span class="w"> </span><span class="mi">2</span><span class="p">)</span><span class="w"> </span><span class="o">||</span><span class="w">  </span><span class="c1">// two-handed melee</span>
-<span class="w">        </span><span class="p">(</span><span class="n">adven</span><span class="p">[</span><span class="n">pc_num</span><span class="p">].</span><span class="n">items</span><span class="p">[</span><span class="n">item</span><span class="p">].</span><span class="n">variety</span><span class="w">  </span><span class="o">==</span><span class="w"> </span><span class="mi">5</span><span class="p">)</span><span class="w"> </span><span class="o">||</span><span class="w">  </span><span class="c1">// bows</span>
-<span class="w">        </span><span class="p">(</span><span class="n">adven</span><span class="p">[</span><span class="n">pc_num</span><span class="p">].</span><span class="n">items</span><span class="p">[</span><span class="n">item</span><span class="p">].</span><span class="n">variety</span><span class="w">  </span><span class="o">==</span><span class="w"> </span><span class="mi">24</span><span class="p">))</span><span class="w">   </span><span class="c1">// crossbows</span>
-<span class="w">            </span><span class="k">return</span><span class="w"> </span><span class="n">TRUE</span><span class="p">;</span><span class="w"></span>
-<span class="w">            </span><span class="k">else</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="n">FALSE</span><span class="p">;</span><span class="w"></span>
-<span class="p">}</span><span class="w"></span>
-</code></pre></div>
-
-<p>So in order to allow thrown weapons to be poisoned, we just need to patch
-<code>is_weapon</code> to return <code>true</code> for thrown weapons, which are item variety <code>6</code> (By
-the way, item variety <code>3</code> is gold pieces and <code>4</code> is arrows). Next, let's look at the
-<code>BLADES.EXE</code> binary to think about how we might proceed.</p>
-<p>Notice the string "No weapon equipped" in the <code>poison_weapon</code> function above.
-Strings like these will help us find the function in the game's binary. I used a
-hex editor to search for this string in BLADES.EXE and located it at around
-offset <code>0xdabb0.</code></p>
-<p><img alt="wxHexEditor finding text in BLADES.EXE" src="https://motardo.github.io/fts/exile/poison/search_nick.png" style="width:100%;"></p>
-<p>Let's find the next routine after <code>0xdabb0</code> and disassemble it. We can tell by
-the inclusion of the file <code>BC450RTL.DLL</code> in the game directory that <code>Blades</code>
-(and indeed all of the Exile games for Windows) was compiled with <em>Borland Turbo C++
-4.5</em>. This compiler begins C subroutines with the bytes <code>8c d0 90 45</code>, so we can
-search for those bytes after <code>0xdabb0</code> and locate a subroutine at <code>0xdac60</code>.
-Let's examine the disassembly.</p>
-<div class="highlight"><pre><span></span><code>$ ndisasm -k0,0xdac60 BLADES.EXE <span class="p">|</span>head -n <span class="m">50</span> <span class="p">|</span>nl
-     <span class="m">1</span>  <span class="m">00000000</span>  skipping 0xDAC60 bytes
-     <span class="m">2</span>  000DAC60  8CD0              mov ax,ss
-     <span class="m">3</span>  000DAC62  <span class="m">90</span>                nop
-     <span class="m">4</span>  000DAC63  <span class="m">45</span>                inc bp
-     <span class="m">5</span>  000DAC64  <span class="m">55</span>                push bp
-     <span class="m">6</span>  000DAC65  8BEC              mov bp,sp
-     <span class="m">7</span>  000DAC67  1E                push ds
-     <span class="m">8</span>  000DAC68  8ED8              mov ds,ax
-     <span class="m">9</span>  000DAC6A  83EC30            sub sp,byte +0x30
-    <span class="m">10</span>  000DAC6D  <span class="m">56</span>                push si
-    <span class="m">11</span>  000DAC6E  <span class="m">57</span>                push di
-    <span class="m">12</span>  000DAC6F  8B7606            mov si,<span class="o">[</span>bp+0x6<span class="o">]</span>
-    <span class="m">13</span>  000DAC72  C746FC1800        mov word <span class="o">[</span>bp-0x4<span class="o">]</span>,0x18
-    <span class="m">14</span>  000DAC77  8D46CE            lea ax,<span class="o">[</span>bp-0x32<span class="o">]</span>
-    <span class="m">15</span>  000DAC7A  <span class="m">16</span>                push ss
-    <span class="m">16</span>  000DAC7B  <span class="m">50</span>                push ax
-    <span class="m">17</span>  000DAC7C  1E                push ds
-    <span class="m">18</span>  000DAC7D  68BA3A            push word 0x3aba
-    <span class="m">19</span>  000DAC80  B92A00            mov cx,0x2a
-    <span class="m">20</span>  000DAC83  9AFFFF0000        call 0x0:0xffff
-    <span class="m">21</span>  000DAC88  33FF              xor di,di
-    <span class="m">22</span>  000DAC8A  EB2D              jmp short 0xacb9
-    <span class="m">23</span>  000DAC8C  8BDE              mov bx,si
-    <span class="m">24</span>  000DAC8E  69DB6A07          imul bx,bx,word 0x76a
-    <span class="m">25</span>  000DAC92  B80000            mov ax,0x0
-    <span class="m">26</span>  000DAC95  8EC0              mov es,ax
-    <span class="m">27</span>  000DAC97  268A8102BA        mov al,<span class="o">[</span>es:bx+di-0x45fe<span class="o">]</span>
-    <span class="m">28</span>  000DAC9C  <span class="m">98</span>                cbw
-    <span class="m">29</span>  000DAC9D  3D0100            cmp ax,0x1
-    <span class="m">30</span>  000DACA0  <span class="m">7516</span>              jnz 0xacb8
-    <span class="m">31</span>  000DACA2  <span class="m">57</span>                push di
-    <span class="m">32</span>  000DACA3  <span class="m">56</span>                push si
-    <span class="m">33</span>  000DACA4  <span class="m">90</span>                nop
-    <span class="m">34</span>  000DACA5  0E                push cs
-    <span class="m">35</span>  000DACA6  E85001            call 0xadf9
-    <span class="m">36</span>  000DACA9  83C404            add sp,byte +0x4
-    <span class="m">37</span>  000DACAC  <span class="m">98</span>                cbw
-    <span class="m">38</span>  000DACAD  3D0100            cmp ax,0x1
-    <span class="m">39</span>  000DACB0  <span class="m">7506</span>              jnz 0xacb8
-    <span class="m">40</span>  000DACB2  897EFC            mov <span class="o">[</span>bp-0x4<span class="o">]</span>,di
-    <span class="m">41</span>  000DACB5  BF1E00            mov di,0x1e
-    <span class="m">42</span>  000DACB8  <span class="m">47</span>                inc di
-    <span class="m">43</span>  000DACB9  83FF18            cmp di,byte +0x18
-    <span class="m">44</span>  000DACBC  7CCE              jl 0xac8c
-    <span class="m">45</span>  000DACBE  837EFC18          cmp word <span class="o">[</span>bp-0x4<span class="o">]</span>,byte +0x18
-    <span class="m">46</span>  000DACC2  <span class="m">7514</span>              jnz 0xacd8
-    <span class="m">47</span>  000DACC4  0E                push cs
-    <span class="m">48</span>  000DACC5  68E339            push word 0x39e3
-    <span class="m">49</span>  000DACC8  9AFFFF0000        call 0x0:0xffff
-    <span class="m">50</span>  000DACCD  83C404            add sp,byte +0x4
-</code></pre></div>
-
-<p>Lines 2-8 are the standard function prolog which sets up the stack frame. Line 9
-makes room on the stack for the function's local variables, and lines 10-21
-initialize the local variables and save registers. The function begins execution
-at line 22. Note that lines 22-44 make a loop which executes 24 times (line 43).
-Also note how line 41 breaks the loop early by injecting a value of 30. This is
-clearly the <code>poison_weapon</code> function we saw in the source code earlier. Line 35
-calls the <code>is_weapon</code> function that we want to change. We can see the call is to
-offset <code>0xadf9</code>, but it's not necessarily in the same segment. Although it is in
-this case.</p>
-<p>In the source code, <code>is_weapon</code> comes right after <code>poison_weapon</code> in the same
-<code>PARTY.CPP</code> file, so there's a good chance it does in the binary as well. When
-we search forward for the bytes <code>8c d0 90 45</code>, we do indeed find the next
-routine at offset <code>0xadf9</code>. Let's examine the disassembly.</p>
-<div class="highlight"><pre><span></span><code>$ ndisasm -k0,0xdadf9 BLADES.EXE <span class="p">|</span>head -n <span class="m">55</span> <span class="p">|</span>nl
-     <span class="m">1</span>  <span class="m">00000000</span>  skipping 0xDADF9 bytes
-     <span class="m">2</span>  000DADF9  8CD0              mov ax,ss
-     <span class="m">3</span>  000DADFB  <span class="m">90</span>                nop
-     <span class="m">4</span>  000DADFC  <span class="m">45</span>                inc bp
-     <span class="m">5</span>  000DADFD  <span class="m">55</span>                push bp
-     <span class="m">6</span>  000DADFE  8BEC              mov bp,sp
-     <span class="m">7</span>  000DAE00  1E                push ds
-     <span class="m">8</span>  000DAE01  8ED8              mov ds,ax
-     <span class="m">9</span>  000DAE03  8B5606            mov dx,<span class="o">[</span>bp+0x6<span class="o">]</span>
-    <span class="m">10</span>  000DAE06  8B4E08            mov cx,<span class="o">[</span>bp+0x8<span class="o">]</span>
-    <span class="m">11</span>  000DAE09  8BDA              mov bx,dx
-    <span class="m">12</span>  000DAE0B  69DB6A07          imul bx,bx,word 0x76a
-    <span class="m">13</span>  000DAE0F  8BC1              mov ax,cx
-    <span class="m">14</span>  000DAE11  6BC042            imul ax,ax,byte +0x42
-    <span class="m">15</span>  000DAE14  03D8              add bx,ax
-    <span class="m">16</span>  000DAE16  B80000            mov ax,0x0
-    <span class="m">17</span>  000DAE19  8EC0              mov es,ax
-    <span class="m">18</span>  000DAE1B  2683BFD2B301      cmp word <span class="o">[</span>es:bx-0x4c2e<span class="o">]</span>,byte +0x1
-    <span class="m">19</span>  000DAE21  744E              jz 0xae71
-    <span class="m">20</span>  000DAE23  8BDA              mov bx,dx
-    <span class="m">21</span>  000DAE25  69DB6A07          imul bx,bx,word 0x76a
-    <span class="m">22</span>  000DAE29  8BC1              mov ax,cx
-    <span class="m">23</span>  000DAE2B  6BC042            imul ax,ax,byte +0x42
-    <span class="m">24</span>  000DAE2E  03D8              add bx,ax
-    <span class="m">25</span>  000DAE30  B80000            mov ax,0x0
-    <span class="m">26</span>  000DAE33  8EC0              mov es,ax
-    <span class="m">27</span>  000DAE35  2683BFD2B302      cmp word <span class="o">[</span>es:bx-0x4c2e<span class="o">]</span>,byte +0x2
-    <span class="m">28</span>  000DAE3B  <span class="m">7434</span>              jz 0xae71
-    <span class="m">29</span>  000DAE3D  8BDA              mov bx,dx
-    <span class="m">30</span>  000DAE3F  69DB6A07          imul bx,bx,word 0x76a
-    <span class="m">31</span>  000DAE43  8BC1              mov ax,cx
-    <span class="m">32</span>  000DAE45  6BC042            imul ax,ax,byte +0x42
-    <span class="m">33</span>  000DAE48  03D8              add bx,ax
-    <span class="m">34</span>  000DAE4A  B80000            mov ax,0x0
-    <span class="m">35</span>  000DAE4D  8EC0              mov es,ax
-    <span class="m">36</span>  000DAE4F  2683BFD2B305      cmp word <span class="o">[</span>es:bx-0x4c2e<span class="o">]</span>,byte +0x5
-    <span class="m">37</span>  000DAE55  741A              jz 0xae71
-    <span class="m">38</span>  000DAE57  8BDA              mov bx,dx
-    <span class="m">39</span>  000DAE59  69DB6A07          imul bx,bx,word 0x76a
-    <span class="m">40</span>  000DAE5D  8BC1              mov ax,cx
-    <span class="m">41</span>  000DAE5F  6BC042            imul ax,ax,byte +0x42
-    <span class="m">42</span>  000DAE62  03D8              add bx,ax
-    <span class="m">43</span>  000DAE64  B80000            mov ax,0x0
-    <span class="m">44</span>  000DAE67  8EC0              mov es,ax
-    <span class="m">45</span>  000DAE69  2683BFD2B318      cmp word <span class="o">[</span>es:bx-0x4c2e<span class="o">]</span>,byte +0x18
-    <span class="m">46</span>  000DAE6F  <span class="m">7506</span>              jnz 0xae77
-    <span class="m">47</span>  000DAE71  B001              mov al,0x1
-    <span class="m">48</span>  000DAE73  EB06              jmp short 0xae7b
-    <span class="m">49</span>  000DAE75  EB04              jmp short 0xae7b
-    <span class="m">50</span>  000DAE77  B000              mov al,0x0
-    <span class="m">51</span>  000DAE79  EB00              jmp short 0xae7b
-    <span class="m">52</span>  000DAE7B  1F                pop ds
-    <span class="m">53</span>  000DAE7C  5D                pop bp
-    <span class="m">54</span>  000DAE7D  4D                dec bp
-    <span class="m">55</span>  000DAE7E  CB                retf
-</code></pre></div>
-
-<aside style="font-size:80%;">
-<h5>Aside</h5>
-<p>Wow, that's really inefficient! Every pair of compare and branch instructions is
-preceded by 7 identical instructions to compute the same value. The value could
-have just been computed once, which would have made the code both shorter and
-faster by 4.5 times. I wonder how different the whole Exile experience would
-have been in the 90's if the games had been compiled with optimizations turned
-on.</p>
-</aside>
-
-<h2>Method</h2>
-<p>So, we have four comparisons for item varieties 1, 2, 5, and 24, and we want to
-squeeze an extra comparison for variety 6 in somehow without taking up more
-space and with minimal disruption to the existing structure. Since we also know
-that variety 0 (nothing) and variety 3 (gold) can never be equipped, we don't
-need to worry about filtering those values. So for any variety less than or
-equal to 6, we can safely return <code>true</code> for everything except 4 (arrows), which
-should return false. And if it's 7 or greater, we only need to check for variety
-24 (crossbows). So we can actually get away with just 3 comparisons to implement
-our new game logic (6, 4, and 24). Let's throw in an unnecessary comparison for
-variety 0 just to maintain the original number of four comparisons. So our patch
-will look like this.</p>
-<p><a href="https://motardo.github.io/fts/exile/poison/poison_asm_diff.png" target="_blank">
-<img alt="vimdiff showing new assembly code for is_weapon" src="https://motardo.github.io/fts/exile/poison/poison_asm_diff.png" style="width:100%;">
-</a></p>
-<div class="highlight"><pre><span></span><code>$ cat patch.txt 
-000dae20: <span class="m">0074</span> <span class="m">54</span>  &lt;- <span class="m">0174</span> 4e
-000dae3a: <span class="m">0474</span> 3a  &lt;- <span class="m">0274</span> <span class="m">34</span>
-000dae54: 067e 1a  &lt;- <span class="m">0574</span> 1a
-</code></pre></div>
-
-<p>We just changed the first three compare and jump pairs. The fourth one for
-crossbows stays the same.</p>
-<p>Let's apply the patch to a copy of <code>BLADES.EXE</code></p>
-<div class="highlight"><pre><span></span><code>$ nasm -o wb-poison wb-poison.asm
-$ ndisasm -o 0xdae1b wb-poison
-000DAE1B  2683BFD2B300      cmp word <span class="o">[</span>es:bx-0x4c2e<span class="o">]</span>,byte +0x0
-000DAE21  <span class="m">7454</span>              jz 0xae77
-000DAE23  89D3              mov bx,dx
-000DAE25  69DB6A07          imul bx,bx,word 0x76a
-000DAE29  89C8              mov ax,cx
-000DAE2B  6BC042            imul ax,ax,byte +0x42
-000DAE2E  01C3              add bx,ax
-000DAE30  B80000            mov ax,0x0
-000DAE33  8EC0              mov es,ax
-000DAE35  2683BFD2B304      cmp word <span class="o">[</span>es:bx-0x4c2e<span class="o">]</span>,byte +0x4
-000DAE3B  743A              jz 0xae77
-000DAE3D  89D3              mov bx,dx
-000DAE3F  69DB6A07          imul bx,bx,word 0x76a
-000DAE43  89C8              mov ax,cx
-000DAE45  6BC042            imul ax,ax,byte +0x42
-000DAE48  01C3              add bx,ax
-000DAE4A  B80000            mov ax,0x0
-000DAE4D  8EC0              mov es,ax
-000DAE4F  2683BFD2B306      cmp word <span class="o">[</span>es:bx-0x4c2e<span class="o">]</span>,byte +0x6
-000DAE55  7E1A              jng 0xae71
-000DAE57  89D3              mov bx,dx
-
-$ cp BLADES.EXE BLADESPT.EXE
-$ <span class="nb">alias</span> <span class="nv">dd</span><span class="o">=</span><span class="s1">&#39;dd iflag=count_bytes oflag=seek_bytes conv=notrunc&#39;</span>
-$ dd <span class="nv">count</span><span class="o">=</span><span class="m">64</span> <span class="nv">seek</span><span class="o">=</span><span class="k">$((</span><span class="m">0</span>xdae1b<span class="k">))</span> <span class="k">if</span><span class="o">=</span>wb-poison <span class="nv">of</span><span class="o">=</span>BLADESPT.EXE 
-<span class="m">0</span>+1 records <span class="k">in</span>
-<span class="m">0</span>+1 records out
-<span class="m">64</span> bytes copied, <span class="m">0</span>.000366593 s, <span class="m">175</span> kB/s
-$ cmp B*
-BLADES.EXE BLADESPT.EXE differ: byte <span class="m">896545</span>, line <span class="m">2844</span>
-$ ndisasm -k <span class="m">0</span>,0xdae1b BLADESPT.EXE <span class="p">|</span>head -n <span class="m">30</span>
-<span class="m">00000000</span>  skipping 0xDAE1B bytes
-000DAE1B  2683BFD2B300      cmp word <span class="o">[</span>es:bx-0x4c2e<span class="o">]</span>,byte +0x0
-000DAE21  <span class="m">7454</span>              jz 0xae77
-000DAE23  89D3              mov bx,dx
-000DAE25  69DB6A07          imul bx,bx,word 0x76a
-000DAE29  89C8              mov ax,cx
-000DAE2B  6BC042            imul ax,ax,byte +0x42
-000DAE2E  01C3              add bx,ax
-000DAE30  B80000            mov ax,0x0
-000DAE33  8EC0              mov es,ax
-000DAE35  2683BFD2B304      cmp word <span class="o">[</span>es:bx-0x4c2e<span class="o">]</span>,byte +0x4
-000DAE3B  743A              jz 0xae77
-000DAE3D  89D3              mov bx,dx
-000DAE3F  69DB6A07          imul bx,bx,word 0x76a
-000DAE43  89C8              mov ax,cx
-000DAE45  6BC042            imul ax,ax,byte +0x42
-000DAE48  01C3              add bx,ax
-000DAE4A  B80000            mov ax,0x0
-000DAE4D  8EC0              mov es,ax
-000DAE4F  2683BFD2B306      cmp word <span class="o">[</span>es:bx-0x4c2e<span class="o">]</span>,byte +0x6
-000DAE55  7E1A              jng 0xae71
-000DAE57  89D3              mov bx,dx
-000DAE59  69DB6A07          imul bx,bx,word 0x76a
-000DAE5D  8BC1              mov ax,cx
-000DAE5F  6BC042            imul ax,ax,byte +0x42
-000DAE62  03D8              add bx,ax
-000DAE64  B80000            mov ax,0x0
-000DAE67  8EC0              mov es,ax
-000DAE69  2683BFD2B318      cmp word <span class="o">[</span>es:bx-0x4c2e<span class="o">]</span>,byte +0x18
-000DAE6F  <span class="m">7506</span>              jnz 0xae77
-</code></pre></div>
-
-<p>Everything looks good. Let's fire it up in DOSBox and see if it works.</p>
-<p><img alt="Frrr with darts equiped and poisoned" src="https://motardo.github.io/fts/exile/poison/poison-darts.png" style="width:100%;"></p>
-<p>Success!</p>
-<h2>Macintosh Versions</h2>
-<p>I prefer to play the Mac versions of the Exile games using the BasiliskII emulator,
-so let's make the same modification to them. Here is the <code>is_weapon</code> function
-in 68k disassembly from the Mac version of Blades of Exile:</p>
-<div class="highlight"><pre><span></span><code><span class="m">3430</span> 087E   move.w    <span class="nv">$7</span>E<span class="o">(</span>a0,d0.l<span class="o">)</span>,d2
-0C42 <span class="m">0001</span>   cmpi.w    <span class="c1">#$01,d2</span>
-<span class="m">6712</span>        beq.s     True
-0C42 <span class="m">0002</span>   cmpi.w    <span class="c1">#$02,d2</span>
-670C        beq.s     True
-0C42 <span class="m">0005</span>   cmpi.w    <span class="c1">#$05,d2</span>
-<span class="m">6706</span>        beq.s     True
-0C42 <span class="m">0018</span>   cmpi.w    <span class="c1">#$18,d2</span>
-<span class="m">6604</span>        bne.s     False
-True:   <span class="p">;</span> <span class="k">return</span> <span class="nb">true</span>
-<span class="m">7001</span>        moveq     <span class="c1">#$01,d0</span>
-<span class="m">6002</span>        bra.s     Continue
-False:  <span class="p">;</span> <span class="k">return</span> <span class="nb">false</span>
-<span class="m">7000</span>        moveq     <span class="c1">#$00,d0</span>
-Continue:
-</code></pre></div>
-
-<p>Just like the x86 version, it returns true for item varieties <code>1</code>, <code>2</code>, <code>5</code>, and <code>24</code>.
-The new code will return <code>false</code> for varieties <code>0</code> and <code>4</code>, or return <code>true</code> for 
-anything less than <code>7</code> or <code>24</code>. It will look like this:</p>
-<div class="highlight"><pre><span></span><code><span class="m">3430</span> 087E   move.w    <span class="nv">$7</span>E<span class="o">(</span>a0,d0.l<span class="o">)</span>,d2
-0C42 <span class="m">0000</span>   cmpi.w    <span class="c1">#$00,d2</span>
-<span class="m">6716</span>        beq.s     False
-0C42 <span class="m">0004</span>   cmpi.w    <span class="c1">#$04,d2</span>
-<span class="m">6710</span>        beq.s     False
-0C42 <span class="m">0006</span>   cmpi.w    <span class="c1">#$06,d2</span>
-6F06        ble.s     True
-0C42 <span class="m">0018</span>   cmpi.w    <span class="c1">#$18,d2</span>
-<span class="m">6604</span>        bne.s     False
-True:   <span class="p">;</span> <span class="k">return</span> <span class="nb">true</span>
-<span class="m">7001</span>        moveq     <span class="c1">#$01,d0</span>
-<span class="m">6002</span>        bra.s     Continue
-False:  <span class="p">;</span> <span class="k">return</span> <span class="nb">false</span>
-<span class="m">7000</span>        moveq     <span class="c1">#$00,d0</span>
-Continue:
-</code></pre></div>
-
-<p>In <em>Exile III</em>, the original code and patch are identical to <em>Blades of Exile</em>.
-For <em>Exile II</em> and <em>Exile I</em>, there were no crossbows, so the code is a little bit
-different. </p>
-<div class="highlight"><pre><span></span><code>Original Exile I and Exile II:
-<span class="m">3430</span> 087E   move.w    <span class="nv">$7</span>E<span class="o">(</span>a0,d0.l<span class="o">)</span>,d2
-0C42 <span class="m">0001</span>   cmpi.w    <span class="c1">#$01,d2</span>
-670C        beq.s     True
-0C42 <span class="m">0002</span>   cmpi.w    <span class="c1">#$02,d2</span>
-<span class="m">6706</span>        beq.s     True
-0C42 <span class="m">0005</span>   cmpi.w    <span class="c1">#$05,d2</span>
-<span class="m">6604</span>        bne.s     False
-True:
-<span class="m">7001</span>        moveq     <span class="c1">#$01,d0</span>
-<span class="m">6002</span>        bra.s     Continue
-False:
-<span class="m">7000</span>        moveq     <span class="c1">#$00,d0</span>
-Continue:
-
-New Exile I and Exile II:
-<span class="m">3430</span> 087E   move.w    <span class="nv">$7</span>E<span class="o">(</span>a0,d0.l<span class="o">)</span>,d2
-0C42 <span class="m">0000</span>   cmpi.w    <span class="c1">#$00,d2</span>
-<span class="m">6710</span>        beq.s     False
-0C42 <span class="m">0004</span>   cmpi.w    <span class="c1">#$04,d2</span>
-670a        beq.s     False
-0C42 <span class="m">0006</span>   cmpi.w    <span class="c1">#$06,d2</span>
-6E04        bgt.s     False
-True:
-<span class="m">7001</span>        moveq     <span class="c1">#$01,d0</span>
-<span class="m">6002</span>        bra.s     Continue
-False:
-<span class="m">7000</span>        moveq     <span class="c1">#$00,d0</span>
-Continue:
-</code></pre></div>
-
-<p>So the patches for the Mac versions look like this:</p>
-<p><em>Blades</em> and <em>Exile III</em>:</p>
-<div class="highlight"><pre><span></span><code>Original: <span class="m">0001</span> <span class="m">6712</span> 0c42 <span class="m">0002</span> 670c 0c42 <span class="m">0005</span> <span class="m">6706</span>
-Patched:  <span class="m">0000</span> <span class="m">6716</span> 0c42 <span class="m">0004</span> <span class="m">6710</span> 0c42 <span class="m">0006</span> 6f06
-</code></pre></div>
-
-<p><em>Exile I</em> and <em>Exile II</em>:</p>
-<div class="highlight"><pre><span></span><code><span class="n">Original</span><span class="o">:</span><span class="w"> </span><span class="mi">0001</span><span class="w"> </span><span class="mi">670</span><span class="n">c</span><span class="w"> </span><span class="mi">0</span><span class="n">c42</span><span class="w"> </span><span class="mi">0002</span><span class="w"> </span><span class="mi">6706</span><span class="w"> </span><span class="mi">0</span><span class="n">c42</span><span class="w"> </span><span class="mi">0005</span><span class="w"> </span><span class="mi">6604</span><span class="w">  </span><span class="o">..</span><span class="n">g</span><span class="o">..</span><span class="n">B</span><span class="o">..</span><span class="n">g</span><span class="o">..</span><span class="n">B</span><span class="o">..</span><span class="n">f</span><span class="o">.</span><span class="w"></span>
-<span class="n">Patched</span><span class="o">:</span><span class="w">  </span><span class="mi">0000</span><span class="w"> </span><span class="mi">6710</span><span class="w"> </span><span class="mi">0</span><span class="n">c42</span><span class="w"> </span><span class="mi">0004</span><span class="w"> </span><span class="mi">670</span><span class="n">a</span><span class="w"> </span><span class="mi">0</span><span class="n">c42</span><span class="w"> </span><span class="mi">0006</span><span class="w"> </span><span class="mi">6</span><span class="n">e04</span><span class="w">  </span><span class="o">..</span><span class="n">g</span><span class="o">..</span><span class="n">B</span><span class="o">..</span><span class="n">g</span><span class="o">..</span><span class="n">B</span><span class="o">..</span><span class="n">f</span><span class="o">.</span><span class="w"></span>
-</code></pre></div>
-
-<p>Here is a screenshot of the Mac version of Exile I showing John having 
-darts successfully envenomed.</p>
-<p><img alt="Darts equiped and poisoned in the Mac version of Exile I" src="https://motardo.github.io/fts/exile/poison/ExilePoisonThrown.png" style="width:100%;"></p>
-<h2>Conclusion</h2>
-<p>Allowing thrown weapons to be poisoned should make them slightly less useless.
-It might be just the nudge needed to try playing a throwing-based character. In
-fact, a hasted character with 8 action points could hit an enemy with 4 poison
-darts in one turn. I'm not sure if poison stacks like that, but that could
-potentially be quite effective.</p>
-<p>Happy Adventuring!</p>                </article>
-            </aside><!-- /#featured -->
-                <section id="content" class="body">
-                    <h1>Other articles</h1>
-                    <hr />
-                    <ol id="posts-list" class="hfeed">
+only type of weapons in Exile which are …</p>
+                <a class="readmore" href="https://motardo.github.io/fts/let-thrown-weapons-be-poisoned.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
 
             <li><article class="hentry">
                 <header>
@@ -436,7 +63,7 @@ potentially be quite effective.</p>
         </address>
 <p>In <a href="https://motardo.github.io/fts/category/exile.html">Exile</a>.</p>
 <p>tags: <a href="https://motardo.github.io/fts/tag/exile.html">exile</a> <a href="https://motardo.github.io/fts/tag/patches.html">patches</a> </p>
-</footer><!-- /.post-info -->                <h2>Motivation</h2>
+</footer><!-- /.post-info -->                <h2></h2>
 <p>Movement in the Exile games is controlled either by clicking on the terrain in
 the desired direction, or by using the keys on the numeric keypad. Clicking with
 the mouse seems tedious to me, so I have always used the keypad. In the past, I
@@ -462,7 +89,7 @@ have even specifically bought …</p>
         </address>
 <p>In <a href="https://motardo.github.io/fts/category/exile.html">Exile</a>.</p>
 
-</footer><!-- /.post-info -->                <h2>Motivation</h2>
+</footer><!-- /.post-info -->                <h2></h2>
 <p>There are many effects in <em>Exile</em> which modify the PCs status. For example, a PC
 could be <code>slowed</code>, <code>hasted</code>, <code>blessed</code>, <code>cursed</code>, or <code>poisoned</code>. These effects
 are indicated by the presence of small icons next to the PC's name.</p>
@@ -489,13 +116,12 @@ are indicated by the presence of small icons next to the PC's name.</p>
         </address>
 <p>In <a href="https://motardo.github.io/fts/category/exile.html">Exile</a>.</p>
 
-</footer><!-- /.post-info -->                <h2>Motivation</h2>
-<p><img alt="Blades of Exile &quot;Door is Locked&quot; dialog box" src="https://motardo.github.io/fts/images/locked_door.png" style="width:100%;">
-{: style="float:right;padding-left:5px;width:66%;" }
+</footer><!-- /.post-info -->                <h2></h2>
+<p><img alt="Blades of Exile &quot;Door is Locked&quot; dialog box" src="https://motardo.github.io/fts/images/locked_door.png" style="float:right;padding-left:5px;width:50%;">
 In both <em>Exile 3</em> and <em>Blades of Exile</em>, walking into a locked door triggers a
 dialog that presents <code>Bash Door</code>, <code>Pick Lock</code>, and <code>Leave</code> buttons.</p>
 <p>In <em>Exile 3</em>, the desired action can quickly be selected from the keyboard with
-<code>b</code> and <code>p …</code></p>
+<code>b</code> and <code>p</code> shortcut keys. However in <em>Blades of Exile …</em></p>
                 <a class="readmore" href="https://motardo.github.io/fts/boe-locked-door-keyboard-shortcuts.html">read more</a>
                 </div><!-- /.entry-content -->
             </article></li>
@@ -517,7 +143,7 @@ dialog that presents <code>Bash Door</code>, <code>Pick Lock</code>, and <code>L
         </address>
 <p>In <a href="https://motardo.github.io/fts/category/exile.html">Exile</a>.</p>
 
-</footer><!-- /.post-info -->                <h2>Motivation</h2>
+</footer><!-- /.post-info -->                <h2></h2>
 <p>Thrown weapons are common in Exile, and throwing skill is cheap in both gold and
 skill points. Unfortunately, in all versions of Exile, throwing skill does not
 actually do anything. The chance to hit with a thrown missile attack depends
