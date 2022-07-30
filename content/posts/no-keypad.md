@@ -1,6 +1,5 @@
 Title:  Movement Keys Without a Numeric Keypad
-Date:   2021-07-22 11:16:47
-Tags: exile, patches
+Date:   2022-07-27 11:16:47
 Category: Exile
 
 ## Motivation
