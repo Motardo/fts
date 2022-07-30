@@ -1,0 +1,248 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom"><title>Full Time Snacking - Exile</title><link href="https://motardo.github.io/" rel="alternate"></link><link href="https://motardo.github.io/feeds/exile.atom.xml" rel="self"></link><id>https://motardo.github.io/</id><updated>2021-07-22T11:16:47-04:00</updated><entry><title>Movement Keys Without a Numeric Keypad</title><link href="https://motardo.github.io/movement-keys-without-a-numeric-keypad.html" rel="alternate"></link><published>2021-07-22T11:16:47-04:00</published><updated>2021-07-22T11:16:47-04:00</updated><author><name>Nathan Wilson</name></author><id>tag:motardo.github.io,2021-07-22:/movement-keys-without-a-numeric-keypad.html</id><summary type="html">&lt;h2&gt;Motivation&lt;/h2&gt;
+&lt;p&gt;Movement in the Exile games is controlled either by clicking on the terrain in
+the desired direction, or by using the keys on the numeric keypad. Clicking with
+the mouse seems tedious to me, so I have always used the keypad. In the past, I
+have even specifically bought …&lt;/p&gt;</summary><content type="html">&lt;h2&gt;Motivation&lt;/h2&gt;
+&lt;p&gt;Movement in the Exile games is controlled either by clicking on the terrain in
+the desired direction, or by using the keys on the numeric keypad. Clicking with
+the mouse seems tedious to me, so I have always used the keypad. In the past, I
+have even specifically bought a laptop with a numeric keypad just to play Exile.
+However, for my newest laptop, there were not a lot of choices with a keypad,
+and I ended up getting something without one.&lt;/p&gt;
+&lt;p&gt;So now it is time to modify the game to use different keys for movement.&lt;/p&gt;
+&lt;h2&gt;Remedy&lt;/h2&gt;
+&lt;p&gt;I have decided to substitute &lt;code&gt;[m,.][jkl][uio]&lt;/code&gt; for the keypad's &lt;code&gt;1-9&lt;/code&gt; keys. This
+will make them easy to find without looking by placing my right hand on the home
+row with my index finger on &lt;code&gt;j&lt;/code&gt;, just like the normal touch typing position that
+I am used to. Of course, this means I will have to choose substitutes for the
+&lt;code&gt;l&lt;/code&gt; and &lt;code&gt;m&lt;/code&gt; keys, which are used in Exile for &lt;em&gt;L&lt;/em&gt;ooking and casting &lt;em&gt;M&lt;/em&gt;age
+spells. I will choose &lt;code&gt;h&lt;/code&gt; and &lt;code&gt;n&lt;/code&gt; for these, just because they are convenient
+and unused.&lt;/p&gt;
+&lt;h2&gt;Method&lt;/h2&gt;
+&lt;p&gt;I will start with the free, registered version of &lt;a href="http://www.spiderwebsoftware.com/ftp/installers/mac/ExileInstaller.zip"&gt;Exile I for
+Macintosh&lt;/a&gt;
+that is available for download from Spiderweb Software. After copying the
+Installer to a virtual HFS volume and running it in BasiliskII, the Exile
+program file is ready to play. I want to get a copy of the executable code on my
+native Linux filesystem so that I can use modern unix tools to examine and
+modify it. From BasiliskII, I used a program to convert the Exile game file to
+MacBinary format. This combines the data and resource forks into a file with a
+single fork that unix understands.&lt;/p&gt;
+&lt;p&gt;Now I have the game code on my Linux filesystem as a MacBinary encoded file
+called &lt;a href="https://motardo.github.io/exile/e1orig.bin"&gt;&lt;code&gt;e1orig.bin&lt;/code&gt;&lt;/a&gt;. Let's find those keycodes.&lt;/p&gt;
+&lt;p&gt;The Exile games were written in C and compiled with &lt;em&gt;Metrowerk's Code Warrior&lt;/em&gt;, a
+popular Macintosh IDE from the 1990s. Code Warrior inserts so called &lt;code&gt;macsbug&lt;/code&gt;
+strings into the executable code it generates. These strings contain the names
+of the functions that were given in the original C source code. This makes it
+very easy to locate particular sections of code in an executable. Let's search
+the &lt;code&gt;macsbug&lt;/code&gt; strings for the word &lt;code&gt;keystroke&lt;/code&gt;.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;$ python3 -c &lt;span class="s2"&gt;&amp;quot;print(open(&amp;#39;e1orig.bin&amp;#39;,&amp;#39;rb&amp;#39;).read().find(b&amp;#39;keystroke&amp;#39;))&amp;quot;&lt;/span&gt;
+&lt;span class="m"&gt;2425898&lt;/span&gt;
+$ xxd -s &lt;span class="m"&gt;2425888&lt;/span&gt; -l &lt;span class="m"&gt;32&lt;/span&gt; e1orig.bin
+&lt;span class="m"&gt;00250420&lt;/span&gt;: 4e75 &lt;span class="m"&gt;9068&lt;/span&gt; 616e 646c 655f 6b65 &lt;span class="m"&gt;7973&lt;/span&gt; &lt;span class="m"&gt;7472&lt;/span&gt;  Nu.handle_keystr
+&lt;span class="m"&gt;00250430&lt;/span&gt;: 6f6b &lt;span class="m"&gt;6500&lt;/span&gt; &lt;span class="m"&gt;0000&lt;/span&gt; 4e56 &lt;span class="m"&gt;0000&lt;/span&gt; 2f0a 594f 3f3c  oke...NV../.YO?&amp;lt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;We found a procedure called &lt;code&gt;handle_keystroke&lt;/code&gt;. The name immediately follows the
+end of the function, so will search backwards from the name to find the start of
+the function. Macintosh procedures start with a &lt;code&gt;LINK A6&lt;/code&gt; (&lt;code&gt;4e56&lt;/code&gt;) instruction
+and end with a &lt;code&gt;RTS&lt;/code&gt; instruction (&lt;code&gt;4e75&lt;/code&gt; as seen above).&lt;/p&gt;
+&lt;p&gt;Disassembling the &lt;code&gt;handle_keystroke&lt;/code&gt; function from the beginning yields:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;$ d68 e1orig.bin &lt;span class="m"&gt;2424198&lt;/span&gt; &lt;span class="m"&gt;128&lt;/span&gt;
+&lt;span class="m"&gt;00000000&lt;/span&gt; : 4e56 ffac      LINK     A6,#-84
+&lt;span class="m"&gt;00000004&lt;/span&gt; : 48e7 1f30      MOVEM.L  D4,D5,A0-A4,-&lt;span class="o"&gt;(&lt;/span&gt;A7&lt;span class="o"&gt;)&lt;/span&gt;
+&lt;span class="m"&gt;00000008&lt;/span&gt; : 1a2e &lt;span class="m"&gt;0009&lt;/span&gt;      MOVE.B   +9&lt;span class="o"&gt;(&lt;/span&gt;A6&lt;span class="o"&gt;)&lt;/span&gt;,D5
+0000000c : 1c2e 000b      MOVE.B   +11&lt;span class="o"&gt;(&lt;/span&gt;A6&lt;span class="o"&gt;)&lt;/span&gt;,D6
+&lt;span class="m"&gt;00000010&lt;/span&gt; : &lt;span class="m"&gt;7800&lt;/span&gt;           MOVEQ    &lt;span class="c1"&gt;#$00,D4&lt;/span&gt;
+&lt;span class="m"&gt;00000012&lt;/span&gt; : 42ae fff8      CLR.L    -8&lt;span class="o"&gt;(&lt;/span&gt;A6&lt;span class="o"&gt;)&lt;/span&gt;
+&lt;span class="m"&gt;00000016&lt;/span&gt; : 2d79 &lt;span class="m"&gt;0001&lt;/span&gt; 094c ffb4 MOVE.L   &lt;span class="nv"&gt;$0001094&lt;/span&gt;c,-76&lt;span class="o"&gt;(&lt;/span&gt;A6&lt;span class="o"&gt;)&lt;/span&gt;
+0000001e : 2d79 &lt;span class="m"&gt;0001&lt;/span&gt; &lt;span class="m"&gt;0948&lt;/span&gt; ffb0 MOVE.L   &lt;span class="nv"&gt;$00010948&lt;/span&gt;,-80&lt;span class="o"&gt;(&lt;/span&gt;A6&lt;span class="o"&gt;)&lt;/span&gt;
+&lt;span class="m"&gt;00000026&lt;/span&gt; : 2d79 &lt;span class="m"&gt;0001&lt;/span&gt; 093e ffc6 MOVE.L   &lt;span class="nv"&gt;$0001093&lt;/span&gt;e,-58&lt;span class="o"&gt;(&lt;/span&gt;A6&lt;span class="o"&gt;)&lt;/span&gt;
+0000002e : 2d79 &lt;span class="m"&gt;0001&lt;/span&gt; &lt;span class="m"&gt;0942&lt;/span&gt; ffca MOVE.L   &lt;span class="nv"&gt;$00010942&lt;/span&gt;,-54&lt;span class="o"&gt;(&lt;/span&gt;A6&lt;span class="o"&gt;)&lt;/span&gt;
+&lt;span class="m"&gt;00000036&lt;/span&gt; : 3d79 &lt;span class="m"&gt;0001&lt;/span&gt; &lt;span class="m"&gt;0946&lt;/span&gt; ffce MOVE.W   &lt;span class="nv"&gt;$00010946&lt;/span&gt;,-50&lt;span class="o"&gt;(&lt;/span&gt;A6&lt;span class="o"&gt;)&lt;/span&gt;
+0000003e : 41f9 &lt;span class="m"&gt;0001&lt;/span&gt; &lt;span class="m"&gt;0916&lt;/span&gt; LEA      &lt;span class="nv"&gt;$00010916&lt;/span&gt;,A0
+&lt;span class="m"&gt;00000044&lt;/span&gt; : 43ee ffd0      LEA      -48&lt;span class="o"&gt;(&lt;/span&gt;A6&lt;span class="o"&gt;)&lt;/span&gt;,A1
+&lt;span class="m"&gt;00000048&lt;/span&gt; : &lt;span class="m"&gt;7009&lt;/span&gt;           MOVEQ    &lt;span class="c1"&gt;#$09,D0&lt;/span&gt;
+0000004a : 22d8           MOVE.L   &lt;span class="o"&gt;(&lt;/span&gt;A0&lt;span class="o"&gt;)&lt;/span&gt;+,&lt;span class="o"&gt;(&lt;/span&gt;A1&lt;span class="o"&gt;)&lt;/span&gt;+
+0000004c : 51c8 fffc      DBF      D0,&lt;span class="nv"&gt;$0000004&lt;/span&gt;a
+&lt;span class="m"&gt;00000050&lt;/span&gt; : 594f           SUBQ.W   &lt;span class="c1"&gt;#4,A7&lt;/span&gt;
+&lt;span class="m"&gt;00000052&lt;/span&gt; : a924           ???
+&lt;span class="m"&gt;00000054&lt;/span&gt; : 205f           MOVEA.L  &lt;span class="o"&gt;(&lt;/span&gt;A7&lt;span class="o"&gt;)&lt;/span&gt;+,A0
+... output truncated ...
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;A-trap instructions such as &lt;code&gt;a924&lt;/code&gt; are not yet recognized by the dis68k disassembler.
+Maybe someday I will add them. Let's look a little farther into the procedure:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;$ d68 e1orig.bin &lt;span class="k"&gt;$((&lt;/span&gt;&lt;span class="m"&gt;0&lt;/span&gt;x24ff60&lt;span class="k"&gt;))&lt;/span&gt; &lt;span class="m"&gt;192&lt;/span&gt;
+&lt;span class="m"&gt;00000000&lt;/span&gt; : &lt;span class="m"&gt;1005&lt;/span&gt;           MOVE.B   D5,D0
+&lt;span class="m"&gt;00000002&lt;/span&gt; : &lt;span class="m"&gt;4880&lt;/span&gt;           EXT.W    D0
+&lt;span class="m"&gt;00000004&lt;/span&gt; : &lt;span class="m"&gt;0440&lt;/span&gt; &lt;span class="m"&gt;0030&lt;/span&gt;      SUBI.W   &lt;span class="c1"&gt;#$0030,D0    0&lt;/span&gt;
+&lt;span class="m"&gt;00000008&lt;/span&gt; : &lt;span class="m"&gt;6700&lt;/span&gt; &lt;span class="m"&gt;0134&lt;/span&gt;      BEQ      &lt;span class="nv"&gt;$0000013&lt;/span&gt;e
+0000000c : &lt;span class="m"&gt;5340&lt;/span&gt;           SUBQ.W   &lt;span class="c1"&gt;#1,D0    1&lt;/span&gt;
+0000000e : &lt;span class="m"&gt;6700&lt;/span&gt; 00b0      BEQ      &lt;span class="nv"&gt;$000000&lt;/span&gt;c0
+&lt;span class="m"&gt;00000012&lt;/span&gt; : &lt;span class="m"&gt;5340&lt;/span&gt;           SUBQ.W   &lt;span class="c1"&gt;#1,D0    2&lt;/span&gt;
+&lt;span class="m"&gt;00000014&lt;/span&gt; : &lt;span class="m"&gt;6700&lt;/span&gt; 00aa      BEQ      &lt;span class="nv"&gt;$000000&lt;/span&gt;c0
+&lt;span class="m"&gt;00000018&lt;/span&gt; : &lt;span class="m"&gt;5340&lt;/span&gt;           SUBQ.W   &lt;span class="c1"&gt;#1,D0    3&lt;/span&gt;
+0000001a : &lt;span class="m"&gt;6700&lt;/span&gt; 00a4      BEQ      &lt;span class="nv"&gt;$000000&lt;/span&gt;c0
+0000001e : &lt;span class="m"&gt;5340&lt;/span&gt;           SUBQ.W   &lt;span class="c1"&gt;#1,D0    4&lt;/span&gt;
+&lt;span class="m"&gt;00000020&lt;/span&gt; : &lt;span class="m"&gt;6700&lt;/span&gt; 009e      BEQ      &lt;span class="nv"&gt;$000000&lt;/span&gt;c0
+&lt;span class="m"&gt;00000024&lt;/span&gt; : &lt;span class="m"&gt;5340&lt;/span&gt;           SUBQ.W   &lt;span class="c1"&gt;#1,D0    5&lt;/span&gt;
+&lt;span class="m"&gt;00000026&lt;/span&gt; : &lt;span class="m"&gt;6700&lt;/span&gt; &lt;span class="m"&gt;0098&lt;/span&gt;      BEQ      &lt;span class="nv"&gt;$000000&lt;/span&gt;c0
+0000002a : &lt;span class="m"&gt;5340&lt;/span&gt;           SUBQ.W   &lt;span class="c1"&gt;#1,D0    6&lt;/span&gt;
+0000002c : &lt;span class="m"&gt;6700&lt;/span&gt; &lt;span class="m"&gt;0092&lt;/span&gt;      BEQ      &lt;span class="nv"&gt;$000000&lt;/span&gt;c0
+&lt;span class="m"&gt;00000030&lt;/span&gt; : &lt;span class="m"&gt;5740&lt;/span&gt;           SUBQ.W   &lt;span class="c1"&gt;#3,D0    9&lt;/span&gt;
+&lt;span class="m"&gt;00000032&lt;/span&gt; : &lt;span class="m"&gt;6700&lt;/span&gt; 00ee      BEQ      &lt;span class="nv"&gt;$00000122&lt;/span&gt;
+&lt;span class="m"&gt;00000036&lt;/span&gt; : &lt;span class="m"&gt;5940&lt;/span&gt;           SUBQ.W   &lt;span class="c1"&gt;#4,D0    =&lt;/span&gt;
+&lt;span class="m"&gt;00000038&lt;/span&gt; : &lt;span class="m"&gt;6700&lt;/span&gt; &lt;span class="m"&gt;0104&lt;/span&gt;      BEQ      &lt;span class="nv"&gt;$0000013&lt;/span&gt;e
+0000003c : &lt;span class="m"&gt;5940&lt;/span&gt;           SUBQ.W   &lt;span class="c1"&gt;#4,D0    A&lt;/span&gt;
+0000003e : &lt;span class="m"&gt;6700&lt;/span&gt; 023a      BEQ      &lt;span class="nv"&gt;$0000027&lt;/span&gt;a
+&lt;span class="m"&gt;00000042&lt;/span&gt; : 5b40           SUBQ.W   &lt;span class="c1"&gt;#5,D0    F&lt;/span&gt;
+&lt;span class="m"&gt;00000044&lt;/span&gt; : &lt;span class="m"&gt;6700&lt;/span&gt; &lt;span class="m"&gt;0188&lt;/span&gt;      BEQ      &lt;span class="nv"&gt;$000001&lt;/span&gt;ce
+&lt;span class="m"&gt;00000048&lt;/span&gt; : &lt;span class="m"&gt;5340&lt;/span&gt;           SUBQ.W   &lt;span class="c1"&gt;#1,D0    G&lt;/span&gt;
+0000004a : &lt;span class="m"&gt;6700&lt;/span&gt; 01b4      BEQ      &lt;span class="nv"&gt;$00000200&lt;/span&gt;
+0000004e : 5b40           SUBQ.W   &lt;span class="c1"&gt;#5,D0    L -&amp;gt; H subq.w #1,d0 5340&lt;/span&gt;
+&lt;span class="m"&gt;00000050&lt;/span&gt; : &lt;span class="m"&gt;6700&lt;/span&gt; &lt;span class="m"&gt;0228&lt;/span&gt;      BEQ      &lt;span class="nv"&gt;$0000027&lt;/span&gt;a
+&lt;span class="m"&gt;00000054&lt;/span&gt; : &lt;span class="m"&gt;5340&lt;/span&gt;           SUBQ.W   &lt;span class="c1"&gt;#1,D0    M -&amp;gt; N subq.w #6,d0 5d40&lt;/span&gt;
+&lt;span class="m"&gt;00000056&lt;/span&gt; : &lt;span class="m"&gt;6700&lt;/span&gt; 02d6      BEQ      &lt;span class="nv"&gt;$0000032&lt;/span&gt;e
+0000005a : &lt;span class="m"&gt;5740&lt;/span&gt;           SUBQ.W   &lt;span class="c1"&gt;#3,D0    P -&amp;gt; P subq.w #2,d0 5540&lt;/span&gt;
+0000005c : &lt;span class="m"&gt;6700&lt;/span&gt; 02d0      BEQ      &lt;span class="nv"&gt;$0000032&lt;/span&gt;e
+&lt;span class="m"&gt;00000060&lt;/span&gt; : &lt;span class="m"&gt;0440&lt;/span&gt; &lt;span class="m"&gt;0011&lt;/span&gt;      SUBI.W   &lt;span class="c1"&gt;#$0011,D0    a&lt;/span&gt;
+&lt;span class="m"&gt;00000064&lt;/span&gt; : &lt;span class="m"&gt;6700&lt;/span&gt; 01c6      BEQ      &lt;span class="nv"&gt;$0000022&lt;/span&gt;c
+&lt;span class="m"&gt;00000068&lt;/span&gt; : &lt;span class="m"&gt;5340&lt;/span&gt;           SUBQ.W   &lt;span class="c1"&gt;#1,D0    b&lt;/span&gt;
+0000006a : &lt;span class="m"&gt;6700&lt;/span&gt; 020e      BEQ      &lt;span class="nv"&gt;$0000027&lt;/span&gt;a
+0000006e : &lt;span class="m"&gt;5540&lt;/span&gt;           SUBQ.W   &lt;span class="c1"&gt;#2,D0    d&lt;/span&gt;
+&lt;span class="m"&gt;00000070&lt;/span&gt; : &lt;span class="m"&gt;6700&lt;/span&gt; 02bc      BEQ      &lt;span class="nv"&gt;$0000032&lt;/span&gt;e
+&lt;span class="m"&gt;00000074&lt;/span&gt; : &lt;span class="m"&gt;5340&lt;/span&gt;           SUBQ.W   &lt;span class="c1"&gt;#1,D0    e&lt;/span&gt;
+&lt;span class="m"&gt;00000076&lt;/span&gt; : &lt;span class="m"&gt;6700&lt;/span&gt; 025c      BEQ      &lt;span class="nv"&gt;$000002&lt;/span&gt;d4
+0000007a : &lt;span class="m"&gt;5340&lt;/span&gt;           SUBQ.W   &lt;span class="c1"&gt;#1,D0    f&lt;/span&gt;
+0000007c : &lt;span class="m"&gt;6700&lt;/span&gt; 02b0      BEQ      &lt;span class="nv"&gt;$0000032&lt;/span&gt;e
+&lt;span class="m"&gt;00000080&lt;/span&gt; : &lt;span class="m"&gt;5340&lt;/span&gt;           SUBQ.W   &lt;span class="c1"&gt;#1,D0    g&lt;/span&gt;
+&lt;span class="m"&gt;00000082&lt;/span&gt; : &lt;span class="m"&gt;6700&lt;/span&gt; 02aa      BEQ      &lt;span class="nv"&gt;$0000032&lt;/span&gt;e
+&lt;span class="m"&gt;00000086&lt;/span&gt; : 5b40           SUBQ.W   &lt;span class="c1"&gt;#5,D0    l -&amp;gt; h subq.w #1,d0 5340&lt;/span&gt;
+&lt;span class="m"&gt;00000088&lt;/span&gt; : &lt;span class="m"&gt;6700&lt;/span&gt; 02a4      BEQ      &lt;span class="nv"&gt;$0000032&lt;/span&gt;e
+0000008c : &lt;span class="m"&gt;5340&lt;/span&gt;           SUBQ.W   &lt;span class="c1"&gt;#1,D0    m -&amp;gt; n subq.w #6,d0 5d40&lt;/span&gt;
+0000008e : &lt;span class="m"&gt;6700&lt;/span&gt; 029e      BEQ      &lt;span class="nv"&gt;$0000032&lt;/span&gt;e
+&lt;span class="m"&gt;00000092&lt;/span&gt; : &lt;span class="m"&gt;5740&lt;/span&gt;           SUBQ.W   &lt;span class="c1"&gt;#3,D0    p -&amp;gt; p subq.w #2,d0 5540&lt;/span&gt;
+&lt;span class="m"&gt;00000094&lt;/span&gt; : &lt;span class="m"&gt;6700&lt;/span&gt; &lt;span class="m"&gt;0298&lt;/span&gt;      BEQ      &lt;span class="nv"&gt;$0000032&lt;/span&gt;e
+&lt;span class="m"&gt;00000098&lt;/span&gt; : &lt;span class="m"&gt;5540&lt;/span&gt;           SUBQ.W   &lt;span class="c1"&gt;#2,D0    r&lt;/span&gt;
+0000009a : &lt;span class="m"&gt;6700&lt;/span&gt; &lt;span class="m"&gt;0292&lt;/span&gt;      BEQ      &lt;span class="nv"&gt;$0000032&lt;/span&gt;e
+0000009e : &lt;span class="m"&gt;5340&lt;/span&gt;           SUBQ.W   &lt;span class="c1"&gt;#1,D0    s&lt;/span&gt;
+000000a0 : &lt;span class="m"&gt;6700&lt;/span&gt; &lt;span class="m"&gt;0232&lt;/span&gt;      BEQ      &lt;span class="nv"&gt;$000002&lt;/span&gt;d4
+000000a4 : &lt;span class="m"&gt;5340&lt;/span&gt;           SUBQ.W   &lt;span class="c1"&gt;#1,D0    t&lt;/span&gt;
+000000a6 : &lt;span class="m"&gt;6700&lt;/span&gt; &lt;span class="m"&gt;0286&lt;/span&gt;      BEQ      &lt;span class="nv"&gt;$0000032&lt;/span&gt;e
+000000aa : &lt;span class="m"&gt;5740&lt;/span&gt;           SUBQ.W   &lt;span class="c1"&gt;#3,D0    w&lt;/span&gt;
+000000ac : &lt;span class="m"&gt;6700&lt;/span&gt; &lt;span class="m"&gt;0280&lt;/span&gt;      BEQ      &lt;span class="nv"&gt;$0000032&lt;/span&gt;e
+000000b0 : &lt;span class="m"&gt;5340&lt;/span&gt;           SUBQ.W   &lt;span class="c1"&gt;#1,D0    x&lt;/span&gt;
+000000b2 : &lt;span class="m"&gt;6700&lt;/span&gt; &lt;span class="m"&gt;0220&lt;/span&gt;      BEQ      &lt;span class="nv"&gt;$000002&lt;/span&gt;d4
+000000b6 : &lt;span class="m"&gt;5540&lt;/span&gt;           SUBQ.W   &lt;span class="c1"&gt;#2,D0    z&lt;/span&gt;
+000000b8 : &lt;span class="m"&gt;6700&lt;/span&gt; 009e      BEQ      &lt;span class="nv"&gt;$00000158&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;I added the letters for the keycodes in the rightmost column to the listing
+above. We can see that the routine reads the keycode of the key that was pressed
+from register D5 and then compares it to a series of values and branches to the
+corresponding code when a match is found. The first keycode that is compared is
+&lt;code&gt;0x30&lt;/code&gt; (regular, non-numpad &lt;code&gt;0&lt;/code&gt;), followed by the (regular, non-numpad) digits
+&lt;code&gt;1&lt;/code&gt; through &lt;code&gt;6&lt;/code&gt;. Farther down, the letters &lt;code&gt;g&lt;/code&gt;, &lt;code&gt;l&lt;/code&gt;, &lt;code&gt;m&lt;/code&gt;, and &lt;code&gt;p&lt;/code&gt; are checked.
+This is were the code should be modified to substitute &lt;code&gt;h&lt;/code&gt; and &lt;code&gt;n&lt;/code&gt; instead. The
+modification is accomplished simply by changing the immediate value of the
+&lt;code&gt;subq.w #_,d0&lt;/code&gt; instructions as shown above. Following the branches above for the
+&lt;code&gt;l&lt;/code&gt; and &lt;code&gt;m&lt;/code&gt; keys, there are two more locations that need similar modifications:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;0000034c : &lt;span class="m"&gt;1005&lt;/span&gt;           MOVE.B   D5,D0
+0000034e : &lt;span class="m"&gt;4880&lt;/span&gt;           EXT.W    D0
+&lt;span class="m"&gt;00000350&lt;/span&gt; : &lt;span class="m"&gt;0440&lt;/span&gt; 004d      SUBI.W   &lt;span class="c1"&gt;#$004D,D0    M -&amp;gt; N  0440 004e&lt;/span&gt;
+&lt;span class="m"&gt;00000354&lt;/span&gt; : &lt;span class="m"&gt;6734&lt;/span&gt;           BEQ      &lt;span class="nv"&gt;$0000038&lt;/span&gt;a
+&lt;span class="m"&gt;00000356&lt;/span&gt; : &lt;span class="m"&gt;5740&lt;/span&gt;           SUBQ.W   &lt;span class="c1"&gt;#3,D0        P -&amp;gt; P  5540&lt;/span&gt;
+&lt;span class="m"&gt;00000358&lt;/span&gt; : &lt;span class="m"&gt;6744&lt;/span&gt;           BEQ      &lt;span class="nv"&gt;$0000039&lt;/span&gt;e
+0000035a : &lt;span class="m"&gt;0440&lt;/span&gt; &lt;span class="m"&gt;0014&lt;/span&gt;      SUBI.W   &lt;span class="c1"&gt;#$0014,D0    d&lt;/span&gt;
+0000035e : &lt;span class="m"&gt;6700&lt;/span&gt; 00de      BEQ      &lt;span class="nv"&gt;$0000043&lt;/span&gt;e
+&lt;span class="m"&gt;00000362&lt;/span&gt; : &lt;span class="m"&gt;5540&lt;/span&gt;           SUBQ.W   &lt;span class="c1"&gt;#2,D0        f&lt;/span&gt;
+&lt;span class="m"&gt;00000364&lt;/span&gt; : &lt;span class="m"&gt;6700&lt;/span&gt; 00fa      BEQ      &lt;span class="nv"&gt;$00000460&lt;/span&gt;
+&lt;span class="m"&gt;00000368&lt;/span&gt; : &lt;span class="m"&gt;5340&lt;/span&gt;           SUBQ.W   &lt;span class="c1"&gt;#1,D0        g&lt;/span&gt;
+0000036a : &lt;span class="m"&gt;6700&lt;/span&gt; 00e4      BEQ      &lt;span class="nv"&gt;$00000450&lt;/span&gt;
+0000036e : 5b40           SUBQ.W   &lt;span class="c1"&gt;#5,D0        l -&amp;gt; h subq.w #1,d0 5340&lt;/span&gt;
+&lt;span class="m"&gt;00000370&lt;/span&gt; : &lt;span class="m"&gt;6740&lt;/span&gt;           BEQ      &lt;span class="nv"&gt;$000003&lt;/span&gt;b2
+&lt;span class="m"&gt;00000372&lt;/span&gt; : &lt;span class="m"&gt;5340&lt;/span&gt;           SUBQ.W   &lt;span class="c1"&gt;#1,D0        m -&amp;gt; n subq.w #6,d0 5d40&lt;/span&gt;
+&lt;span class="m"&gt;00000374&lt;/span&gt; : &lt;span class="m"&gt;6722&lt;/span&gt;           BEQ      &lt;span class="nv"&gt;$00000398&lt;/span&gt;
+&lt;span class="m"&gt;00000376&lt;/span&gt; : &lt;span class="m"&gt;5740&lt;/span&gt;           SUBQ.W   &lt;span class="c1"&gt;#3,D0        p -&amp;gt; p subq.w #2,d0 5540&lt;/span&gt;
+&lt;span class="m"&gt;00000378&lt;/span&gt; : &lt;span class="m"&gt;6732&lt;/span&gt;           BEQ      &lt;span class="nv"&gt;$000003&lt;/span&gt;ac
+0000037a : &lt;span class="m"&gt;5540&lt;/span&gt;           SUBQ.W   &lt;span class="c1"&gt;#2,D0        r&lt;/span&gt;
+0000037c : 673a           BEQ      &lt;span class="nv"&gt;$000003&lt;/span&gt;b8
+0000037e : &lt;span class="m"&gt;5540&lt;/span&gt;           SUBQ.W   &lt;span class="c1"&gt;#2,D0        t&lt;/span&gt;
+&lt;span class="m"&gt;00000380&lt;/span&gt; : 674a           BEQ      &lt;span class="nv"&gt;$000003&lt;/span&gt;cc
+&lt;span class="m"&gt;00000382&lt;/span&gt; : &lt;span class="m"&gt;5740&lt;/span&gt;           SUBQ.W   &lt;span class="c1"&gt;#3,D0        w&lt;/span&gt;
+&lt;span class="m"&gt;00000384&lt;/span&gt; : 675c           BEQ      &lt;span class="nv"&gt;$000003&lt;/span&gt;e2
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;That takes care of substituting &lt;code&gt;l&lt;/code&gt; and &lt;code&gt;m&lt;/code&gt; with &lt;code&gt;h&lt;/code&gt; and &lt;code&gt;n&lt;/code&gt;. Now we can work on
+changing the numeric keypad motion keys. This is actually much easier to change
+because the motion keys are stored as an array of keycodes in a statically
+initialized data block.&lt;/p&gt;
+&lt;p&gt;The listing below shows that the keycode is compared to each value in a ten
+element array, and if a match is found, another routine is called with arguments
+based on which element was matched.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;$ d68 e1orig.bin &lt;span class="m"&gt;2424502&lt;/span&gt; &lt;span class="m"&gt;92&lt;/span&gt;
+&lt;span class="m"&gt;00000000&lt;/span&gt; : &lt;span class="m"&gt;7600&lt;/span&gt;           MOVEQ    &lt;span class="c1"&gt;#$00,D3        ;d3 is the array index&lt;/span&gt;
+&lt;span class="m"&gt;00000002&lt;/span&gt; : &lt;span class="m"&gt;6052&lt;/span&gt;           BRA      &lt;span class="nv"&gt;$00000056&lt;/span&gt;
+&lt;span class="m"&gt;00000004&lt;/span&gt; : 41ee ffc6      LEA      -58&lt;span class="o"&gt;(&lt;/span&gt;A6&lt;span class="o"&gt;)&lt;/span&gt;,A0
+&lt;span class="m"&gt;00000008&lt;/span&gt; : bc30 &lt;span class="m"&gt;3000&lt;/span&gt;      CMP.B    +0&lt;span class="o"&gt;(&lt;/span&gt;A0,D3.W&lt;span class="o"&gt;)&lt;/span&gt;,D6 &lt;span class="p"&gt;;&lt;/span&gt;compare d6 to each value &lt;span class="k"&gt;in&lt;/span&gt; the array
+0000000c : &lt;span class="m"&gt;6646&lt;/span&gt;           BNE      &lt;span class="nv"&gt;$00000054&lt;/span&gt;
+0000000e : 4a43           TST      D3
+&lt;span class="m"&gt;00000010&lt;/span&gt; : &lt;span class="m"&gt;6604&lt;/span&gt;           BNE      &lt;span class="nv"&gt;$00000016&lt;/span&gt;
+&lt;span class="m"&gt;00000012&lt;/span&gt; : 7a7a           MOVEQ    &lt;span class="c1"&gt;#$7A,D5&lt;/span&gt;
+&lt;span class="m"&gt;00000014&lt;/span&gt; : 603e           BRA      &lt;span class="nv"&gt;$00000054&lt;/span&gt;
+&lt;span class="m"&gt;00000016&lt;/span&gt; : &lt;span class="m"&gt;3443&lt;/span&gt;           MOVEA.W  D3,A2          &lt;span class="p"&gt;;&lt;/span&gt;lookup arguments based on matched index
+&lt;span class="m"&gt;00000018&lt;/span&gt; : 200a           MOVE.L   A2,D0
+0000001a : e588           LSL.L    &lt;span class="c1"&gt;#2,D0&lt;/span&gt;
+0000001c : 45ee ffd0      LEA      -48&lt;span class="o"&gt;(&lt;/span&gt;A6&lt;span class="o"&gt;)&lt;/span&gt;,A2
+&lt;span class="m"&gt;00000020&lt;/span&gt; : d5c0           ADDA.L   D0,A0
+&lt;span class="m"&gt;00000022&lt;/span&gt; : 3d52 fffe      MOVE.W   &lt;span class="o"&gt;(&lt;/span&gt;A2&lt;span class="o"&gt;)&lt;/span&gt;,-2&lt;span class="o"&gt;(&lt;/span&gt;A6&lt;span class="o"&gt;)&lt;/span&gt;
+&lt;span class="m"&gt;00000026&lt;/span&gt; : 3d6a &lt;span class="m"&gt;0002&lt;/span&gt; fffc MOVE.W   +2&lt;span class="o"&gt;(&lt;/span&gt;A2&lt;span class="o"&gt;)&lt;/span&gt;,-4&lt;span class="o"&gt;(&lt;/span&gt;A6&lt;span class="o"&gt;)&lt;/span&gt;
+0000002c : 486e fffc      PEA      -4&lt;span class="o"&gt;(&lt;/span&gt;A6&lt;span class="o"&gt;)&lt;/span&gt;
+&lt;span class="m"&gt;00000030&lt;/span&gt; : a870           ???
+&lt;span class="m"&gt;00000032&lt;/span&gt; : 2d6e fffc &lt;span class="m"&gt;0016&lt;/span&gt; MOVE.L   -4&lt;span class="o"&gt;(&lt;/span&gt;A6&lt;span class="o"&gt;)&lt;/span&gt;,+22&lt;span class="o"&gt;(&lt;/span&gt;A6&lt;span class="o"&gt;)&lt;/span&gt;
+&lt;span class="m"&gt;00000038&lt;/span&gt; : 41ee 001c      LEA      +28&lt;span class="o"&gt;(&lt;/span&gt;A6&lt;span class="o"&gt;)&lt;/span&gt;,A0
+0000003c : 2f20           MOVE.L   -&lt;span class="o"&gt;(&lt;/span&gt;A0&lt;span class="o"&gt;)&lt;/span&gt;,-&lt;span class="o"&gt;(&lt;/span&gt;A7&lt;span class="o"&gt;)&lt;/span&gt;    &lt;span class="p"&gt;;&lt;/span&gt;push args on stack and call new routine
+0000003e : 2f20           MOVE.L   -&lt;span class="o"&gt;(&lt;/span&gt;A0&lt;span class="o"&gt;)&lt;/span&gt;,-&lt;span class="o"&gt;(&lt;/span&gt;A7&lt;span class="o"&gt;)&lt;/span&gt;
+&lt;span class="m"&gt;00000040&lt;/span&gt; : 2f20           MOVE.L   -&lt;span class="o"&gt;(&lt;/span&gt;A0&lt;span class="o"&gt;)&lt;/span&gt;,-&lt;span class="o"&gt;(&lt;/span&gt;A7&lt;span class="o"&gt;)&lt;/span&gt;
+&lt;span class="m"&gt;00000042&lt;/span&gt; : 2f20           MOVE.L   -&lt;span class="o"&gt;(&lt;/span&gt;A0&lt;span class="o"&gt;)&lt;/span&gt;,-&lt;span class="o"&gt;(&lt;/span&gt;A7&lt;span class="o"&gt;)&lt;/span&gt;
+&lt;span class="m"&gt;00000044&lt;/span&gt; : 4eba df0e      JSR      -8434&lt;span class="o"&gt;(&lt;/span&gt;PC&lt;span class="o"&gt;)&lt;/span&gt; &lt;span class="o"&gt;{&lt;/span&gt;&lt;span class="nv"&gt;$4294958932&lt;/span&gt;&lt;span class="o"&gt;}&lt;/span&gt;
+&lt;span class="m"&gt;00000048&lt;/span&gt; : &lt;span class="m"&gt;1800&lt;/span&gt;           MOVE.B   D0,D4
+0000004a : &lt;span class="m"&gt;1004&lt;/span&gt;           MOVE.B   D4,D0
+0000004c : 4fef &lt;span class="m"&gt;0010&lt;/span&gt;      LEA      +16&lt;span class="o"&gt;(&lt;/span&gt;A7&lt;span class="o"&gt;)&lt;/span&gt;,A7
+&lt;span class="m"&gt;00000050&lt;/span&gt; : &lt;span class="m"&gt;6000&lt;/span&gt; &lt;span class="m"&gt;0512&lt;/span&gt;      BRA      &lt;span class="nv"&gt;$00000564&lt;/span&gt;
+&lt;span class="m"&gt;00000054&lt;/span&gt; : &lt;span class="m"&gt;5243&lt;/span&gt;           ADDQ.W   &lt;span class="c1"&gt;#1,D3&lt;/span&gt;
+&lt;span class="m"&gt;00000056&lt;/span&gt; : 0c43 000a      CMPI.W   &lt;span class="c1"&gt;#$000A,D3&lt;/span&gt;
+0000005a : 6da8           BLT      &lt;span class="nv"&gt;$00000004&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;The only thing left to do is locate the array of keypad codes. The Macintosh's
+keyboard encodes the numeric keypad keys as &lt;code&gt;0x52-0x5c&lt;/code&gt; for &lt;code&gt;0-9&lt;/code&gt; with &lt;code&gt;0x5a&lt;/code&gt;
+being skipped. Searching the game file for an array of those values yields:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;$ python3 -c &lt;span class="s2"&gt;&amp;quot;print(open(&amp;#39;e1orig.bin&amp;#39;,&amp;#39;rb&amp;#39;).read().find(b&amp;#39;\x52\x53\x54\x55\x56\x57\x58\x59\x5b\x5c&amp;#39;))&amp;quot;&lt;/span&gt;
+&lt;span class="m"&gt;2371181&lt;/span&gt;
+$ xxd -s &lt;span class="m"&gt;2371181&lt;/span&gt; -l &lt;span class="m"&gt;16&lt;/span&gt; e1orig.bin
+00242e6d: &lt;span class="m"&gt;5253&lt;/span&gt; &lt;span class="m"&gt;5455&lt;/span&gt; &lt;span class="m"&gt;5657&lt;/span&gt; &lt;span class="m"&gt;5859&lt;/span&gt; 5b5c &lt;span class="m"&gt;2325&lt;/span&gt; &lt;span class="m"&gt;0100&lt;/span&gt; &lt;span class="m"&gt;2125&lt;/span&gt;  RSTUVWXY&lt;span class="o"&gt;[&lt;/span&gt;&lt;span class="se"&gt;\#&lt;/span&gt;%..!%
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;The Macintosh key codes for the replacement keys (&lt;code&gt;[m,.][jkl][uio]&lt;/code&gt;) are
+&lt;code&gt;[2e2b2f][262825][20221f]&lt;/code&gt;. Finally let's substitute numeric keypad &lt;code&gt;0&lt;/code&gt; with &lt;code&gt;y&lt;/code&gt;
+(&lt;code&gt;0x10&lt;/code&gt; on the Mac). I don't actually know what keypad &lt;code&gt;0&lt;/code&gt; does in the game, but we
+might as well grab it while we're here just in case.&lt;/p&gt;
+&lt;p&gt;Putting it all together, the patch file for the Mac version of Exile I looks
+like this:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;$ cat e1-keypad-patch.txt
+00242e6d: 102e 2b2f &lt;span class="m"&gt;2628&lt;/span&gt; &lt;span class="m"&gt;2520&lt;/span&gt; 221f &lt;span class="m"&gt;2325&lt;/span&gt; &lt;span class="m"&gt;0100&lt;/span&gt; &lt;span class="m"&gt;2125&lt;/span&gt;
+0024ffae: &lt;span class="m"&gt;5340&lt;/span&gt; &lt;span class="m"&gt;6700&lt;/span&gt; &lt;span class="m"&gt;0228&lt;/span&gt; 5d40 &lt;span class="m"&gt;6700&lt;/span&gt; 02d6 &lt;span class="m"&gt;5540&lt;/span&gt; &lt;span class="m"&gt;6700&lt;/span&gt;
+0024ffe6: &lt;span class="m"&gt;5340&lt;/span&gt; &lt;span class="m"&gt;6700&lt;/span&gt; 02a4 5d40 &lt;span class="m"&gt;6700&lt;/span&gt; 029e &lt;span class="m"&gt;5540&lt;/span&gt; &lt;span class="m"&gt;6700&lt;/span&gt;
+002502b0: &lt;span class="m"&gt;0440&lt;/span&gt; 004e &lt;span class="m"&gt;6734&lt;/span&gt; &lt;span class="m"&gt;5540&lt;/span&gt; &lt;span class="m"&gt;6744&lt;/span&gt; &lt;span class="m"&gt;0440&lt;/span&gt; &lt;span class="m"&gt;0014&lt;/span&gt; &lt;span class="m"&gt;6700&lt;/span&gt;
+002502ce: &lt;span class="m"&gt;5340&lt;/span&gt; &lt;span class="m"&gt;6740&lt;/span&gt; 5d40 &lt;span class="m"&gt;6722&lt;/span&gt; &lt;span class="m"&gt;5540&lt;/span&gt; &lt;span class="m"&gt;6732&lt;/span&gt; &lt;span class="m"&gt;5540&lt;/span&gt; 673a
+$ cp e1orig.bin e1-no-keypad.bin
+$ xxd -r e1-keypad-patch.txt e1-no-keypad.bin
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;h2&gt;Conclusion&lt;/h2&gt;
+&lt;p&gt;We can copy the &lt;a href="https://motardo.github.io/exile/keypad/e1-no-keypad.bin"&gt;patched game file&lt;/a&gt; back over to BasiliskII, extract the
+application program from the MacBinary format, and test out our new motion keys.&lt;/p&gt;
+&lt;p&gt;Good luck and have fun!&lt;/p&gt;</content><category term="Exile"></category><category term="exile"></category><category term="patches"></category></entry></feed>
