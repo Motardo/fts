@@ -268,7 +268,17 @@ $ xxd -r e1-keypad-patch.txt e1-no-keypad.bin
 
 ## Conclusion
 
-We can copy the [patched game file]({static}/exile/keypad/e1-no-keypad.bin) back over to BasiliskII, extract the
-application program from the MacBinary format, and test out our new motion keys.
+Let's copy the [patched game file]({static}/exile/keypad/e1-no-keypad.bin) back over to BasiliskII, extract the
+application program from the MacBinary format, and test out our new motion keys. Yes, it works!
 
-Good luck and have fun!
+Unfortunately, in the short amount of time that I've tested the new keys, I find myself often fat-fingering the
+new `h` (now *Look*) and `n`(now *Mage Spell*) keys when trying to hit `j` and `m` (to move *West* and *Southwest*).
+This is especially annoying for `n` which pops up a spell dialog. Also, even though I will probably get more
+accurate with practice, I'm not happy with the choice to have the *Look* key on the same hand as the motion keys.
+When I originally used the numeric keypad for motion, I would hit the `l` key with my left hand which made examining
+rows of bookshelves or crates faster.
+
+In the future, I would like to replace all the hard-coded keys in the application with an easily modifiable data
+array.
+
+Good luck and Happy Adventuring!
